@@ -23,6 +23,7 @@
  *   https://groups.google.com/forum/#!forum/bbr-dev
  *
  * NOTE: BBR *must* be used with the fq qdisc ("man tc-fq") with pacing enabled,
+ * since pacing is integral to the BBR design and implementation.
  * BBR without pacing would not function properly, and may incur unnecessary
  * high packet loss rates.
  */
