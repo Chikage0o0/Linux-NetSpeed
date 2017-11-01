@@ -406,7 +406,7 @@ check_stauts(){
 	run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" `
 	if [[ ${kernel_version} = "4.11.8" ]]; then
 		kernel_status="BBR"
-	elif [[ ${kernel_version} = "4.11.8" || ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0" ||]]; then
+	elif [[ ${kernel_version} = "4.11.8" || ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0" ]]; then
 		kernel_status="Lotserver"
 	else 
 		kernel_status="noinstall"
