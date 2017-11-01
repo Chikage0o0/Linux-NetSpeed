@@ -5,7 +5,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+,Debian7+,Ubuntu12+
 #	Description: BBR+BBR魔改版+Lotserver
-#	Version: 0.9
+#	Version: 1.0
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
@@ -194,14 +194,14 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 ————————————————————————————————" && echo
 
 	check_status
-	if [[ ${kernel_stauts}="noinstall" ]]; then
-		echo -e " 当前状态: ${Green_font_prefix}未安装${Font_color_suffix}内核 ${red_font_prefix}请先安装内核${Font_color_suffix}"
+	if [[ ${kernel_status}="noinstall" ]]; then
+		echo -e " 当前状态: ${Green_font_prefix}未安装${Font_color_suffix} 加速内核 ${Red_font_prefix}请先安装内核${Font_color_suffix}"
 	else
-		if [[ ${kernel_stauts}="BBR" ]]; then
+		echo -e " 当前状态: ${Green_font_prefix}已安装${Font_color_suffix} ${_font_prefix}${kernel_status}${Font_color_suffix} 加速内核 ${Red_font_prefix} ${run_status}$ {Font_color_suffix}"
 		
 	fi
 echo
-stty erase '^H' && read -p " 请输入数字 [0-8]:" num
+read -p " 请输入数字 [0-8]:" num
 case "$num" in
 	0)
 	Update_Shell
@@ -225,7 +225,7 @@ case "$num" in
 	remove_all
 	;;
 	7)
-	View_Config
+		echo -e "尚未完工"
 	;;
 	8)
 	exit 1
@@ -402,20 +402,46 @@ check_sys_Lotsever(){
 }
 
 check_stauts(){
-	kernel_version="uname -r | awk -F "-" '{print $1}'"
-	run_stauts='grep "ServerSpeeder" /root/tcp.log'
-	bash /appex/bin/serverSpeeder.sh status >>/root/tcp.log
+	kernel_version=`uname -r | awk -F "-" '{print $1}'`
+	run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" `
 	if [[ ${kernel_version} = "4.11.8" ]]; then
-		kernel_stauts="BBR"
+		kernel_status="BBR"
 	elif [[ ${kernel_version} = "4.11.8" || ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0" ||]]; then
-		kernel_stauts="Lotserver"
+		kernel_status="Lotserver"
 	else 
-		kernel_stauts="noinstall"
+		kernel_status="noinstall"
 	fi
-	if [[ ${run_stauts} = "ServerSpeeder is running!" ]]; then
-		run_stauts="Lotserver"
-	elif [[ bash /appex/bin/serverSpeeder.sh status | sed -n '2p' ]];
-		run_stauts=grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{print $2}'
+	if [[ ${kernel_status}="Lotserver" ]]; then
+		if [[ -e /appex/bin/serverSpeeder.sh ]]; then
+			run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" `]
+			if [[ ${run_status}="Lotserver" ]]; then
+				run_status="启动成功"
+			else 
+				run_status="启动失败"
+			fi
+		else 
+			run_status="未安装加速模块"
+		fi
+	elif [[ ${kernel_status} = "BBR" ]]; then
+		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{print $2}'`
+		if [[ ${run_status}="bbr" ]]; then
+			run_status=`lsmod | grep "tcp" | awk '{print $1}'`
+			if [[ ${run_status} = "tcp_bbr" ]]; then
+				run_status="BBR启动成功"
+			else 
+				run_status="BBR启动失败"
+			fi
+		elif [[ ${run_status}="tsunami" ]]; then
+			run_status=`lsmod | grep "tcp" | awk '{print $1}'`
+			if [[ ${run_status} = "tcp_tsunami" ]]; then
+				run_status="BBR魔改版启动成功"
+			else 
+				run_status="BBR魔改版启动失败"
+			fi
+		else 
+			run_status="未安装加速模块"
+		fi
+	fi
 }
 
 #############系统检测组件#############
