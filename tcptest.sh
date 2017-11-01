@@ -401,12 +401,11 @@ check_sys_Lotsever(){
 	fi
 }
 
-check_stauts(){
+check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
-	run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" `
 	if [[ ${kernel_version} = "4.11.8" ]]; then
 		kernel_status="BBR"
-	elif [[ ${kernel_version} = "4.11.8" || ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0" ]]; then
+	elif [[ ${kernel_version} = "4.11.8" || ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  ]]; then
 		kernel_status="Lotserver"
 	else 
 		kernel_status="noinstall"
