@@ -10,7 +10,7 @@ export PATH
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="0.9"
+sh_ver="1.0"
 github="raw.githubusercontent.com/chiakge/Centos-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -159,7 +159,7 @@ Update_Shell(){
 	[[ -z ${sh_new_ver} ]] && echo -e "${Error} 检测最新版本失败 !" && start_menu
 	if [[ ${sh_new_ver} != ${sh_ver} ]]; then
 		echo -e "发现新版本[ ${sh_new_ver} ]，是否更新？[Y/n]"
-		stty erase '^H' && read -p "(默认: y):" yn
+		read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [Yy] ]]; then
 			wget -N --no-check-certificate http://${github}/tcp.sh && chmod +x tcp.sh
@@ -194,10 +194,10 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 ————————————————————————————————" && echo
 
 	check_status
-	if [[ ${kernel_status}="noinstall" ]]; then
+	if [[ ${kernel_status} == "noinstall" ]]; then
 		echo -e " 当前状态: ${Green_font_prefix}未安装${Font_color_suffix} 加速内核 ${Red_font_prefix}请先安装内核${Font_color_suffix}"
 	else
-		echo -e " 当前状态: ${Green_font_prefix}已安装${Font_color_suffix} ${_font_prefix}${kernel_status}${Font_color_suffix} 加速内核 ${Red_font_prefix} ${run_status}$ {Font_color_suffix}"
+		echo -e " 当前状态: ${Green_font_prefix}已安装${Font_color_suffix} ${_font_prefix}${kernel_status}${Font_color_suffix} 加速内核 , ${Green_font_prefix}${run_status}${Font_color_suffix}"
 		
 	fi
 echo
@@ -362,10 +362,10 @@ check_sys_bbr(){
 check_sys_Lotsever(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "6" ]]; then
+		if [[ ${version} == "6" ]]; then
 			kernel_version="2.6.32-504"
 			installlot
-		elif [[ ${version} = "7" ]]; then
+		elif [[ ${version} == "7" ]]; then
 			yum -y install net-tools
 			kernel_version="3.10.0-327"
 			installlot
@@ -374,10 +374,10 @@ check_sys_Lotsever(){
 		fi
 	elif [[ "${release}" == "debian" ]]; then
 		if [[ ${version} -ge "7" ]]; then
-			if [[ ${bit} = "x64" ]]; then
+			if [[ ${bit} == "x64" ]]; then
 				kernel_version="3.16.0-4"
 				installlot
-			elif [[ ${bit} = "x32" ]]; then
+			elif [[ ${bit} == "x32" ]]; then
 				kernel_version="3.2.0-4"
 				installlot
 			fi
@@ -386,10 +386,10 @@ check_sys_Lotsever(){
 		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
 		if [[ ${version} -ge "12" ]]; then
-			if [[ ${bit} = "x64" ]]; then
+			if [[ ${bit} == "x64" ]]; then
 				kernel_version="4.4.0-47"
 				installlot
-			elif [[ ${bit} = "x32" ]]; then
+			elif [[ ${bit} == "x32" ]]; then
 				kernel_version="3.13.0-29"
 				installlot
 			fi
@@ -403,17 +403,17 @@ check_sys_Lotsever(){
 
 check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
-	if [[ ${kernel_version} = "4.11.8" ]]; then
+	if [[ ${kernel_version} == "4.11.8" ]]; then
 		kernel_status="BBR"
-	elif [[ ${kernel_version} = "4.11.8" || ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  ]]; then
+	elif [[ ${kernel_version} == "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" ]] || [[ ${kernel_version} = "3.13.0"  ]]; then
 		kernel_status="Lotserver"
 	else 
 		kernel_status="noinstall"
 	fi
-	if [[ ${kernel_status}="Lotserver" ]]; then
+	if [[ ${kernel_status} == "Lotserver" ]]; then
 		if [[ -e /appex/bin/serverSpeeder.sh ]]; then
 			run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" `]
-			if [[ ${run_status}="Lotserver" ]]; then
+			if [[ ${run_status} == "Lotserver" ]]; then
 				run_status="启动成功"
 			else 
 				run_status="启动失败"
@@ -421,18 +421,18 @@ check_status(){
 		else 
 			run_status="未安装加速模块"
 		fi
-	elif [[ ${kernel_status} = "BBR" ]]; then
+	elif [[ ${kernel_status} == "BBR" ]]; then
 		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{print $2}'`
-		if [[ ${run_status}="bbr" ]]; then
+		if [[ ${run_status} == "bbr" ]]; then
 			run_status=`lsmod | grep "tcp" | awk '{print $1}'`
-			if [[ ${run_status} = "tcp_bbr" ]]; then
+			if [[ ${run_status} == "tcp_bbr" ]]; then
 				run_status="BBR启动成功"
 			else 
 				run_status="BBR启动失败"
 			fi
-		elif [[ ${run_status}="tsunami" ]]; then
+		elif [[ ${run_status} == "tsunami" ]]; then
 			run_status=`lsmod | grep "tcp" | awk '{print $1}'`
-			if [[ ${run_status} = "tcp_tsunami" ]]; then
+			if [[ ${run_status} == "tcp_tsunami" ]]; then
 				run_status="BBR魔改版启动成功"
 			else 
 				run_status="BBR魔改版启动失败"
@@ -445,6 +445,7 @@ check_status(){
 
 #############系统检测组件#############
 check_sys
+check_version
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 start_menu
 
