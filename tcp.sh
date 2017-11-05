@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+,Debian7+,Ubuntu12+
 #	Description: BBR+BBR魔改版+Lotserver
-#	Version: 1.0
+#	Version: 1.0.2
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.0.1"
+sh_ver="1.0.2"
 github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -89,8 +89,7 @@ installlot(){
 
 #启用BBR
 startbbr(){
-	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-    sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+	remove_all
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 	sysctl -p
@@ -99,6 +98,7 @@ startbbr(){
 
 #编译并启用BBR魔改
 startbbrmod(){
+	remove_all
 	if [[ "${release}" == "centos" ]]; then
 		yum install -y make gcc
 		mkdir bbrmod && cd bbrmod
@@ -127,8 +127,7 @@ startbbrmod(){
 		depmod -a
 	fi
 	
-	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-    sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=tsunami" >> /etc/sysctl.conf
 	sysctl -p
@@ -138,9 +137,45 @@ startbbrmod(){
 
 #启用Lotserver
 startlotserver(){
-	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-    sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+	remove_all
 	wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && chmod +x appex.sh && bash appex.sh install
+	rm -f appex.sh
+	memory=`cat /proc/meminfo |grep 'MemTotal' |awk -F : '{print $2}' |sed 's/^[ \t]*//g' | awk  '{print $1}'`
+	memory1=`expr ${memory} / 1024`
+	memory2=`expr ${memory1} \* 8`
+	cpucore=`cat /proc/cpuinfo | grep “processor” | wc -l`
+	ping1=`ping  139.196.7.248  -s 1000 -c 10 | awk -F"[= ]*"   '/from/{sum+=$(NF-1);}END{print sum/10;}' | awk -F "." '{print $1}'`
+	sed -i '/acc/d' /etc/sysctl.conf
+	sed -i '/advacc/d' /etc/sysctl.conf
+	sed -i '/advinacc/d' /etc/sysctl.conf
+	sed -i '/maxmode/d' /etc/sysctl.conf
+	sed -i '/initialCwndWan/d' /etc/sysctl.conf
+	sed -i '/l2wQLimit/d' /etc/sysctl.conf
+	sed -i '/w2lQLimit/d' /etc/sysctl.conf
+	sed -i '/shaperEnable/d' /etc/sysctl.conf
+	sed -i '/SmBurstMS/d' /etc/sysctl.conf
+	sed -i '/rsc/d' /etc/sysctl.conf
+	sed -i '/gso/d' /etc/sysctl.conf
+	sed -i '/engineNum/d' /etc/sysctl.conf
+	sed -i '/shortRttMS/d' /etc/sysctl.conf
+	initialCwndWan=`expr ${ping1} / 3`
+	SmBurstMS=`expr ${ping1} / 9`
+	l2wQLimit="${memory1} ${memory2}"
+	echo "acc="1"
+		advacc="1"
+		advinacc="1"
+		maxmode="1"
+		initialCwndWan="${initialCwndWan}"
+		l2wQLimit="${l2wQLimit}"
+		w2lQLimit="${l2wQLimit}"
+		shaperEnable="0"
+		SmBurstMS="${SmBurstMS}"
+		rsc="1"
+		gso="1"
+		engineNum="${cpucore}"
+		shortRttMS="${initialCwndWan}"
+	">>text.txt
+	bash /appex/bin/serverSpeeder.sh restart
 	start_menu
 }
 
@@ -148,10 +183,89 @@ startlotserver(){
 remove_all(){
 	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
     sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
-	wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && chmod +x appex.sh && bash appex.sh uninstall
+	if [[ -e /appex/bin/serverSpeeder.sh ]]; thenif [[ -e /appex/bin/serverSpeeder.sh ]]; then
+		wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && chmod +x appex.sh && bash appex.sh uninstall
+		rm -f appex.sh
+	fi
+	clear
+	echo -e "${Info}:卸载完成。"
+	sleep 5s
 	start_menu
 }
 
+#优化系统配置
+optimizing_system(){
+	sed -i '/fs.file-max/d' /etc/sysctl.conf
+	sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+	sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+	sed -i '/net.core.rmem_default/d' /etc/sysctl.conf
+	sed -i '/net.core.wmem_default/d' /etc/sysctl.conf
+	sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.conf
+	sed -i '/net.core.somaxconn/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_syncookies/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_tw_reuse/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_tw_recycle/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_fin_timeout/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_time/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_local_port_range/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_max_syn_backlog/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_max_tw_buckets/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_mtu_probing/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
+	echo "# max open files
+		fs.file-max = 1024000
+		# max read buffer
+		net.core.rmem_max = 67108864
+		# max write buffer
+		net.core.wmem_max = 67108864
+		# default read buffer
+		net.core.rmem_default = 65536
+		# default write buffer
+		net.core.wmem_default = 65536
+		# max processor input queue
+		net.core.netdev_max_backlog = 4096
+		# max backlog
+		net.core.somaxconn = 4096
+
+		# resist SYN flood attacks
+		net.ipv4.tcp_syncookies = 1
+		# reuse timewait sockets when safe
+		net.ipv4.tcp_tw_reuse = 1
+		# turn off fast timewait sockets recycling
+		net.ipv4.tcp_tw_recycle = 0
+		# short FIN timeout
+		net.ipv4.tcp_fin_timeout = 30
+		# short keepalive time
+		net.ipv4.tcp_keepalive_time = 1200
+		# outbound port range
+		net.ipv4.ip_local_port_range = 10000 65000
+		# max SYN backlog
+		net.ipv4.tcp_max_syn_backlog = 4096
+		# max timewait sockets held by system simultaneously
+		net.ipv4.tcp_max_tw_buckets = 5000
+		# TCP receive buffer
+		net.ipv4.tcp_rmem = 4096 87380 67108864
+		# TCP write buffer
+		net.ipv4.tcp_wmem = 4096 65536 67108864
+		# turn on path MTU discovery
+		net.ipv4.tcp_mtu_probing = 1
+
+		# forward ipv4
+		net.ipv4.ip_forward = 1">>/etc/sysctl.conf
+	sysctl -p
+	echo "*               soft    nofile           512000
+		*               hard    nofile          1024000">/etc/security/limits.conf
+	echo "session required pam_limits.so">>/etc/pam.d/common-session
+	echo "ulimit -SHn 1024000">>/etc/profile
+	read -p "需要重启VPS后，才能生效系统优化配置，是否现在重启 ? [Y/n] :" yn
+	[ -z "${yn}" ] && yn="y"
+	if [[ $yn == [Yy] ]]; then
+		echo -e "${Info} VPS 重启中..."
+		reboot
+	fi
+}
 #更新脚本
 Update_Shell(){
 	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
@@ -208,7 +322,7 @@ case "$num" in
 	Update_Shell
 	;;
 	1)
-	check_sys_bbrmod
+	check_sys_bbr
 	;;
 	2)
 	check_sys_Lotsever
@@ -226,13 +340,16 @@ case "$num" in
 	remove_all
 	;;
 	7)
-		echo -e "尚未完工"
+	optimizing_system
 	;;
 	8)
 	exit 1
 	;;
 	*)
-	echo "请输入正确数字 [0-9]"
+	clear
+	echo -e "${Error}:请输入正确数字 [0-8]"
+	sleep 5s
+	start_menu
 	;;
 esac
 }
@@ -413,8 +530,8 @@ check_status(){
 	fi
 	if [[ ${kernel_status} == "Lotserver" ]]; then
 		if [[ -e /appex/bin/serverSpeeder.sh ]]; then
-			run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" `]
-			if [[ ${run_status} == "ServerSpeeder is running!" ]]; then
+			run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" | awk  '{print $3}'`
+			if [[ ${run_status} = "running!" ]]; then
 				run_status="启动成功"
 			else 
 				run_status="启动失败"
