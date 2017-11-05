@@ -154,12 +154,12 @@ startlotserver(){
 	initialCwndWan=`expr ${ping1} / 3`
 	SmBurstMS=`expr ${ping1} / 9`
 	l2wQLimit="${memory1} ${memory2}"
-	echo -e 'initialCwndWan="${initialCwndWan}"
-l2wQLimit="${l2wQLimit}"
-w2lQLimit="${l2wQLimit}"
-SmBurstMS="${SmBurstMS}"
-engineNum="${cpucore}"
-shortRttMS="${initialCwndWan}"'>>/appex/etc/config
+	echo -e 'initialCwndWan=\"${initialCwndWan}\"
+l2wQLimit=\"${l2wQLimit}\"
+w2lQLimit=\"${l2wQLimit}\"
+SmBurstMS=\"${SmBurstMS}\"
+engineNum=\"${cpucore}\"
+shortRttMS=\"${initialCwndWan}\"'>>/appex/etc/config
 	bash /appex/bin/serverSpeeder.sh restart
 	start_menu
 }
@@ -507,7 +507,7 @@ check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
 	if [[ ${kernel_version} = "4.11.8" ]]; then
 		kernel_status="BBR"
-	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32"]]; then
+	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" ]]; then
 		kernel_status="Lotserver"
 	else 
 		kernel_status="noinstall"
