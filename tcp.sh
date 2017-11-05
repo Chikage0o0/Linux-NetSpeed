@@ -154,12 +154,12 @@ startlotserver(){
 	initialCwndWan=`expr ${ping1} / 3`
 	SmBurstMS=`expr ${ping1} / 9`
 	l2wQLimit="${memory1} ${memory2}"
-	echo -e 'initialCwndWan=\"${initialCwndWan}\"
+	echo -e "initialCwndWan=\"${initialCwndWan}\"
 l2wQLimit=\"${l2wQLimit}\"
 w2lQLimit=\"${l2wQLimit}\"
 SmBurstMS=\"${SmBurstMS}\"
 engineNum=\"${cpucore}\"
-shortRttMS=\"${initialCwndWan}\"'>>/appex/etc/config
+shortRttMS=\"${initialCwndWan}\"">>/appex/etc/config
 	bash /appex/bin/serverSpeeder.sh restart
 	start_menu
 }
