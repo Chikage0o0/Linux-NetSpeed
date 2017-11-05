@@ -145,36 +145,21 @@ startlotserver(){
 	memory2=`expr ${memory1} \* 8`
 	cpucore=`cat /proc/cpuinfo | grep “processor” | wc -l`
 	ping1=`ping  139.196.7.248  -s 1000 -c 10 | awk -F"[= ]*"   '/from/{sum+=$(NF-1);}END{print sum/10;}' | awk -F "." '{print $1}'`
-	sed -i '/acc/d' /etc/sysctl.conf
-	sed -i '/advacc/d' /etc/sysctl.conf
-	sed -i '/advinacc/d' /etc/sysctl.conf
-	sed -i '/maxmode/d' /etc/sysctl.conf
-	sed -i '/initialCwndWan/d' /etc/sysctl.conf
-	sed -i '/l2wQLimit/d' /etc/sysctl.conf
-	sed -i '/w2lQLimit/d' /etc/sysctl.conf
-	sed -i '/shaperEnable/d' /etc/sysctl.conf
-	sed -i '/SmBurstMS/d' /etc/sysctl.conf
-	sed -i '/rsc/d' /etc/sysctl.conf
-	sed -i '/gso/d' /etc/sysctl.conf
-	sed -i '/engineNum/d' /etc/sysctl.conf
-	sed -i '/shortRttMS/d' /etc/sysctl.conf
+	sed -i '/initialCwndWan/d' /appex/etc/config
+	sed -i '/l2wQLimit/d' /appex/etc/config
+	sed -i '/w2lQLimit/d' /appex/etc/config
+	sed -i '/SmBurstMS/d' /appex/etc/config
+	sed -i '/engineNum/d' /appex/etc/config
+	sed -i '/shortRttMS/d' /appex/etc/config
 	initialCwndWan=`expr ${ping1} / 3`
 	SmBurstMS=`expr ${ping1} / 9`
 	l2wQLimit="${memory1} ${memory2}"
-	echo "acc="1"
-		advacc="1"
-		advinacc="1"
-		maxmode="1"
-		initialCwndWan="${initialCwndWan}"
-		l2wQLimit="${l2wQLimit}"
-		w2lQLimit="${l2wQLimit}"
-		shaperEnable="0"
-		SmBurstMS="${SmBurstMS}"
-		rsc="1"
-		gso="1"
-		engineNum="${cpucore}"
-		shortRttMS="${initialCwndWan}"
-	">>text.txt
+	echo -e 'initialCwndWan="${initialCwndWan}"
+l2wQLimit="${l2wQLimit}"
+w2lQLimit="${l2wQLimit}"
+SmBurstMS="${SmBurstMS}"
+engineNum="${cpucore}"
+shortRttMS="${initialCwndWan}"'>>/appex/etc/config
 	bash /appex/bin/serverSpeeder.sh restart
 	start_menu
 }
@@ -183,14 +168,13 @@ startlotserver(){
 remove_all(){
 	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
     sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
-	if [[ -e /appex/bin/serverSpeeder.sh ]]; thenif [[ -e /appex/bin/serverSpeeder.sh ]]; then
+	if [[ -e /appex/bin/serverSpeeder.sh ]]; then
 		wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && chmod +x appex.sh && bash appex.sh uninstall
 		rm -f appex.sh
 	fi
 	clear
-	echo -e "${Info}:卸载完成。"
-	sleep 5s
-	start_menu
+	echo -e "${Info}:清除加速完成。"
+	sleep 1s
 }
 
 #优化系统配置
@@ -215,48 +199,48 @@ optimizing_system(){
 	sed -i '/net.ipv4.tcp_mtu_probing/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
 	echo "# max open files
-		fs.file-max = 1024000
-		# max read buffer
-		net.core.rmem_max = 67108864
-		# max write buffer
-		net.core.wmem_max = 67108864
-		# default read buffer
-		net.core.rmem_default = 65536
-		# default write buffer
-		net.core.wmem_default = 65536
-		# max processor input queue
-		net.core.netdev_max_backlog = 4096
-		# max backlog
-		net.core.somaxconn = 4096
+fs.file-max = 1024000
+# max read buffer
+net.core.rmem_max = 67108864
+# max write buffer
+net.core.wmem_max = 67108864
+# default read buffer
+net.core.rmem_default = 65536
+# default write buffer
+net.core.wmem_default = 65536
+# max processor input queue
+net.core.netdev_max_backlog = 4096
+# max backlog
+net.core.somaxconn = 4096
 
-		# resist SYN flood attacks
-		net.ipv4.tcp_syncookies = 1
-		# reuse timewait sockets when safe
-		net.ipv4.tcp_tw_reuse = 1
-		# turn off fast timewait sockets recycling
-		net.ipv4.tcp_tw_recycle = 0
-		# short FIN timeout
-		net.ipv4.tcp_fin_timeout = 30
-		# short keepalive time
-		net.ipv4.tcp_keepalive_time = 1200
-		# outbound port range
-		net.ipv4.ip_local_port_range = 10000 65000
-		# max SYN backlog
-		net.ipv4.tcp_max_syn_backlog = 4096
-		# max timewait sockets held by system simultaneously
-		net.ipv4.tcp_max_tw_buckets = 5000
-		# TCP receive buffer
-		net.ipv4.tcp_rmem = 4096 87380 67108864
-		# TCP write buffer
-		net.ipv4.tcp_wmem = 4096 65536 67108864
-		# turn on path MTU discovery
-		net.ipv4.tcp_mtu_probing = 1
+# resist SYN flood attacks
+net.ipv4.tcp_syncookies = 1
+# reuse timewait sockets when safe
+net.ipv4.tcp_tw_reuse = 1
+# turn off fast timewait sockets recycling
+net.ipv4.tcp_tw_recycle = 0
+# short FIN timeout
+net.ipv4.tcp_fin_timeout = 30
+# short keepalive time
+net.ipv4.tcp_keepalive_time = 1200
+# outbound port range
+net.ipv4.ip_local_port_range = 10000 65000
+# max SYN backlog
+net.ipv4.tcp_max_syn_backlog = 4096
+# max timewait sockets held by system simultaneously
+net.ipv4.tcp_max_tw_buckets = 5000
+# TCP receive buffer
+net.ipv4.tcp_rmem = 4096 87380 67108864
+# TCP write buffer
+net.ipv4.tcp_wmem = 4096 65536 67108864
+# turn on path MTU discovery
+net.ipv4.tcp_mtu_probing = 1
 
-		# forward ipv4
-		net.ipv4.ip_forward = 1">>/etc/sysctl.conf
+# forward ipv4
+net.ipv4.ip_forward = 1">>/etc/sysctl.conf
 	sysctl -p
 	echo "*               soft    nofile           512000
-		*               hard    nofile          1024000">/etc/security/limits.conf
+*               hard    nofile          1024000">/etc/security/limits.conf
 	echo "session required pam_limits.so">>/etc/pam.d/common-session
 	echo "ulimit -SHn 1024000">>/etc/profile
 	read -p "需要重启VPS后，才能生效系统优化配置，是否现在重启 ? [Y/n] :" yn
@@ -521,9 +505,9 @@ check_sys_Lotsever(){
 
 check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
-	if [[ ${kernel_version} == "4.11.8" ]]; then
+	if [[ ${kernel_version} = "4.11.8" ]]; then
 		kernel_status="BBR"
-	elif [[ ${kernel_version} == "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" ]] || [[ ${kernel_version} = "3.13.0"  ]]; then
+	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32"]]; then
 		kernel_status="Lotserver"
 	else 
 		kernel_status="noinstall"
