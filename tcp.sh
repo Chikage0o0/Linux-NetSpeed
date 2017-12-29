@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+,Debian7+,Ubuntu12+
 #	Description: BBR+BBR魔改版+Lotserver
-#	Version: 1.0.5
+#	Version: 1.0.6
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.0.5"
+sh_ver="1.0.6"
 github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -347,7 +347,7 @@ detele_kernel(){
 			for((integer = 1; integer <= ${rpm_total}; integer++)); do
 				rpm_del=`rpm -qa | grep kernel | grep -v "${kernel_version}" | grep -v "noarch" | head -${integer}`
 				echo -e "开始卸载 ${rpm_del} 内核..."
-				yum remove -y ${rpm_del} >/dev/null 2>&1
+				yum remove -y ${rpm_del}
 				echo -e "卸载 ${rpm_del} 内核卸载完成，继续..."
 			done
 			echo -e "内核卸载完毕，继续..."
@@ -361,7 +361,7 @@ detele_kernel(){
 			for((integer = 1; integer <= ${deb_total}; integer++)); do
 				deb_del=`dpkg -l|grep linux-image | awk '{print $2}' | grep -v "${kernel_version}" | head -${integer}`
 				echo -e "开始卸载 ${deb_del} 内核..."
-				apt-get purge -y ${deb_del} >/dev/null 2>&1
+				apt-get purge -y ${deb_del}
 				echo -e "卸载 ${deb_del} 内核卸载完成，继续..."
 			done
 			echo -e "内核卸载完毕，继续..."
