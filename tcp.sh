@@ -107,7 +107,7 @@ startbbrmod(){
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
 		chmod +x ./tcp_nanqinlang.ko
 		cp -rf ./tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel/net/ipv4
-		insmod tcp_nanqinlang.ko
+		insmod /lib/modules/$(uname -r)/kernel/net/ipv4/tcp_nanqinlang.ko
 		depmod -a
 	else
 		apt-get update
@@ -123,7 +123,7 @@ startbbrmod(){
 		echo "obj-m := tcp_nanqinlang.o" > Makefile
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
 		install tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel
-		cp -rf ./tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel/net/ipv4
+		insmod /lib/modules/$(uname -r)/kernel/net/ipv4/tcp_nanqinlang.ko
 		depmod -a
 	fi
 	
@@ -531,9 +531,9 @@ check_status(){
 			else 
 				run_status="BBR启动失败"
 			fi
-		elif [[ ${run_status} == "tsunami" ]]; then
-			run_status=`lsmod | grep "tsunami" | awk '{print $1}'`
-			if [[ ${run_status} == "tcp_tsunami" ]]; then
+		elif [[ ${run_status} == "nanqinlang" ]]; then
+			run_status=`lsmod | grep "nanqinlang" | awk '{print $1}'`
+			if [[ ${run_status} == "tcp_nanqinlang" ]]; then
 				run_status="BBR魔改版启动成功"
 			else 
 				run_status="BBR魔改版启动失败"
