@@ -107,7 +107,7 @@ startbbrmod(){
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
 		chmod +x ./tcp_nanqinlang.ko
 		cp -rf ./tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel/net/ipv4
-		insmod /lib/modules/$(uname -r)/kernel/net/ipv4/tcp_nanqinlang.ko
+		insmod tcp_tsunami.ko
 		depmod -a
 	else
 		apt-get update
@@ -124,7 +124,6 @@ startbbrmod(){
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
 		install tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel
 		cp -rf ./tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel/net/ipv4
-		insmod /lib/modules/$(uname -r)/kernel/net/ipv4/tcp_nanqinlang.ko
 		depmod -a
 	fi
 	
@@ -132,7 +131,6 @@ startbbrmod(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=nanqinlang" >> /etc/sysctl.conf
 	sysctl -p
-    cd .. && rm -rf bbrmod
 	echo -e "${Info}魔改版BBR启动成功！"
 }
 
