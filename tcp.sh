@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+,Debian7+,Ubuntu12+
 #	Description: BBR+BBR魔改版+Lotserver
-#	Version: 1.0.6
+#	Version: 1.1.0
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.0.6"
+sh_ver="1.1.0"
 github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -102,12 +102,12 @@ startbbrmod(){
 	if [[ "${release}" == "centos" ]]; then
 		yum install -y make gcc
 		mkdir bbrmod && cd bbrmod
-		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
-		echo "obj-m:=tcp_tsunami.o" > Makefile
+		wget -N --no-check-certificate https://raw.githubusercontent.com/chiakge/tcp_nanqinlang-test/master/tcp_nanqinlang.c
+		echo "obj-m := tcp_nanqinlang.o" > Makefile
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
-		chmod +x ./tcp_tsunami.ko
-		cp -rf ./tcp_tsunami.ko /lib/modules/$(uname -r)/kernel/net/ipv4
-		insmod tcp_tsunami.ko
+		chmod +x ./tcp_nanqinlang.ko
+		cp -rf ./tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel/net/ipv4
+		insmod tcp_nanqinlang.ko
 		depmod -a
 	else
 		apt-get update
@@ -119,17 +119,17 @@ startbbrmod(){
 		fi
 		apt-get -y install make gcc-4.9
 		mkdir bbrmod && cd bbrmod
-		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
-		echo "obj-m:=tcp_tsunami.o" > Makefile
+		wget -N --no-check-certificate https://raw.githubusercontent.com/chiakge/tcp_nanqinlang-test/master/tcp_nanqinlang.c
+		echo "obj-m := tcp_nanqinlang.o" > Makefile
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
-		install tcp_tsunami.ko /lib/modules/$(uname -r)/kernel
-		cp -rf ./tcp_tsunami.ko /lib/modules/$(uname -r)/kernel/net/ipv4
+		install tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel
+		cp -rf ./tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel/net/ipv4
 		depmod -a
 	fi
 	
 
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=tsunami" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=nanqinlang" >> /etc/sysctl.conf
 	sysctl -p
     cd .. && rm -rf bbrmod
 	echo -e "${Info}魔改版BBR启动成功！"
