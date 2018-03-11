@@ -575,7 +575,7 @@ check_status(){
 			fi
 		elif [[ ${run_status} == "tsunami" ]]; then
 			run_status=`lsmod | grep "tsunami" | awk '{print $1}'`
-			if [[ ${run_status} == "tsunami" ]]; then
+			if [[ ${run_status} == "tcp_tsunami" ]]; then
 				run_status="BBR魔改版启动成功"
 			else 
 				run_status="BBR魔改版启动失败"
