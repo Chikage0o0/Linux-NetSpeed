@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+,Debian7+,Ubuntu12+
 #	Description: BBR+BBR魔改版+Lotserver
-#	Version: 1.1.0
+#	Version: 1.1.1
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.1.0"
+sh_ver="1.1.1"
 github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -98,6 +98,45 @@ startbbr(){
 
 #编译并启用BBR魔改
 startbbrmod(){
+	remove_all
+	if [[ "${release}" == "centos" ]]; then
+		yum install -y make gcc
+		mkdir bbrmod && cd bbrmod
+		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
+		echo "obj-m:=tcp_tsunami.o" > Makefile
+		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
+		chmod +x ./tcp_tsunami.ko
+		cp -rf ./tcp_tsunami.ko /lib/modules/$(uname -r)/kernel/net/ipv4
+		insmod tcp_tsunami.ko
+		depmod -a
+	else
+		apt-get update
+		if [[ "${release}" == "ubuntu" && "${version}" = "14" ]]; then
+			apt-get -y install build-essential
+			apt-get -y install software-properties-common
+			add-apt-repository ppa:ubuntu-toolchain-r/test -y
+			apt-get update
+		fi
+		apt-get -y install make gcc-4.9
+		mkdir bbrmod && cd bbrmod
+		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
+		echo "obj-m:=tcp_tsunami.o" > Makefile
+		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
+		install tcp_tsunami.ko /lib/modules/$(uname -r)/kernel
+		cp -rf ./tcp_tsunami.ko /lib/modules/$(uname -r)/kernel/net/ipv4
+		depmod -a
+	fi
+	
+
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=tsunami" >> /etc/sysctl.conf
+	sysctl -p
+    cd .. && rm -rf bbrmod
+	echo -e "${Info}魔改版BBR启动成功！"
+}
+
+#编译并启用BBR魔改
+startbbrmod_nanqinlang(){
 	remove_all
 	if [[ "${release}" == "centos" ]]; then
 		yum install -y make gcc
@@ -283,11 +322,12 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 ————————————加速管理————————————
  ${Green_font_prefix}3.${Font_color_suffix} 使用BBR加速
  ${Green_font_prefix}4.${Font_color_suffix} 使用BBR魔改版加速
- ${Green_font_prefix}5.${Font_color_suffix} 使用Lotserver(锐速)加速
+ ${Green_font_prefix}5.${Font_color_suffix} 使用暴力BBR魔改版加速(不支持部分系统)
+ ${Green_font_prefix}6.${Font_color_suffix} 使用Lotserver(锐速)加速
 ————————————杂项管理————————————
- ${Green_font_prefix}6.${Font_color_suffix} 卸载全部加速
- ${Green_font_prefix}7.${Font_color_suffix} 系统配置优化
- ${Green_font_prefix}8.${Font_color_suffix} 退出脚本
+ ${Green_font_prefix}7.${Font_color_suffix} 卸载全部加速
+ ${Green_font_prefix}8.${Font_color_suffix} 系统配置优化
+ ${Green_font_prefix}9.${Font_color_suffix} 退出脚本
 ————————————————————————————————" && echo
 
 	check_status
@@ -298,7 +338,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 		
 	fi
 echo
-read -p " 请输入数字 [0-8]:" num
+read -p " 请输入数字 [0-9]:" num
 case "$num" in
 	0)
 	Update_Shell
@@ -316,15 +356,18 @@ case "$num" in
 	startbbrmod
 	;;
 	5)
-	startlotserver
+	startbbrmod_nanqinlang
 	;;
 	6)
-	remove_all
+	startlotserver
 	;;
 	7)
-	optimizing_system
+	remove_all
 	;;
 	8)
+	optimizing_system
+	;;
+	9)
 	exit 1
 	;;
 	*)
@@ -530,12 +573,19 @@ check_status(){
 			else 
 				run_status="BBR启动失败"
 			fi
-		elif [[ ${run_status} == "nanqinlang" ]]; then
-			run_status=`lsmod | grep "nanqinlang" | awk '{print $1}'`
-			if [[ ${run_status} == "tcp_nanqinlang" ]]; then
+		elif [[ ${run_status} == "tsunami" ]]; then
+			run_status=`lsmod | grep "tsunami" | awk '{print $1}'`
+			if [[ ${run_status} == "tsunami" ]]; then
 				run_status="BBR魔改版启动成功"
 			else 
 				run_status="BBR魔改版启动失败"
+			fi
+		elif [[ ${run_status} == "nanqinlang" ]]; then
+			run_status=`lsmod | grep "nanqinlang" | awk '{print $1}'`
+			if [[ ${run_status} == "tcp_nanqinlang" ]]; then
+				run_status="暴力BBR魔改版启动成功"
+			else 
+				run_status="暴力BBR魔改版启动失败"
 			fi
 		else 
 			run_status="未安装加速模块"
