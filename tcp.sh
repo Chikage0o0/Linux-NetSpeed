@@ -204,6 +204,7 @@ shortRttMS=\"${initialCwndWan}\"">>/appex/etc/config
 
 #卸载全部加速
 remove_all(){
+	rm -rf bbrmod
 	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
     sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
 	if [[ -e /appex/bin/serverSpeeder.sh ]]; then
