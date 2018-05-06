@@ -182,22 +182,13 @@ startlotserver(){
 	memory1=`expr ${memory} / 1024`
 	memory2=`expr ${memory1} \* 8`
 	cpucore=`cat /proc/cpuinfo | grep “processor” | wc -l`
-	ping1=`ping 140.205.230.3  -s 1000 -c 10 | awk -F"[= ]*"   '/from/{sum+=$(NF-1);}END{print sum/10;}' | awk -F "." '{print $1}'`
-	sed -i '/initialCwndWan/d' /appex/etc/config
 	sed -i '/l2wQLimit/d' /appex/etc/config
 	sed -i '/w2lQLimit/d' /appex/etc/config
-	sed -i '/SmBurstMS/d' /appex/etc/config
 	sed -i '/engineNum/d' /appex/etc/config
-	sed -i '/shortRttMS/d' /appex/etc/config
-	initialCwndWan=`expr ${ping1} / 3`
-	SmBurstMS=`expr ${ping1} / 9`
 	l2wQLimit="${memory1} ${memory2}"
-	echo -e "initialCwndWan=\"${initialCwndWan}\"
-l2wQLimit=\"${l2wQLimit}\"
+	echo -e "l2wQLimit=\"${l2wQLimit}\"
 w2lQLimit=\"${l2wQLimit}\"
-SmBurstMS=\"${SmBurstMS}\"
-engineNum=\"${cpucore}\"
-shortRttMS=\"${initialCwndWan}\"">>/appex/etc/config
+engineNum=\"${cpucore}\"">>/appex/etc/config
 	bash /appex/bin/serverSpeeder.sh restart
 	start_menu
 }
