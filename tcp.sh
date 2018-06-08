@@ -5,7 +5,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+,Debian7+,Ubuntu12+
 #	Description: BBR+BBR魔改版+Lotserver
-#	Version: 1.1.5
+#	Version: 1.1.6
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
