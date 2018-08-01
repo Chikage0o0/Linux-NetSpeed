@@ -40,7 +40,7 @@ installbbr(){
 	fi
 	detele_kernel
 	BBR_grub
-	# optimizing_system2
+	optimizing_system2
 	startbbr
 	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR/BBR魔改版${Font_color_suffix}"
 	reboot
