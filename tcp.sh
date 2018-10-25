@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+,Debian7+,Ubuntu12+
 #	Description: BBR+BBR魔改版+Lotserver
-#	Version: 1.1.8
+#	Version: 1.1.9
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.1.8"
+sh_ver="1.1.9"
 github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -184,18 +184,6 @@ startlotserver(){
 	fi
 	wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && chmod +x appex.sh && bash appex.sh install
 	rm -f appex.sh
-	memory=`cat /proc/meminfo |grep 'MemTotal' |awk -F : '{print $2}' |sed 's/^[ \t]*//g' | awk  '{print $1}'`
-	memory1=`expr ${memory} / 1024`
-	memory2=`expr ${memory1} \* 8`
-	cpucore=`cat /proc/cpuinfo | grep “processor” | wc -l`
-	sed -i '/l2wQLimit/d' /appex/etc/config
-	sed -i '/w2lQLimit/d' /appex/etc/config
-	sed -i '/engineNum/d' /appex/etc/config
-	l2wQLimit="${memory1} ${memory2}"
-	echo -e "l2wQLimit=\"${l2wQLimit}\"
-w2lQLimit=\"${l2wQLimit}\"
-engineNum=\"${cpucore}\"">>/appex/etc/config
-	bash /appex/bin/serverSpeeder.sh restart
 	start_menu
 }
 
