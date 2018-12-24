@@ -55,8 +55,9 @@ installbbr(){
 installbbrplus(){
 	kernel_version="4.14.90"
 	if [[ "${release}" == "centos" ]]; then
-		rpm --import http://${github}/bbrplus/${release}/RPM-GPG-KEY-elrepo.org
-		yum install -y http://${github}/bbrplus/${release}/${version}/${bit}/kernel-${kernel_version}.rpm
+		wget https://${github}/bbrplus/${release}/${version}/kernel-4.14.90.rpm
+		yum install -y kernel-4.14.90.rpm
+                rm -f kernel-4.14.90.rpm
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		mkdir bbrplus && cd bbrplus
 		wget -N --no-check-certificate http://${github}/bbrplus/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
