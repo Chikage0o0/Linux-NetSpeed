@@ -151,10 +151,11 @@ startbbrmod(){
 			add-apt-repository ppa:ubuntu-toolchain-r/test -y
 			apt-get update
 		fi
-		apt-get -y install make gcc-4.9
+		apt-get -y install make gcc
 		mkdir bbrmod && cd bbrmod
 		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
 		echo "obj-m:=tcp_tsunami.o" > Makefile
+		ln -s /usr/bin/gcc /usr/bin/gcc-4.9
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
 		install tcp_tsunami.ko /lib/modules/$(uname -r)/kernel
 		cp -rf ./tcp_tsunami.ko /lib/modules/$(uname -r)/kernel/net/ipv4
@@ -605,7 +606,7 @@ check_sys_Lotsever(){
 
 check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
-	if [[ ${kernel_version} = "4.14.90" || ${kernel_version} = "4.14.90" ]]; then
+	if [[ ${kernel_version} = "4.14.90" ]]; then
 		kernel_status="BBRplus"
 	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" ]]; then
 		kernel_status="Lotserver"
@@ -614,6 +615,7 @@ check_status(){
 	else 
 		kernel_status="noinstall"
 	fi
+
 	if [[ ${kernel_status} == "Lotserver" ]]; then
 		if [[ -e /appex/bin/serverSpeeder.sh ]]; then
 			run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" | awk  '{print $3}'`
