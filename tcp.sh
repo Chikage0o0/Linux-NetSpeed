@@ -348,7 +348,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}4.${Font_color_suffix} 使用BBR加速
  ${Green_font_prefix}5.${Font_color_suffix} 使用BBR魔改版加速
  ${Green_font_prefix}6.${Font_color_suffix} 使用暴力BBR魔改版加速(不支持部分系统)
- ${Green_font_prefix}7.${Font_color_suffix} 使用BBR魔改版加速
+ ${Green_font_prefix}7.${Font_color_suffix} 使用BBRplus版加速
  ${Green_font_prefix}8.${Font_color_suffix} 使用Lotserver(锐速)加速
 ————————————杂项管理————————————
  ${Green_font_prefix}9.${Font_color_suffix} 卸载全部加速
@@ -646,7 +646,12 @@ check_status(){
 			else 
 				run_status="暴力BBR魔改版启动失败"
 			fi
-		elif [[ ${run_status} == "bbrplus" ]]; then
+		else 
+			run_status="未安装加速模块"
+		fi
+	elif [[ ${kernel_status} == "BBRplus" ]]; then
+		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{print $2}'`
+		if [[ ${run_status} == "bbrplus" ]]; then
 			run_status=`lsmod | grep "bbrplus" | awk '{print $1}'`
 			if [[ ${run_status} == "tcp_bbrplus" ]]; then
 				run_status="BBRplus启动成功"
