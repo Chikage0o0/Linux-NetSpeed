@@ -603,12 +603,12 @@ check_sys_Lotsever(){
 
 check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
-	if [[ `echo ${kernel_version} | awk -F'.' '{print $1}'` == "4" ]] && [[ `echo ${kernel_version} | awk -F'.' '{print $2}'` -ge 9 ]]; then
-		kernel_status="BBR"
+	if [[ ${kernel_version} = "4.14.90" || ${kernel_version} = "4.14.90" ]]; then
+		kernel_status="BBRplus"
 	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" ]]; then
 		kernel_status="Lotserver"
-	elif [[ ${kernel_version} = "4.14.90" || ${kernel_version} = "4.14.90" ]]; then
-		kernel_status="bbrplus"
+	elif [[ `echo ${kernel_version} | awk -F'.' '{print $1}'` == "4" ]] && [[ `echo ${kernel_version} | awk -F'.' '{print $2}'` -ge 9 ]]; then
+		kernel_status="BBR"
 	else 
 		kernel_status="noinstall"
 	fi
