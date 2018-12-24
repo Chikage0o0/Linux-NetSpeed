@@ -3,15 +3,15 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
 #=================================================
-#	System Required: CentOS 6+,Debian7+,Ubuntu12+
-#	Description: BBR+BBR魔改版+Lotserver
+#	System Required: CentOS 7,Debian 8/9,Ubuntu 16+
+#	Description: BBR+BBR魔改版+BBRplus+Lotserver
 #	Version: 1.1.9
 #	Author: 千影
 #	Blog: https://www.94ish.me/
 #=================================================
 
 sh_ver="1.1.9"
-github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
+github="github.com/cx9208/Linux-NetSpeed/raw/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
@@ -29,10 +29,12 @@ installbbr(){
 		yum install -y http://${github}/bbr/${release}/${version}/${bit}/kernel-ml-devel-${kernel_version}.rpm
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		mkdir bbr && cd bbr
+		wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
 		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/linux-headers-${kernel_version}-all.deb
 		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
 		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
 	
+		dpkg -i libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
 		dpkg -i linux-headers-${kernel_version}-all.deb
 		dpkg -i linux-headers-${kernel_version}.deb
 		dpkg -i linux-image-${kernel_version}.deb
@@ -42,6 +44,30 @@ installbbr(){
 	BBR_grub
 	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR/BBR魔改版${Font_color_suffix}"
 	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR/BBR魔改版，是否现在重启 ? [Y/n] :" yn
+	[ -z "${yn}" ] && yn="y"
+	if [[ $yn == [Yy] ]]; then
+		echo -e "${Info} VPS 重启中..."
+		reboot
+	fi
+}
+
+#安装BBRplus内核
+installbbrplus(){
+	kernel_version="4.14.90"
+	if [[ "${release}" == "centos" ]]; then
+		wget https://${github}/bbrplus/${release}/${version}/kernel-4.14.90.rpm
+		yum install -y kernel-4.14.90.rpm
+                rm -f kernel-4.14.90.rpm
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		mkdir bbrplus && cd bbrplus
+		wget -N --no-check-certificate http://${github}/bbrplus/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
+		dpkg -i linux-image-${kernel_version}.deb
+		cd .. && rm -rf bbrplus
+	fi
+	detele_kernel
+	BBR_grub
+	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBRplus${Font_color_suffix}"
+	stty erase '^H' && read -p "需要重启VPS后，才能开启BBRplus，是否现在重启 ? [Y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
 		echo -e "${Info} VPS 重启中..."
@@ -96,6 +122,15 @@ startbbr(){
 	echo -e "${Info}BBR启动成功！"
 }
 
+#启用BBRplus
+startbbrplus(){
+	remove_all
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbrplus" >> /etc/sysctl.conf
+	sysctl -p
+	echo -e "${Info}BBRplus启动成功！"
+}
+
 #编译并启用BBR魔改
 startbbrmod(){
 	remove_all
@@ -117,10 +152,11 @@ startbbrmod(){
 			add-apt-repository ppa:ubuntu-toolchain-r/test -y
 			apt-get update
 		fi
-		apt-get -y install make gcc-4.9
+		apt-get -y install make gcc
 		mkdir bbrmod && cd bbrmod
 		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
 		echo "obj-m:=tcp_tsunami.o" > Makefile
+		ln -s /usr/bin/gcc /usr/bin/gcc-4.9
 		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
 		install tcp_tsunami.ko /lib/modules/$(uname -r)/kernel
 		cp -rf ./tcp_tsunami.ko /lib/modules/$(uname -r)/kernel/net/ipv4
@@ -310,16 +346,18 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
 ————————————内核管理————————————
  ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR/BBR魔改版内核
- ${Green_font_prefix}2.${Font_color_suffix} 安装 Lotserver(锐速)内核
+ ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 
+ ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核
 ————————————加速管理————————————
- ${Green_font_prefix}3.${Font_color_suffix} 使用BBR加速
- ${Green_font_prefix}4.${Font_color_suffix} 使用BBR魔改版加速
- ${Green_font_prefix}5.${Font_color_suffix} 使用暴力BBR魔改版加速(不支持部分系统)
- ${Green_font_prefix}6.${Font_color_suffix} 使用Lotserver(锐速)加速
+ ${Green_font_prefix}4.${Font_color_suffix} 使用BBR加速
+ ${Green_font_prefix}5.${Font_color_suffix} 使用BBR魔改版加速
+ ${Green_font_prefix}6.${Font_color_suffix} 使用暴力BBR魔改版加速(不支持部分系统)
+ ${Green_font_prefix}7.${Font_color_suffix} 使用BBRplus版加速
+ ${Green_font_prefix}8.${Font_color_suffix} 使用Lotserver(锐速)加速
 ————————————杂项管理————————————
- ${Green_font_prefix}7.${Font_color_suffix} 卸载全部加速
- ${Green_font_prefix}8.${Font_color_suffix} 系统配置优化
- ${Green_font_prefix}9.${Font_color_suffix} 退出脚本
+ ${Green_font_prefix}9.${Font_color_suffix} 卸载全部加速
+ ${Green_font_prefix}10.${Font_color_suffix} 系统配置优化
+ ${Green_font_prefix}11.${Font_color_suffix} 退出脚本
 ————————————————————————————————" && echo
 
 	check_status
@@ -330,7 +368,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 		
 	fi
 echo
-read -p " 请输入数字 [0-9]:" num
+read -p " 请输入数字 [0-11]:" num
 case "$num" in
 	0)
 	Update_Shell
@@ -339,32 +377,38 @@ case "$num" in
 	check_sys_bbr
 	;;
 	2)
-	check_sys_Lotsever
+	check_sys_bbrplus
 	;;
 	3)
-	startbbr
+	check_sys_Lotsever
 	;;
 	4)
-	startbbrmod
+	startbbr
 	;;
 	5)
-	startbbrmod_nanqinlang
+	startbbrmod
 	;;
 	6)
-	startlotserver
+	startbbrmod_nanqinlang
 	;;
 	7)
-	remove_all
+	startbbrplus
 	;;
 	8)
-	optimizing_system
+	startlotserver
 	;;
 	9)
+	remove_all
+	;;
+	10)
+	optimizing_system
+	;;
+	11)
 	exit 1
 	;;
 	*)
 	clear
-	echo -e "${Error}:请输入正确数字 [0-8]"
+	echo -e "${Error}:请输入正确数字 [0-11]"
 	sleep 5s
 	start_menu
 	;;
@@ -381,7 +425,7 @@ detele_kernel(){
 			for((integer = 1; integer <= ${rpm_total}; integer++)); do
 				rpm_del=`rpm -qa | grep kernel | grep -v "${kernel_version}" | grep -v "noarch" | head -${integer}`
 				echo -e "开始卸载 ${rpm_del} 内核..."
-				yum remove -y ${rpm_del}
+				rpm -e ${rpm_del}
 				echo -e "卸载 ${rpm_del} 内核卸载完成，继续..."
 			done
 			echo -e "内核卸载完毕，继续..."
@@ -492,6 +536,31 @@ check_sys_bbr(){
 	fi
 }
 
+check_sys_bbrplus(){
+	check_version
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} -ge "6" ]]; then
+			installbbrplus
+		else
+			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} -ge "8" ]]; then
+			installbbrplus
+		else
+			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "ubuntu" ]]; then
+		if [[ ${version} -ge "14" ]]; then
+			installbbrplus
+		else
+			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	else
+		echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+}
+
 
 #检查安装Lotsever的系统要求
 check_sys_Lotsever(){
@@ -538,13 +607,16 @@ check_sys_Lotsever(){
 
 check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
-	if [[ `echo ${kernel_version} | awk -F'.' '{print $1}'` == "4" ]] && [[ `echo ${kernel_version} | awk -F'.' '{print $2}'` -ge 9 ]]; then
-		kernel_status="BBR"
+	if [[ ${kernel_version} = "4.14.90" ]]; then
+		kernel_status="BBRplus"
 	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" ]]; then
 		kernel_status="Lotserver"
+	elif [[ `echo ${kernel_version} | awk -F'.' '{print $1}'` == "4" ]] && [[ `echo ${kernel_version} | awk -F'.' '{print $2}'` -ge 9 ]]; then
+		kernel_status="BBR"
 	else 
 		kernel_status="noinstall"
 	fi
+
 	if [[ ${kernel_status} == "Lotserver" ]]; then
 		if [[ -e /appex/bin/serverSpeeder.sh ]]; then
 			run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" | awk  '{print $3}'`
@@ -578,6 +650,18 @@ check_status(){
 				run_status="暴力BBR魔改版启动成功"
 			else 
 				run_status="暴力BBR魔改版启动失败"
+			fi
+		else 
+			run_status="未安装加速模块"
+		fi
+	elif [[ ${kernel_status} == "BBRplus" ]]; then
+		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{print $2}'`
+		if [[ ${run_status} == "bbrplus" ]]; then
+			run_status=`lsmod | grep "bbrplus" | awk '{print $1}'`
+			if [[ ${run_status} == "tcp_bbrplus" ]]; then
+				run_status="BBRplus启动成功"
+			else 
+				run_status="BBRplus启动失败"
 			fi
 		else 
 			run_status="未安装加速模块"
