@@ -5,13 +5,13 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7,Debian 8/9,Ubuntu 16+
 #	Description: BBR+BBR魔改版+BBRplus+Lotserver
-#	Version: 1.2.0
+#	Version: 1.2.1
 #	Author: 千影,cx9208
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.2.0"
-github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
+sh_ver="1.2.1"
+github="github.com/cx9208/Linux-NetSpeed/raw/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
@@ -53,14 +53,16 @@ installbbr(){
 
 #安装BBRplus内核
 installbbrplus(){
-	kernel_version="4.14.90"
+	kernel_version="4.14.91"
 	if [[ "${release}" == "centos" ]]; then
-		wget https://${github}/bbrplus/${release}/${version}/kernel-4.14.90.rpm
-		yum install -y kernel-4.14.90.rpm
-                rm -f kernel-4.14.90.rpm
+		wget -N --no-check-certificate https://${github}/bbrplus/${release}/${version}/kernel-${kernel_version}.rpm
+		yum install -y kernel-${kernel_version}.rpm
+		rm -f kernel-${kernel_version}.rpm
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		mkdir bbrplus && cd bbrplus
+		wget -N --no-check-certificate http://${github}/bbrplus/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
 		wget -N --no-check-certificate http://${github}/bbrplus/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
+		dpkg -i linux-headers-${kernel_version}.deb
 		dpkg -i linux-image-${kernel_version}.deb
 		cd .. && rm -rf bbrplus
 	fi
