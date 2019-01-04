@@ -11,7 +11,7 @@ export PATH
 #=================================================
 
 sh_ver="1.2.1"
-github="github.com/cx9208/Linux-NetSpeed/raw/master"
+github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
@@ -430,7 +430,7 @@ detele_kernel(){
 				rpm -e ${rpm_del}
 				echo -e "卸载 ${rpm_del} 内核卸载完成，继续..."
 			done
-			echo -e "内核卸载完毕，继续..."
+			echo --nodeps -e "内核卸载完毕，继续..."
 		else
 			echo -e " 检测到 内核 数量不正确，请检查 !" && exit 1
 		fi
