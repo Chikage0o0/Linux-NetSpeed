@@ -427,10 +427,10 @@ detele_kernel(){
 			for((integer = 1; integer <= ${rpm_total}; integer++)); do
 				rpm_del=`rpm -qa | grep kernel | grep -v "${kernel_version}" | grep -v "noarch" | head -${integer}`
 				echo -e "开始卸载 ${rpm_del} 内核..."
-				rpm -e ${rpm_del}
+				rpm --nodeps -e ${rpm_del}
 				echo -e "卸载 ${rpm_del} 内核卸载完成，继续..."
 			done
-			echo --nodeps -e "内核卸载完毕，继续..."
+			echo -e "内核卸载完毕，继续..."
 		else
 			echo -e " 检测到 内核 数量不正确，请检查 !" && exit 1
 		fi
