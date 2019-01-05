@@ -5,13 +5,13 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7,Debian 8/9,Ubuntu 16+
 #	Description: BBR+BBR魔改版+BBRplus+Lotserver
-#	Version: 1.2.1
+#	Version: 1.2.2
 #	Author: 千影,cx9208
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.2.1"
-github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
+sh_ver="1.2.2"
+github="github.com/cx9208/Linux-NetSpeed/raw/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
