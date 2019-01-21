@@ -158,8 +158,7 @@ startbbrmod(){
 		mkdir bbrmod && cd bbrmod
 		wget -N --no-check-certificate http://${github}/bbr/tcp_tsunami.c
 		echo "obj-m:=tcp_tsunami.o" > Makefile
-		ln -s /usr/bin/gcc /usr/bin/gcc-4.9
-		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
+		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
 		install tcp_tsunami.ko /lib/modules/$(uname -r)/kernel
 		cp -rf ./tcp_tsunami.ko /lib/modules/$(uname -r)/kernel/net/ipv4
 		depmod -a
@@ -194,11 +193,11 @@ startbbrmod_nanqinlang(){
 			add-apt-repository ppa:ubuntu-toolchain-r/test -y
 			apt-get update
 		fi
-		apt-get -y install make gcc-4.9
+		apt-get -y install make gcc
 		mkdir bbrmod && cd bbrmod
 		wget -N --no-check-certificate https://raw.githubusercontent.com/chiakge/Linux-NetSpeed/master/bbr/tcp_nanqinlang.c
 		echo "obj-m := tcp_nanqinlang.o" > Makefile
-		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc-4.9
+		make -C /lib/modules/$(uname -r)/build M=`pwd` modules CC=/usr/bin/gcc
 		install tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel
 		cp -rf ./tcp_nanqinlang.ko /lib/modules/$(uname -r)/kernel/net/ipv4
 		depmod -a
