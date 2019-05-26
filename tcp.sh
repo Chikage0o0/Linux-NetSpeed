@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7,Debian 8/9,Ubuntu 16+
 #	Description: BBR+BBR魔改版+BBRplus+Lotserver
-#	Version: 1.2.1
+#	Version: 1.3.0
 #	Author: 千影,cx9208
 #	Blog: https://www.94ish.me/
 #=================================================
 
-sh_ver="1.2.1"
+sh_ver="1.3.0"
 github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -220,8 +220,7 @@ startlotserver(){
 		apt-get update
 		apt-get install -y unzip
 	fi
-	wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && chmod +x appex.sh && bash appex.sh install
-	rm -f appex.sh
+	bash <(wget --no-check-certificate -qO- https://github.com/chiakge/lotServer/raw/master/Install.sh) install
 	start_menu
 }
 
@@ -579,12 +578,17 @@ check_sys_Lotsever(){
 			echo -e "${Error} Lotsever不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} -ge "7" ]]; then
+		if [[ ${version} = "7" || ${version} = "8" ]]; then
 			if [[ ${bit} == "x64" ]]; then
 				kernel_version="3.16.0-4"
 				installlot
 			elif [[ ${bit} == "x32" ]]; then
 				kernel_version="3.2.0-4"
+				installlot
+			fi
+		elif [[ ${version} = "9" ]]; then
+			if [[ ${bit} == "x64" ]]; then
+				kernel_version="4.9.0-4"
 				installlot
 			fi
 		else
@@ -612,9 +616,9 @@ check_status(){
 	kernel_version_full=`uname -r`
 	if [[ ${kernel_version_full} = "4.14.91-bbrplus" ]]; then
 		kernel_status="BBRplus"
-	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" ]]; then
+	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" || ${kernel_version} = "4.9.0" ]]; then
 		kernel_status="Lotserver"
-	elif [[ `echo ${kernel_version} | awk -F'.' '{print $1}'` == "4" ]] && [[ `echo ${kernel_version} | awk -F'.' '{print $2}'` -ge 9 ]]; then
+	elif [[ echo ${kernel_version} | awk -F'.' '{print $1}' == "4" ]] && [[ echo ${kernel_version} | awk -F'.' '{print $2}' -ge 9 ]] || [[ echo ${kernel_version} | awk -F'.' '{print $1}' == "5" ]]; then
 		kernel_status="BBR"
 	else 
 		kernel_status="noinstall"
@@ -622,7 +626,7 @@ check_status(){
 
 	if [[ ${kernel_status} == "Lotserver" ]]; then
 		if [[ -e /appex/bin/serverSpeeder.sh ]]; then
-			run_status=`bash /appex/bin/serverSpeeder.sh status | grep "ServerSpeeder" | awk  '{print $3}'`
+			run_status=`bash /appex/bin/lotServer.sh status | grep "ServerSpeeder" | awk  '{print $3}'`
 			if [[ ${run_status} = "running!" ]]; then
 				run_status="启动成功"
 			else 
