@@ -202,7 +202,7 @@ startbbrmod_nanqinlang(){
 #启用Lotserver
 startlotserver(){
 	remove_all
-	bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/Debian_Kernel.sh')
+	bash <(wget --no-check-certificate -qO- https://github.com/MoeClub/lotServer/raw/master/Install.sh) install
 	start_menu
 }
 
@@ -244,9 +244,8 @@ remove_all(){
 	sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_max_orphans/d' /etc/sysctl.conf
-	if [[ -e /appex/bin/serverSpeeder.sh ]]; then
-		wget --no-check-certificate -O appex.sh https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh && chmod +x appex.sh && bash appex.sh uninstall
-		rm -f appex.sh
+	if [[ -e /appex/bin/lotServer.sh ]]; then
+		bash <(wget --no-check-certificate -qO- https://github.com/MoeClub/lotServer/raw/master/Install.sh) uninstall
 	fi
 	clear
 	echo -e "${Info}:清除加速完成。"
