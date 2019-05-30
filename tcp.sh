@@ -202,14 +202,7 @@ startbbrmod_nanqinlang(){
 #启用Lotserver
 startlotserver(){
 	remove_all
-	if [[ "${release}" == "centos" ]]; then
-		yum install -y unzip
-	else
-		apt-get update
-		apt-get install -y unzip
-	fi
-	wget --no-check-certificate -qO- https://github.com/chiakge/lotServer/raw/master/Install.sh
-	bash Install.sh
+	bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShell/Debian_Kernel.sh')
 	start_menu
 }
 
