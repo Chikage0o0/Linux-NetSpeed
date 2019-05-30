@@ -202,6 +202,12 @@ startbbrmod_nanqinlang(){
 #启用Lotserver
 startlotserver(){
 	remove_all
+	if [[ "${release}" == "centos" ]]; then
+		yum install ethtool
+	else
+		apt-get update
+		apt-get install ethtool
+	fi
 	bash <(wget --no-check-certificate -qO- https://github.com/MoeClub/lotServer/raw/master/Install.sh) install
 	start_menu
 }
