@@ -8,12 +8,11 @@ export PATH
 #	Version: 1.3.2
 #	Author: 千影,cx9208
 #	Blog: https://www.94ish.me/
-#	修改x版 不删除内核 ylx
-#   centos6 请勿安装bbrplus内核
+#   修改不删除内核
 #=================================================
 
 sh_ver="1.3.2"
-github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
+github="raw.githubusercontent.com/chiakge/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
@@ -55,12 +54,12 @@ installbbr(){
 
 #安装BBRplus内核
 installbbrplus(){
-	kernel_version="4.14.158-bbrplus"
+	kernel_version="4.14.129-bbrplus"
 	if [[ "${release}" == "centos" ]]; then
 		wget -N --no-check-certificate https://${github}/bbrplus/${release}/${version}/kernel-${kernel_version}.rpm
 		yum install -y kernel-${kernel_version}.rpm
 		rm -f kernel-${kernel_version}.rpm
-		kernel_version="4.14.158_bbrplus" #fix a bug
+		kernel_version="4.14.129_bbrplus" #fix a bug
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		mkdir bbrplus && cd bbrplus
 		wget -N --no-check-certificate http://${github}/bbrplus/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
