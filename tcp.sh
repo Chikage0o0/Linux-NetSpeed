@@ -565,7 +565,7 @@ check_sys_Lotsever(){
 			installlot
 		elif [[ ${version} == "7" ]]; then
 			yum -y install net-tools
-			kernel_version="3.10.0-327"
+			kernel_version="3.10.0-957"
 			installlot
 		else
 			echo -e "${Error} Lotsever不支持当前系统 ${release} ${version} ${bit} !" && exit 1
