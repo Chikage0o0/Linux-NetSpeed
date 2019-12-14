@@ -49,6 +49,33 @@ fi
 
 apt-get update
 apt-get install --no-install-recommends -y linux-image-${item}
+if [ $? -ne 0 ]; then
+  if [ "$deb_ver" == "8" ]; then
+    dpkg -l |grep -q 'linux-base' || {
+      wget --no-check-certificate -qO '/tmp/linux-base_3.5_all.deb' 'http://snapshot.debian.org/archive/debian/20120304T220938Z/pool/main/l/linux-base/linux-base_3.5_all.deb'
+      dpkg -i '/tmp/linux-base_3.5_all.deb'
+    } 
+    wget --no-check-certificate -qO '/tmp/linux-image-3.16.0-4-amd64_3.16.43-2+deb8u5_amd64.deb' 'http://snapshot.debian.org/archive/debian/20171008T163152Z/pool/main/l/linux/linux-image-3.16.0-4-amd64_3.16.43-2+deb8u5_amd64.deb'
+    dpkg -i '/tmp/linux-image-3.16.0-4-amd64_3.16.43-2+deb8u5_amd64.deb'
+    if [ $? -ne 0 ]; then
+      exit 1
+    fi
+  elif [ "$deb_ver" == "9" ]; then
+    dpkg -l |grep -q 'linux-base' || {
+      wget --no-check-certificate -qO '/tmp/linux-base_4.5_all.deb' 'http://snapshot.debian.org/archive/debian/20160917T042239Z/pool/main/l/linux-base/linux-base_4.5_all.deb'
+      dpkg -i '/tmp/linux-base_4.5_all.deb'
+    } 
+    wget --no-check-certificate -qO '/tmp/linux-image-4.9.0-4-amd64_4.9.65-3+deb9u1_amd64.deb' 'http://snapshot.debian.org/archive/debian/20171224T175424Z/pool/main/l/linux/linux-image-4.9.0-4-amd64_4.9.65-3+deb9u1_amd64.deb'
+    dpkg -i '/tmp/linux-image-4.9.0-4-amd64_4.9.65-3+deb9u1_amd64.deb'
+    if [ $? -ne 0 ]; then
+      exit 1
+    fi
+  else
+    exit 1
+  fi
+else
+  exit 1
+fi
 while true; do
   List_Kernel="$(dpkg -l |grep 'linux-image\|linux-modules\|linux-generic\|linux-headers' |grep -v "$item")"
   Num_Kernel="$(echo "$List_Kernel" |sed '/^$/d' |wc -l)"
