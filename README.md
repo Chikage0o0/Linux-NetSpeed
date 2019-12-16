@@ -15,3 +15,6 @@ nano /appex/etc/config
 
 检测代码有BUG，如果锐速正常 运行查看
 bash /appex/bin/lotServer.sh status | grep "LotServer"
+
+检查bbr ?
+lsmod | grep bbr
