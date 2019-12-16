@@ -9,3 +9,6 @@ bbr 添加
 echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf 
 echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf 
 sysctl -p
+
+编辑锐速文件
+nano /appex/etc/config
