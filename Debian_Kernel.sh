@@ -94,9 +94,9 @@ while true; do
     do
       if [ -f "/var/lib/dpkg/info/${kernel}.prerm" ]; then
         sed -i 's/linux-check-removal/#linux-check-removal/' "/var/lib/dpkg/info/${kernel}.prerm"
-        sed -i 's/uname -r/echo purge/' "/var/lib/dpkg/info/${kernel}.prerm"
+        #sed -i 's/uname -r/echo purge/' "/var/lib/dpkg/info/${kernel}.prerm"
       fi
-      dpkg --force-depends --purge "$kernel"
+     #dpkg --force-depends --purge "$kernel"
     done
   done
 apt-get autoremove -y
