@@ -608,7 +608,7 @@ check_sys_Lotsever(){
 check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
 	kernel_version_full=`uname -r`
-	if [[ ${kernel_version_full} = "4.14.129-bbrplus" ]]; then
+	if [[ ${kernel_version_full} = "4.14.160-bbrplus" ]]; then
 		kernel_status="BBRplus"
 	elif [[ ${kernel_version} = "3.10.0" || ${kernel_version} = "3.16.0" || ${kernel_version} = "3.2.0" || ${kernel_version} = "4.4.0" || ${kernel_version} = "3.13.0"  || ${kernel_version} = "2.6.32" || ${kernel_version} = "4.9.0" ]]; then
 		kernel_status="Lotserver"
