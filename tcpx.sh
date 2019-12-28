@@ -618,18 +618,8 @@ check_status(){
 		kernel_status="noinstall"
 	fi
 
-	if [[ ${kernel_status} == "Lotserver" ]]; then
-		if [[ -e /appex/bin/lotServer.sh ]]; then
-			run_status=`bash /appex/bin/lotServer.sh status | grep "LotServer" | awk  '{print $3}'`
-			if [[ ${run_status} = "running!" ]]; then
-				run_status="启动成功"
-			else 
-				run_status="启动失败"
-			fi
-		else 
-			run_status="未安装加速模块"
-		fi
-	elif [[ ${kernel_status} == "BBR" ]]; then
+
+	if [[ ${kernel_status} == "BBR" ]]; then
 		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{print $2}'`
 		if [[ ${run_status} == "bbr" ]]; then
 			run_status=`lsmod | grep "bbr" | awk '{print $1}'`
@@ -655,6 +645,18 @@ check_status(){
 		else 
 			run_status="未安装加速模块"
 		fi
+		
+	elif [[ ${kernel_status} == "Lotserver" ]]; then
+		if [[ -e /appex/bin/lotServer.sh ]]; then
+			run_status=`bash /appex/bin/lotServer.sh status | grep "LotServer" | awk  '{print $3}'`
+			if [[ ${run_status} = "running!" ]]; then
+				run_status="启动成功"
+			else 
+				run_status="启动失败"
+			fi
+		else 
+			run_status="未安装加速模块"
+		fi	
 	elif [[ ${kernel_status} == "BBRplus" ]]; then
 		run_status=`grep "net.ipv4.tcp_congestion_control" /etc/sysctl.conf | awk -F "=" '{print $2}'`
 		if [[ ${run_status} == "bbrplus" ]]; then
