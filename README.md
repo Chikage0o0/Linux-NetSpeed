@@ -18,3 +18,8 @@ bash /appex/bin/lotServer.sh status | grep "LotServer"
 
 检查bbr ?
 lsmod | grep bbr
+
+查看当前支持TCP算法
+cat /proc/sys/net/ipv4/tcp_allowed_congestion_control
+查看当前运行的算法
+cat /proc/sys/net/ipv4/tcp_congestion_control
