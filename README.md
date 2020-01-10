@@ -23,3 +23,9 @@ lsmod | grep bbr
 cat /proc/sys/net/ipv4/tcp_allowed_congestion_control
 查看当前运行的算法
 cat /proc/sys/net/ipv4/tcp_congestion_control
+
+命令： uname -a
+作用： 查看系统内核版本号及系统名称
+
+命令： cat /proc/version
+作用： 查看目录"/proc"下version的信息，也可以得到当前系统的内核版本号及系统名称
