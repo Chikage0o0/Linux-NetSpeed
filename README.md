@@ -29,3 +29,8 @@ cat /proc/sys/net/ipv4/tcp_congestion_control
 
 命令： cat /proc/version
 作用： 查看目录"/proc"下version的信息，也可以得到当前系统的内核版本号及系统名称
+
+bbsplus算法原作者
+https://blog.csdn.net/dog250/article/details/80629551
+bbrplus首用名 ？
+https://github.com/cx9208/bbrplus
