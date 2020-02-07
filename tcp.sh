@@ -422,7 +422,7 @@ installxanmod(){
 }
 
 #安装bbr2内核
-installxanmod(){
+installbbr2(){
 	kernel_version="5.4.0-rc6"
 	bit=`uname -m`
 	rm -rf bbr2
@@ -748,6 +748,9 @@ case "$num" in
 	4)
 	check_sys_xanmod
 	;;
+	5)
+	check_sys_bbr2
+	;;
 	11)
 	startbbrfq
 	;;
@@ -959,6 +962,27 @@ check_sys_xanmod(){
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} ,去xanmod.org 官网安装吧!" && exit 1
 	else
 		echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+}
+
+check_sys_bbr2(){
+	check_version
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" || ${version} = "8" ]]; then
+			installbbr2
+		else
+			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "9" || ${version} = "10" ]]; then
+			installbbr2
+		else
+			echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "ubuntu" ]]; then
+			echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	else
+		echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
 }
 
