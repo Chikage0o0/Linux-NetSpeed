@@ -770,11 +770,11 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
   
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
 ————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR内核
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核
- ${Green_font_prefix}5.${Font_color_suffix} 安装 bbr2测试版内核
+ ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核
  ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
