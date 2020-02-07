@@ -5,11 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.3
+#	Version: 1.3.2.4
 #	Author: 千影,cx9208,YLX
 #=================================================
 
-sh_ver="1.3.2.3"
+sh_ver="1.3.2.4"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -492,6 +492,76 @@ installbbr2(){
 	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 }
 
+#安装Zen内核
+installzen(){
+	kernel_version="5.5.2-zen"
+	bit=`uname -m`
+	rm -rf zen
+	mkdir zen && cd zen
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-5.5.2_zen-1-c7.x86_64.rpm
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-headers-5.5.2_zen-1-c7.x86_64.rpm
+				
+				yum install -y kernel-5.5.2_zen-1-c7.x86_64.rpm
+				yum install -y kernel-headers-5.5.2_zen-1-c7.x86_64.rpm
+			
+				kernel_version="5.5.2_zen"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi
+		elif [[ ${version} = "8" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-5.5.2_zen-1-c8.x86_64.rpm
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-headers-5.5.2_zen-1-c8.x86_64.rpm
+				yum install -y kernel-5.5.2_zen-1-c8.x86_64.rpm
+				yum install -y kernel-headers-5.5.2_zen-1-c8.x86_64.rpm
+			
+				kernel_version="5.5.2_zen"
+		fi
+		
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "9" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/linux-headers-5.5.2-zen_5.5.2-zen-1-d9_amd64.deb
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/linux-image-5.5.2-zen_5.5.2-zen-1-d9_amd64.deb
+				
+				dpkg -i linux-image-5.5.2-zen_5.5.2-zen-1-d9_amd64.deb
+				dpkg -i linux-headers-5.5.2-zen_5.5.2-zen-1-d9_amd64.deb
+				
+				#kernel_version="4.14.168-bbrplus"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi	
+		elif [[ ${version} = "10" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/linux-headers-5.5.2-zen_5.5.2-zen-1-d10_amd64.deb
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.2zen/linux-image-5.5.2-zen_5.5.2-zen-1-d10_amd64.deb
+					
+				dpkg -i linux-image-5.5.2-zen_5.5.2-zen-1-d10_amd64.deb
+				dpkg -i linux-headers-5.5.2-zen_5.5.2-zen-1-d10_amd64.deb
+				
+				#kernel_version="4.14.168-bbrplus"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi		
+		fi			
+	fi
+	
+	cd .. && rm -rf zen
+	detele_kernel
+	BBR_grub
+	echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
+	echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
+	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR${Font_color_suffix}"
+	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR2，是否现在重启 ? [Y/n] :" yn
+	[ -z "${yn}" ] && yn="y"
+	if [[ $yn == [Yy] ]]; then
+		echo -e "${Info} VPS 重启中..."
+		reboot
+	fi
+	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
 
 #启用BBR+fq
 startbbrfq(){
@@ -704,7 +774,8 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核
- ${Green_font_prefix}5.${Font_color_suffix} 安装 bbr2测试版内核 
+ ${Green_font_prefix}5.${Font_color_suffix} 安装 bbr2测试版内核
+ ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
@@ -750,6 +821,9 @@ case "$num" in
 	;;
 	5)
 	check_sys_bbr2
+	;;
+	6)
+	check_sys_zen
 	;;
 	11)
 	startbbrfq
@@ -971,7 +1045,7 @@ check_sys_bbr2(){
 		if [[ ${version} = "7" || ${version} = "8" ]]; then
 			installbbr2
 		else
-			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+			echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" ]]; then
 		if [[ ${version} = "9" || ${version} = "10" ]]; then
@@ -986,6 +1060,27 @@ check_sys_bbr2(){
 	fi
 }
 
+
+check_sys_zen(){
+	check_version
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" || ${version} = "8" ]]; then
+			installzen
+		else
+			echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "9" || ${version} = "10" ]]; then
+			installzen
+		else
+			echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "ubuntu" ]]; then
+			echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	else
+		echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+}
 
 #检查安装Lotsever的系统要求
 check_sys_Lotsever(){
