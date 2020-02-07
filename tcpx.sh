@@ -105,7 +105,7 @@ installbbr(){
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
-			fi	
+			fi
 		elif [[ "${release}" == "ubuntu" ]]; then
 			
 			if [[ ${version} = "16" ]]; then
@@ -145,7 +145,7 @@ installbbr(){
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
-			fi			
+			fi				
 			
 		#else	
 		#	wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
@@ -199,18 +199,19 @@ installbbrplus(){
 				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/4.14.168bbrplus/kernel-4.14.168_bbrplus-1-c7.x86_64.rpm
 				yum install -y kernel-4.14.168_bbrplus-1-c7.x86_64.rpm
 				yum install -y kernel-headers-4.14.168_bbrplus-1-c7.x86_64.rpm
+				
 			
 				kernel_version="4.14.168_bbrplus"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
-							wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/4.14.168bbrplus/kernel-headers-4.14.168_bbrplus-1-c8.x86_64.rpm
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/4.14.168bbrplus/kernel-headers-4.14.168_bbrplus-1-c8.x86_64.rpm
 				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/4.14.168bbrplus/kernel-4.14.168_bbrplus-1-c8.x86_64.rpm
 				yum install -y kernel-4.14.168_bbrplus-1-c8.x86_64.rpm
 				yum install -y kernel-headers-4.14.168_bbrplus-1-c8.x86_64.rpm
 			
-			kernel_version="4.14.168_bbrplus"
+				kernel_version="4.14.168_bbrplus"
 		fi
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
@@ -252,8 +253,8 @@ installbbrplus(){
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi		
-			fi
-		elif [[ "${release}" == "ubuntu" ]]; then
+			fi	
+			elif [[ "${release}" == "ubuntu" ]]; then
 			if [[ ${version} = "16" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
 					wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/4.14.168bbrplus/linux-headers-4.14.168-bbrplus_4.14.168-bbrplus-1-u16_amd64.deb
@@ -291,7 +292,7 @@ installbbrplus(){
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi		
-			fi			
+			fi		
 		#else	
 		#	wget -N --no-check-certificate https://github.com/ylx2016/kernel/raw/2020.1.17/debian9/linux-headers-4.14.165-bbrplus_4.14.165-bbrplus-1_amd64.deb
 		#	wget -N --no-check-certificate https://github.com/ylx2016/kernel/raw/2020.1.17/debian9/linux-image-4.14.165-bbrplus_4.14.165-bbrplus-1_amd64.deb
@@ -413,8 +414,80 @@ installxanmod(){
 	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 }
 
+#安装bbr2内核
+installxanmod(){
+	kernel_version="5.4.0-rc6"
+	bit=`uname -m`
+	rm -rf bbr2
+	mkdir bbr2 && cd bbr2
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-headers-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
+				
+				yum install -y kernel-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
+				yum install -y kernel-headers-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
+			
+				kernel_version="5.4.0-rc6"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi
+		elif [[ ${version} = "8" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-headers-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
+				yum install -y kernel-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
+				yum install -y kernel-headers-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
+			
+				kernel_version="5.5.1_xanmod1"
+		fi
+		
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "9" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d9_amd64.deb
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d9_amd64.deb
+				
+				dpkg -i linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d9_amd64.deb	
+				dpkg -i linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d9_amd64.deb
+				
+				#kernel_version="4.14.168-bbrplus"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi	
+		elif [[ ${version} = "10" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
+				wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
+					
+				dpkg -i linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
+				dpkg -i linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
+				
+				#kernel_version="4.14.168-bbrplus"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi		
+		fi			
+	fi
+	
+	cd .. && rm -rf bbr2
+	#detele_kernel
+	BBR_grub
+	#echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
+	#echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
+	#echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR${Font_color_suffix}"
+	#stty erase '^H' && read -p "需要重启VPS后，才能开启BBR2，是否现在重启 ? [Y/n] :" yn
+	#[ -z "${yn}" ] && yn="y"
+	#if [[ $yn == [Yy] ]]; then
+	#	echo -e "${Info} VPS 重启中..."
+	#	reboot
+	#fi
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+
 #启用BBR+fq
-startbbr(){
+startbbrfq(){
 	remove_all
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
@@ -458,9 +531,51 @@ maxmode=\"1\"">>/appex/etc/config
 	start_menu
 }
 
+#启用BBR2+FQ
+startbbr2fq(){
+	remove_all
+	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.conf
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
+	sysctl -p
+	echo -e "${Info}BBR2启动成功！"
+}
+
+#启用BBR2+CAKE
+startbbr2cake(){
+	remove_all
+	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.conf
+	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
+	sysctl -p
+	echo -e "${Info}BBR2启动成功！"
+}
+
+#启用BBR2+FQ+ecn
+startbbr2fqecn(){
+	remove_all
+	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.conf
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
+	sysctl -p
+	echo -e "${Info}BBR2启动成功！"
+}
+
+#启用BBR2+CAKE+ecn
+startbbr2cakeecn(){
+	remove_all
+	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.conf
+	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
+	sysctl -p
+	echo -e "${Info}BBR2启动成功！"
+}
+
+
 #卸载全部加速
 remove_all(){
 	rm -rf bbrmod
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
 	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
     sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
     sed -i '/fs.file-max/d' /etc/sysctl.conf
@@ -582,15 +697,20 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核
+ ${Green_font_prefix}5.${Font_color_suffix} 安装 bbr2测试版内核 
 ————————————加速管理————————————
- ${Green_font_prefix}5.${Font_color_suffix} 使用BBR+FQ加速
- ${Green_font_prefix}6.${Font_color_suffix} 使用BBR+CAKE加速 
- ${Green_font_prefix}7.${Font_color_suffix} 使用BBRplus+FQ版加速
- ${Green_font_prefix}8.${Font_color_suffix} 使用Lotserver(锐速)加速
+ ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
+ ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
+ ${Green_font_prefix}13.${Font_color_suffix} 使用BBRplus+FQ版加速
+ ${Green_font_prefix}14.${Font_color_suffix} 使用Lotserver(锐速)加速
+ ${Green_font_prefix}15.${Font_color_suffix} 使用BBR2+FQ加速
+ ${Green_font_prefix}16.${Font_color_suffix} 使用BBR2+CAKE加速
+ ${Green_font_prefix}17.${Font_color_suffix} 使用BBR2+FQ+ECN加速
+ ${Green_font_prefix}18.${Font_color_suffix} 使用BBR2+CAKE+ECN加速 
 ————————————杂项管理————————————
- ${Green_font_prefix}9.${Font_color_suffix} 卸载全部加速
- ${Green_font_prefix}10.${Font_color_suffix} 系统配置优化
- ${Green_font_prefix}11.${Font_color_suffix} 退出脚本
+ ${Green_font_prefix}21.${Font_color_suffix} 卸载全部加速
+ ${Green_font_prefix}22.${Font_color_suffix} 系统配置优化
+ ${Green_font_prefix}23.${Font_color_suffix} 退出脚本
 ————————————————————————————————" && echo
 
 	check_status
@@ -602,6 +722,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
 		
 	fi
 	echo -e " 当前拥塞控制算法为: ${Green_font_prefix}${net_congestion_control}${Font_color_suffix} 当前队列算法为: ${Green_font_prefix}${net_qdisc}${Font_color_suffix} "
+	
 echo
 read -p " 请输入数字 [0-11]:" num
 case "$num" in
@@ -620,25 +741,37 @@ case "$num" in
 	4)
 	check_sys_xanmod
 	;;
-	5)
-	startbbr
+	11)
+	startbbrfq
 	;;
-	6)
+	12)
 	startbbrcake
 	;;
-	7)
+	13)
 	startbbrplus
 	;;
-	8)
+	14)
 	startlotserver
 	;;
-	9)
+	15)
+	startbbr2fq
+	;;
+	16)
+	startbbr2cake
+	;;
+	17)
+	startbbr2fqecn
+	;;
+	18)
+	startbbr2cakeecn
+	;;
+	21)
 	remove_all
 	;;
-	10)
+	22)
 	optimizing_system
 	;;
-	11)
+	23)
 	exit 1
 	;;
 	*)
@@ -823,7 +956,6 @@ check_sys_xanmod(){
 }
 
 
-
 #检查安装Lotsever的系统要求
 check_sys_Lotsever(){
 	check_version
@@ -887,7 +1019,7 @@ check_status(){
 	else 
 		kernel_status="noinstall"
 	fi
-
+	
 
 	if [[ ${kernel_status} == "BBR" ]]; then
 		run_status=`cat /proc/sys/net/ipv4/tcp_congestion_control | awk '{print $1}'`
@@ -898,6 +1030,13 @@ check_status(){
 			else 
 				run_status="BBR启动失败"
 			fi
+		elif [[ ${run_status} == "bbr2" ]]; then
+			run_status=`cat /proc/sys/net/ipv4/tcp_congestion_control | awk '{print $1}'`
+			if [[ ${run_status} == "bbr2" ]]; then
+				run_status="BBR2启动成功"
+			else 
+				run_status="BBR2启动失败"
+			fi	
 		elif [[ ${run_status} == "tsunami" ]]; then
 			run_status=`lsmod | grep "tsunami" | awk '{print $1}'`
 			if [[ ${run_status} == "tcp_tsunami" ]]; then
