@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.4
+#	Version: 1.3.2.5
 #	Author: 千影,cx9208,YLX
 #   	不卸载内核版本
 #=================================================
 
-sh_ver="1.3.2.4"
+sh_ver="1.3.2.5"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -771,12 +771,12 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
   
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
 ————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核
- ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 
- ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核
- ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核
- ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核
- ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.4.13/5.4.14/5.5.0
+ ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.168
+ ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
+ ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1
+ ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核 - 5.4.0
+ ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 - 5.5.2
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
