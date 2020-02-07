@@ -436,7 +436,7 @@ installbbr2(){
 				yum install -y kernel-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
 				yum install -y kernel-headers-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
 			
-				kernel_version="5.4.0-rc6"
+				kernel_version="5.4.0_rc6"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
@@ -446,7 +446,7 @@ installbbr2(){
 				yum install -y kernel-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
 				yum install -y kernel-headers-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
 			
-				kernel_version="5.5.1_xanmod1"
+				kernel_version="5.4.0_rc6"
 		fi
 		
 	elif [[ "${release}" == "debian" ]]; then
