@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.5
+#	Version: 1.3.2.6
 #	Author: 千影,cx9208,YLX
 #   	不卸载内核版本
 #=================================================
 
-sh_ver="1.3.2.5"
+sh_ver="1.3.2.6"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -653,6 +653,9 @@ startbbr2cakeecn(){
 #卸载全部加速
 remove_all(){
 	rm -rf bbrmod
+	sed -i '/net.ipv4.tcp_retries2/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
 	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
     sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
@@ -699,6 +702,9 @@ remove_all(){
 
 #优化系统配置
 optimizing_system(){
+	sed -i '/net.ipv4.tcp_retries2/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
 	sed -i '/fs.file-max/d' /etc/sysctl.conf
 	sed -i '/fs.inotify.max_user_instances/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_syncookies/d' /etc/sysctl.conf
@@ -715,7 +721,10 @@ optimizing_system(){
 	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_max_orphans/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
-	echo "fs.file-max = 1000000
+	echo "net.ipv4.tcp_retries2 = 8
+net.ipv4.tcp_slow_start_after_idle = 0
+net.ipv4.tcp_fastopen = 3
+fs.file-max = 1000000
 fs.inotify.max_user_instances = 8192
 net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_fin_timeout = 30
@@ -803,7 +812,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
 	echo -e " 当前拥塞控制算法为: ${Green_font_prefix}${net_congestion_control}${Font_color_suffix} 当前队列算法为: ${Green_font_prefix}${net_qdisc}${Font_color_suffix} "
 	
 echo
-read -p " 请输入数字 [0-11]:" num
+read -p " 请输入数字 :" num
 case "$num" in
 	0)
 	Update_Shell
