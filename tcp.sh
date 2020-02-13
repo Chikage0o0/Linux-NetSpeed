@@ -98,7 +98,7 @@ installbbr(){
 					wget -N --no-check-certificate https://github.com/ylx2016/kernel/releases/download/5.5.3/linux-headers-5.5.3_5.5.3-1-d10_amd64.deb
 				
 					dpkg -i linux-image-5.5.3_5.5.3-1-d10_amd64.deb
-					dpkg -i llinux-headers-5.5.3_5.5.3-1-d10_amd64.deb
+					dpkg -i linux-headers-5.5.3_5.5.3-1-d10_amd64.deb
 				
 					kernel_version="5.5.3"
 				else
