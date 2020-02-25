@@ -162,7 +162,7 @@ installbbr(){
 	
 	cd .. && rm -rf bbr	
 	
-	detele_kernel
+	#detele_kernel
 	BBR_grub
 	#echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
 	#echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
