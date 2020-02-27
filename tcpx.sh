@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.10
+#	Version: 1.3.2.11
 #	Author: 千影,cx9208,YLX
 #   	不卸载内核版本
 #=================================================
 
-sh_ver="1.3.2.10"
+sh_ver="1.3.2.11"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -773,12 +773,18 @@ Update_Shell(){
 	fi
 }
 
+#切换到卸载内核版本
+gototcp(){
+	clear
+	wget -N --no-check-certificate "https://github.000060000.xyz/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+}
 #开始菜单
 start_menu(){
 clear
 echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
+ ${Green_font_prefix}9.${Font_color_suffix} 切换到卸载内核版本
 ————————————内核管理————————————
  ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.4.14/5.5.5/5.5.6
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.168
@@ -834,6 +840,9 @@ case "$num" in
 	;;
 	6)
 	check_sys_zen
+	;;
+	9)
+	gototcp
 	;;
 	11)
 	startbbrfq
@@ -963,10 +972,10 @@ check_sys(){
 	
 #处理ca证书
 	if [[ "${release}" == "centos" ]]; then
-		yum install wget ca-certificates -y
+		yum install ca-certificates -y
 		update-ca-trust force-enable
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		apt-get install wget ca-certificates -y
+		apt-get install ca-certificates -y
 		update-ca-certificates
 	fi	
 }
