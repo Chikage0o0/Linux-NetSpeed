@@ -921,7 +921,7 @@ check_sys_bbr(){
 check_sys_bbrplus(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "6" || ${version} = "7" || ${version} = "8" ]]; then
+		if [[${version} = "7"]]; then
 			installbbrplus
 		else
 			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
