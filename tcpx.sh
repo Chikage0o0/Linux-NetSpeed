@@ -180,8 +180,8 @@ installbbrplus(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-			wget -N -O kernel-headers-c7.rpm https://github.com/cx9208/Linux-NetSpeed/blob/master/bbrplus/centos/7/kernel-headers-4.14.129-bbrplus.rpm
-			wget -N -O kernel-c7.rpm https://github.com/cx9208/Linux-NetSpeed/blob/master/bbrplus/centos/7/kernel-4.14.129-bbrplus.rpm
+			wget -N -O kernel-headers-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-headers-4.14.129-bbrplus.rpm
+			wget -N -O kernel-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-4.14.129-bbrplus.rpm
 				
 			yum install -y kernel-c7.rpm
 			yum install -y kernel-headers-c7.rpm
@@ -189,8 +189,8 @@ installbbrplus(){
 			kernel_version="4.14.129_bbrplus"
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		wget -N -O linux-headers.deb https://github.com/cx9208/Linux-NetSpeed/blob/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.129-bbrplus.deb
-		wget -N -O linux-image.deb https://github.com/cx9208/Linux-NetSpeed/blob/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.129-bbrplus.deb
+		wget -N -O linux-headers.deb https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.129-bbrplus.deb
+		wget -N -O linux-image.deb https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.129-bbrplus.deb
 		
 		dpkg -i linux-image.deb
 		dpkg -i linux-headers.deb
