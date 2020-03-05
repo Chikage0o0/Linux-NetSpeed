@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.13
+#	Version: 1.3.2.14
 #	Author: 千影,cx9208,YLX
 #   	不卸载内核版本
 #=================================================
 
-sh_ver="1.3.2.13"
+sh_ver="1.3.2.14"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -180,14 +180,18 @@ installbbrplus(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-			wget -N -O kernel-headers-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-headers-4.14.129-bbrplus.rpm
-			wget -N -O kernel-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-4.14.129-bbrplus.rpm
+				wget -N -O kernel-headers-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-headers-4.14.129-bbrplus.rpm
+				wget -N -O kernel-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-4.14.129-bbrplus.rpm
 				
-			yum install -y kernel-c7.rpm
-			yum install -y kernel-headers-c7.rpm
+				yum install -y kernel-c7.rpm
+				yum install -y kernel-headers-c7.rpm
 				
-			kernel_version="4.14.129_bbrplus"
-		fi
+				kernel_version="4.14.129_bbrplus"
+			else
+					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi
+		fi	
+		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		wget -N -O linux-headers.deb https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.129-bbrplus.deb
 		wget -N -O linux-image.deb https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.129-bbrplus.deb
@@ -196,8 +200,6 @@ installbbrplus(){
 		dpkg -i linux-headers.deb
 			
 		kernel_version="4.14.129-bbrplus"
-			
-		fi
 	fi
 	
 	cd .. && rm -rf bbrplus
