@@ -681,6 +681,7 @@ gototcp(){
 start_menu(){
 clear
 echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
+ 更新内容及反馈:  https://blog.ylx.me/archives/783.html
   
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到卸载内核版本
