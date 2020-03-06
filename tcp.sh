@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.16
+#	Version: 1.3.2.17
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.16"
+sh_ver="1.3.2.17"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -41,13 +41,13 @@ installbbr(){
 		
 		elif [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-headers-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.5.7/kernel-headers-5.5.7-1-c7.x86_64.rpm
-				wget -N -O kernel-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.5.7/kernel-5.5.7-1-c7.x86_64.rpm
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eb3r14K-yL1GtrcolKpmfy8BfEKIKGxVZnnbTZBASnc64Q?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfNoicsVwapLhFg07LgQP0sBP6KJNcAecVmfWDvcZCGV7Q?download=1
 
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.5.7"
+				kernel_version="5.5.8"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi	
@@ -91,13 +91,13 @@ installbbr(){
 				fi
 			elif [[ ${version} = "10" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d10.deb https://github.com/ylx2016/kernel/releases/download/5.5.7/linux-image-5.5.7_5.5.7-1-d10_amd64.deb
-					wget -N -O linux-headers-d10.deb https://github.com/ylx2016/kernel/releases/download/5.5.7/linux-headers-5.5.7_5.5.7-1-d10_amd64.deb
+					wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERioIzt2i1JBisKtTBEIAuoBky7o4l1ihPE7gzWVEJXxDQ?download=1
+					wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERFOHM6xzmxPiS-P0WLsNDIBmLhw9_Lr7nWKPaeju8OcZw?download=1
 				
 					dpkg -i linux-image-d10.deb
 					dpkg -i linux-headers-d10.deb
 				
-					kernel_version="5.5.7"
+					kernel_version="5.5.8"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
@@ -256,13 +256,13 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETbBkjHj3XpMv_vonucezGABQlAORwOZ2MXl_Qs22B-SRQ?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERcFOY2fpOdNi3hTT2Yka0cBGAee4igz-jSE0UP0Uu3ECg?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ES1FqBSXMZlJlPgYrSagBCUBb6N2_srwS_e59B2Y74Rksg?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERUwIDLM1XdDt4xxv13xJOkBfpaQby-u2XdEr3d9I6ixag?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.5.6_xanmod5"
+				kernel_version="5.5.8_xanmod6"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
@@ -291,13 +291,13 @@ installxanmod(){
 			fi	
 		elif [[ ${version} = "10" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EQ2WlJs1mPRMjjLP7vluN0gBn7qGcnm1P5jmzK_wdNpeyQ?download=1
-				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EaGhe4AcqCZAlaC2InMjALQBw7AsxUpSTOgU0tDT0czGyA?download=1
+				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcwO-0rZ3VlFjBNHYoVxy_IBgn2E_viwNx0l2fGHtRwyJw?download=1
+				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcJBiKjxLp5Lq0tkTUlXcfEBH2wRr_n83jV4aVvii3q2Fg?download=1
 					
 				dpkg -i linux-image-d10.deb
 				dpkg -i linux-headers-d10.deb
 				
-				kernel_version="5.5.6-xanmod5"
+				kernel_version="5.5.8-xanmod6"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi		
@@ -400,13 +400,13 @@ installzen(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.5.6/kernel-5.5.6_zen1-1-c7.x86_64.rpm
-				wget -N -O kernel-headers-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.5.6/kernel-headers-5.5.6_zen1-1-c7.x86_64.rpm
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ef4nkrswlMZCvUaUO3vMM5cB8lDo5jzhyRTXQhjuZ4jmew?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EdqJ-GOX2nBDmwxsA2vIYakBCFRXKno1Q7R4G8vu7Blrog?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.5.6_zen"
+				kernel_version="5.5.8_zen"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
@@ -435,13 +435,13 @@ installzen(){
 			fi	
 		elif [[ ${version} = "10" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d10.deb https://github.com/ylx2016/kernel/releases/download/5.5.6/linux-headers-5.5.6-zen1_5.5.6-zen1-1-d10_amd64.deb
-				wget -N -O linux-image-d10.deb https://github.com/ylx2016/kernel/releases/download/5.5.6/linux-image-5.5.6-zen1_5.5.6-zen1-1-d10_amd64.deb
+				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERok86GS-SdBsOWYE0XZanwBTZgG5sB-cnfjwtj0jlO1xQ?download=1
+				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EQoKL2XJBm1IgXi5uFXxHM8B8LiRcBvBcLTEjJmIM7jC9A?download=1
 					
 				dpkg -i linux-image-d10.deb
 				dpkg -i linux-headers-d10.deb
 				
-				kernel_version="5.5.6-zen"
+				kernel_version="5.5.8-zen"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi		
