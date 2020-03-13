@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.17
+#	Version: 1.3.2.18
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.17"
+sh_ver="1.3.2.18"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -171,7 +171,7 @@ installbbr(){
 	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 }
 
-#安装BBRplus内核
+#安装BBRplus内核 4.14.129
 installbbrplus(){
 	kernel_version="4.14.160-bbrplus"
 	bit=`uname -m`
@@ -381,7 +381,7 @@ installbbr2(){
 	BBR_grub
 	echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
 	echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
-	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR${Font_color_suffix}"
+	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR2${Font_color_suffix}"
 	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR2，是否现在重启 ? [Y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
@@ -454,13 +454,65 @@ installzen(){
 	echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
 	echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
 	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR${Font_color_suffix}"
-	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR2，是否现在重启 ? [Y/n] :" yn
+	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR，是否现在重启 ? [Y/n] :" yn
 	[ -z "${yn}" ] && yn="y"
 	if [[ $yn == [Yy] ]]; then
 		echo -e "${Info} VPS 重启中..."
 		reboot
 	fi
 	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+#安装bbrplus 新内核
+installbbrplusnew(){
+	kernel_version="4.14.173-bbrplus"
+	bit=`uname -m`
+	rm -rf bbrplusnew
+	mkdir bbrplusnew && cd bbrplusnew
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWu6fCx32KxEvBrWqe5pZbAB6Y13ogTMfMfPnQWzfQpmiQ?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZVCeWQA8rdMrNMysFO2V_0BJWB6Mlrc-IzLD_Xni4HuTQ?download=1
+				
+				yum install -y kernel-c7.rpm
+				yum install -y kernel-headers-c7.rpm
+			
+				kernel_version="4.14.173_bbrplus"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi
+		fi
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "10" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERSKfg1XkUJImM9fWZ3N8WwB3ygLGBzAT3-2Qf37UOokcw?download=1
+				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeSISwYaxadNr81olVZh_usBHwvnt0J6W__-4nV-AKY9HQ?download=1
+					
+				dpkg -i linux-image-d10.deb
+				dpkg -i linux-headers-d10.deb
+				
+				kernel_version="4.14.173-bbrplus"
+			else
+				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			fi		
+		fi			
+	fi
+
+	cd .. && rm -rf bbrplusnew
+	detele_kernel
+	BBR_grub
+	echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
+	echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
+	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBRplus${Font_color_suffix}"
+	stty erase '^H' && read -p "需要重启VPS后，才能开启BBRplus，是否现在重启 ? [Y/n] :" yn
+	[ -z "${yn}" ] && yn="y"
+	if [[ $yn == [Yy] ]]; then
+		echo -e "${Info} VPS 重启中..."
+		reboot
+	fi
+	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+
 }
 
 #启用BBR+fq
@@ -693,6 +745,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.5.8
  ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核 - 5.4.0
  ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 - 5.5.2/5.5.8
+ ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.173
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
@@ -741,6 +794,9 @@ case "$num" in
 	;;
 	6)
 	check_sys_zen
+	;;
+	7)
+	check_sys_bbrplusnew	
 	;;
 	9)
 	gototcpx
@@ -944,6 +1000,25 @@ check_sys_bbrplus(){
 		fi
 	else
 		echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+}
+
+check_sys_bbrplusnew(){
+	check_version
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" ]]; then
+			installbbrplusnew
+		else
+			echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "10" ]]; then
+			installbbrplusnew
+		else
+			echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	else
+		echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
 }
 
