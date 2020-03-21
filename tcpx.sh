@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.19
+#	Version: 1.3.2.20
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.19"
+sh_ver="1.3.2.20"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -887,12 +887,19 @@ BBR_grub(){
             fi
             sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
         elif [[ ${version} = "7" ]]; then
-            if [ ! -f "/boot/grub2/grub.cfg" ]; then
-                echo -e "${Error} /boot/grub2/grub.cfg 找不到，请检查."
+            if [ -f "/boot/grub2/grub.cfg" ]; then
+				grub2-mkconfig  -o   /boot/grub2/grub.cfg
+				grub2-set-default 0
                 exit 1
+			elif [ -f "/boot/efi/EFI/centos/grub.cfg" ]; then
+				grub2-mkconfig  -o   /boot/efi/EFI/centos/grub.cfg
+				grub2-set-default 0
+				exit 1
+			else
+				echo -e "${Error} grub.cfg 找不到，请检查."
             fi
-			grub2-mkconfig  -o   /boot/grub2/grub.cfg
-			grub2-set-default 0
+			#grub2-mkconfig  -o   /boot/grub2/grub.cfg
+			#grub2-set-default 0
 		
 		elif [[ ${version} = "8" ]]; then
 			grub2-mkconfig  -o   /boot/grub2/grub.cfg
