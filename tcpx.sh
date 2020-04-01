@@ -713,7 +713,7 @@ Update_Shell(){
 		read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [Yy] ]]; then
-			wget -N --no-check-certificate http://${github}/tcp.sh && chmod +x tcp.sh
+			wget -N --no-check-certificate http://${github}/tcpx.sh && chmod +x tcp.sh
 			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
 		else
 			echo && echo "	已取消..." && echo
