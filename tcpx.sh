@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.23
+#	Version: 1.3.2.24
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.23"
+sh_ver="1.3.2.24"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -551,7 +551,7 @@ startlotserver(){
 		apt-get update
 		apt-get install ethtool
 	fi
-	bash <(wget --no-check-certificate -qO-  https://git.io/lotServerInstall.sh) install
+	bash <(wget --no-check-certificate -qO- https://git.io/lotServerInstall.sh) install
 	sed -i '/advinacc/d' /appex/etc/config
 	sed -i '/maxmode/d' /appex/etc/config
 	echo -e "advinacc=\"1\"
@@ -644,7 +644,7 @@ remove_all(){
 	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_max_orphans/d' /etc/sysctl.conf
 	if [[ -e /appex/bin/lotServer.sh ]]; then
-		bash <(wget --no-check-certificate -qO- https://github.com/MoeClub/lotServer/raw/master/Install.sh) uninstall
+		bash <(wget --no-check-certificate -qO- https://git.io/lotServerInstall.sh) uninstall
 	fi
 	clear
 	echo -e "${Info}:清除加速完成。"
