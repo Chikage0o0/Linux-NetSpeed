@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.24
+#	Version: 1.3.2.25
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.24"
+sh_ver="1.3.2.25"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -41,13 +41,13 @@ installbbr(){
 		
 		elif [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESigYTQckcNMucfg3_JD1rsBFKsbZpzcOECRAoU6e1nvsw?download=1
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eb58pBWVa0BPqK-bQ1oDHTEBKAwRH7oYfm_5a9pwPkNPfA?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EawFBSdcm0FAnu8RtZpbVzUBXFesfv1s-xNQLhcYmRD03A?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EQd4KoXfrjlHtoCHGZ-ry6MB263GdBPZqsYYOqO8qRVqpw?download=1
 
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.6.4"
+				kernel_version="5.6.11"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi	
@@ -91,13 +91,13 @@ installbbr(){
 				fi
 			elif [[ ${version} = "10" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbN0hGGMPABJh_-XWnHUN60BpJzHxmkUHAALfhdsW9t9LA?download=1
-					wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eazr1INQN15BpXvwBlZ7jAcBXvTqfBgUXIIS4FQzp_7xiw?download=1
+					wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbhQHDttxZZIruzA0-NBBvsBIulOfaPfRNRRAhqh4pn8rA?download=1
+					wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EXWMwuh4veNAu1ilsmDouQoBMkq6F4KUQ9X6qj8fOqkqLQ?download=1
 				
 					dpkg -i linux-image-d10.deb
 					dpkg -i linux-headers-d10.deb
 				
-					kernel_version="5.6.3"
+					kernel_version="5.6.11"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
@@ -521,7 +521,7 @@ startbbrfq(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBR+FQ启动成功！"
+	echo -e "${Info}BBR+FQ修改成功，重启生效！"
 }
 
 #启用BBR+cake
@@ -530,7 +530,7 @@ startbbrcake(){
 	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBR+cake启动成功！"
+	echo -e "${Info}BBR+cake修改成功，重启生效！"
 }
 
 #启用BBRplus
@@ -539,7 +539,7 @@ startbbrplus(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbrplus" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBRplus启动成功！"
+	echo -e "${Info}BBRplus修改成功，重启生效！"
 }
 
 #启用Lotserver
@@ -567,7 +567,7 @@ startbbr2fq(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBR2启动成功！"
+	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
 #启用BBR2+CAKE
@@ -577,7 +577,7 @@ startbbr2cake(){
 	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBR2启动成功！"
+	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
 #启用BBR2+FQ+ecn
@@ -587,7 +587,7 @@ startbbr2fqecn(){
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBR2启动成功！"
+	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
 #启用BBR2+CAKE+ecn
@@ -597,7 +597,7 @@ startbbr2cakeecn(){
 	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
 	sysctl -p
-	echo -e "${Info}BBR2启动成功！"
+	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
 
@@ -739,7 +739,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到卸载内核版本
 ————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.4.14/5.5.5/5.6.3/5.6.4
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.4.14/5.5.5/5.6.11
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.5.8
@@ -890,7 +890,7 @@ BBR_grub(){
             if [ -f "/boot/grub2/grub.cfg" ]; then
 				grub2-mkconfig  -o   /boot/grub2/grub.cfg
 				grub2-set-default 0
-                exit 1
+	    exit 1
 			elif [ -f "/boot/efi/EFI/centos/grub.cfg" ]; then
 				grub2-mkconfig  -o   /boot/efi/EFI/centos/grub.cfg
 				grub2-set-default 0
