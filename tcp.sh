@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.27
+#	Version: 1.3.2.28
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.27"
+sh_ver="1.3.2.28"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -20,7 +20,7 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
 #安装BBR内核
 installbbr(){
-	kernel_version="4.11.8"
+	kernel_version="5.6.15"
 	bit=`uname -m`
 	rm -rf bbr
 	mkdir bbr && cd bbr
@@ -28,76 +28,76 @@ installbbr(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "6" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-headers-c6.rpm https://github.com/ylx2016/kernel/releases/download/5.5.5/kernel-headers-5.5.5-1-c6.x86_64.rpm
-				wget -N -O kernel-c6.rpm https://github.com/ylx2016/kernel/releases/download/5.5.5/kernel-5.5.5-1-c6.x86_64.rpm
+				wget -N -O kernel-headers-c6.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUCmObDQnMZEmKnhxS67sJkBG8kjbx0bjNF-XwTtzvgtAA?download=1
+				wget -N -O kernel-c6.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeC72joP3HVNmrIbjlPg_coBs7kj29Md4f9psAjZOuqOdg?download=1
 			
 				yum install -y kernel-c6.rpm
 				yum install -y kernel-headers-c6.rpm
 			
-				kernel_version="5.5.5"
+				#kernel_version="5.5.5"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		
 		elif [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbQxxtHlR31Aldm9i0a6hJEBh9VYwk4kRw73m0r0BPfTuA?download=1
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ee0_moQH0pJBuFAamvLt9E8B22PYvrWigo0kT8ekOadlxA?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EW1QJB1YjWVAqh476_nDTt8BGXthR8r6yZgKNtxiUnkhqw?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbQeSmPPMfRIrDgQcvhJgsgBpyJgAVRY1GZptaYlsziyig?download=1
 
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.6.12"
+				#kernel_version="5.6.12"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi	
 			
 		elif [[ ${version} = "8" ]]; then
-			wget -N -O kernel-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.5/kernel-5.5.5-1-c8.x86_64.rpm
-			wget -N -O kernel-headers-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.5/kernel-headers-5.5.5-1-c8.x86_64.rpm
+			wget -N -O kernel-c8.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETadaTIeeQJCgxEXKlOFiCEBsBa-Y15QbDkv-HQGo2EHSQ?download=1
+			wget -N -O kernel-headers-c8.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZEZyLBjDplMgSqDzyaqkvYBW06OOKDCcIQq27381fa5-A?download=1
 
 			yum install -y kernel-c8.rpm
 			yum install -y kernel-headers-c8.rpm
 			
-			kernel_version="5.5.5"
+			#kernel_version="5.5.5"
 		fi
 	
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ "${release}" == "debian" ]]; then
 			if [[ ${version} = "8" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d8.deb https://github.com/ylx2016/kernel/releases/download/5.5.5/linux-image-5.5.5_5.5.5-1-d8_amd64.deb
-					wget -N -O linux-headers-d8.deb https://github.com/ylx2016/kernel/releases/download/5.5.5/linux-headers-5.5.5_5.5.5-1-d8_amd64.deb
+					wget -N -O linux-image-d8.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeNpacEol0ZDk5S5ARJ1G7wBI6hF0q-C--Nonxq31lO1iw?download=1
+					wget -N -O linux-headers-d8.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWmAacwLpdJPhs56m6KhxsEBnnZyqOPJggf-2XXHMfxCtw?download=1
 				
 					dpkg -i linux-image-d8.deb
 					dpkg -i linux-headers-d8.deb
 				
-					kernel_version="5.5.5"
+					#kernel_version="5.5.5"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
 		
 			elif [[ ${version} = "9" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d9.deb https://github.com/ylx2016/kernel/releases/download/5.5.5/linux-image-5.5.5_5.5.5-1-d9_amd64.deb
-					wget -N -O linux-headers-d9.deb https://github.com/ylx2016/kernel/releases/download/5.5.5/linux-headers-5.5.5_5.5.5-1-d9_amd64.deb
+					wget -N -O linux-image-d9.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWrsOGQzcqJOrLzeaqXBh0sBbs9Np7anhs5JULwFAliGBg?download=1
+					wget -N -O linux-headers-d9.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbAGliMxbpZAtaqvjhcaexkB3owfi2PddFenWUEwMNkiXw?download=1
 				
 					dpkg -i linux-image-d9.deb
 					dpkg -i linux-headers-d9.deb
 				
-					kernel_version="5.5.5"
+					#kernel_version="5.5.5"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
 			elif [[ ${version} = "10" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERO5PBwi8BxKt_JLNFXYS5cBkK4_upXgIumL-MRCSfeMVQ?download=1
-					wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeAqqC38UTVNixonXrus5O8B4ctQDAZmteMDqVPpQvGR-A?download=1
+					wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ET2PkFkQeSFMtpiIhK58xaoB01aH51XFPcMTv-OGCP92gA?download=1
+					wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ec-uNmSW0iBOmUKbu-w2iS0BspktPBqgRjPMIqXcConmmA?download=1
 				
 					dpkg -i linux-image-d10.deb
 					dpkg -i linux-headers-d10.deb
 				
-					kernel_version="5.6.12"
+					#kernel_version="5.6.12"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
@@ -105,41 +105,53 @@ installbbr(){
 		elif [[ "${release}" == "ubuntu" ]]; then
 			if [[ ${version} = "16" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-u16.deb https://github.com/ylx2016/kernel/releases/download/5.4.14/linux-image-5.4.14_5.4.14-1-u16_amd64.deb
-					wget -N -O linux-headers-u16.deb https://github.com/ylx2016/kernel/releases/download/5.4.14/linux-headers-5.4.14_5.4.14-1-u16_amd64.deb
+					wget -N -O linux-image-u16.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERyDAcgbNptBjPGywtyy4zwB1S14VXAHEraobteVekwcNQ?download=1
+					wget -N -O linux-headers-u16.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eeka3lp7WAFOugowSi1F_eYBUXXdnx1dp1rI_aTg9XYtww?download=1
 				
 					dpkg -i linux-image-u16.deb
 					dpkg -i linux-headers-u16.deb
 				
-					kernel_version="5.4.14"
+					#kernel_version="5.4.14"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
 		
 			elif [[ ${version} = "18" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-u18.deb https://github.com/ylx2016/kernel/releases/download/5.4.14/linux-image-5.4.14_5.4.14-1-u18_amd64.deb
-					wget -N -O linux-headers-u18.deb https://github.com/ylx2016/kernel/releases/download/5.4.14/linux-headers-5.4.14_5.4.14-1-u18_amd64.deb
+					wget -N -O linux-image-u18.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERvqNJiLLrpKnLO9z3vCdZIB-GwZr2AKXO7t6dpTbEotmQ?download=1
+					wget -N -O linux-headers-u18.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWZdQsfxE5lAvL3xTHxS9H4BjYijqpxP-TokL1hLag7PIw?download=1
 				
 					dpkg -i linux-image-u18.deb
 					dpkg -i linux-headers-u18.deb
 				
-					kernel_version="5.4.14"
+					#kernel_version="5.4.14"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
 			elif [[ ${version} = "19" ]]; then
 				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-u19.deb https://github.com/ylx2016/kernel/releases/download/5.4.14/linux-headers-5.4.14_5.4.14-1-u19_amd64.deb
-					wget -N -O linux-headers-u19.deb https://github.com/ylx2016/kernel/releases/download/5.4.14/linux-image-5.4.14_5.4.14-1-u19_amd64.deb
+					wget -N -O linux-image-u19.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESEgC1nVDmRFmQeJnSWujz4BYy-tnZa64EgX60dIQJjW9Q?download=1
+					wget -N -O linux-headers-u19.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcsC0aEv8KBHhG3jwRaF8r4BLqvFwBLK5JGy83dfhdV-zQ?download=1
 				
 					dpkg -i linux-image-u19.deb
 					dpkg -i linux-headers-u19.deb
 				
-					kernel_version="5.4.14"
+					#kernel_version="5.4.14"
 				else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 				fi
+			elif [[ ${version} = "20" ]]; then
+				if [[ ${bit} = "x86_64" ]]; then
+					wget -N -O linux-image-u20.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYqsZWWiss1JvRW5gsfGxckBQhV1IiQgOqzlFmzUJAAdpg?download=1
+					wget -N -O linux-headers-u20.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESJMvds9OwRKlSPEoHYeMPcB4CIbP9rO3hcdGmzAsJqCVQ?download=1
+				
+					dpkg -i linux-image-u20.deb
+					dpkg -i linux-headers-u20.deb
+				
+					#kernel_version="5.4.14"
+				else
+					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+				fi	
 			fi				
 			
 		#else	
@@ -740,7 +752,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本
 ————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.4.14/5.5.5/5.6.12
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.5.8
@@ -976,7 +988,7 @@ check_sys_bbr(){
 			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
-		if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" ]]; then
+		if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
 			installbbr
 		else
 			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
