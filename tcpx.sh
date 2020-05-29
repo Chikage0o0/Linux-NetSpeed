@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.28
+#	Version: 1.3.2.29
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.28"
+sh_ver="1.3.2.29"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -475,20 +475,20 @@ installzen(){
 
 #安装bbrplus 新内核
 installbbrplusnew(){
-	kernel_version="4.14.173-bbrplus"
+	kernel_version="4.14.182-bbrplus"
 	bit=`uname -m`
 	rm -rf bbrplusnew
 	mkdir bbrplusnew && cd bbrplusnew
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWu6fCx32KxEvBrWqe5pZbAB6Y13ogTMfMfPnQWzfQpmiQ?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZVCeWQA8rdMrNMysFO2V_0BJWB6Mlrc-IzLD_Xni4HuTQ?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWtxHt1RiAlHgqERl5bvYzcBUrkKa_n1mWQ-uM2-Na7gmQ?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYkNoi17pKJBi7KnhUGRqEIBEK_26-bzkCL-fuQYZmrHWA?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="4.14.173_bbrplus"
+				kernel_version="4.14.182_bbrplus"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
@@ -496,13 +496,13 @@ installbbrplusnew(){
 	elif [[ "${release}" == "debian" ]]; then
 		if [[ ${version} = "10" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERSKfg1XkUJImM9fWZ3N8WwB3ygLGBzAT3-2Qf37UOokcw?download=1
-				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeSISwYaxadNr81olVZh_usBHwvnt0J6W__-4nV-AKY9HQ?download=1
+				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ef9pJn1wp-pBk4FIPxT1qBoBqpWhTVCawoKzEB0_vpiMRw?download=1
+				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EaFJshr8za9Bq9FGjEBLds0B4ZfrYThLH8E35xe9-qWX_Q?download=1
 					
 				dpkg -i linux-image-d10.deb
 				dpkg -i linux-headers-d10.deb
 				
-				kernel_version="4.14.173-bbrplus"
+				kernel_version="4.14.182-bbrplus"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi		
@@ -756,7 +756,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.5.8
  ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核 - 5.4.0
  ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 - 5.5.2/5.5.10
- ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.173
+ ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
