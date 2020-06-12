@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.32
+#	Version: 1.3.2.34
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.32"
+sh_ver="1.3.2.34"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -288,32 +288,18 @@ installxanmod(){
 				kernel_version="5.5.1_xanmod1"
 		fi
 		
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "9" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d9.deb https://github.com/ylx2016/kernel/releases/download/5.5.1xanmod/linux-headers-5.5.1-xanmod1_5.5.1-xanmod1-1-d9_amd64.deb
-				wget -N -O linux-image-d9.deb https://github.com/ylx2016/kernel/releases/download/5.5.1xanmod/linux-image-5.5.1-xanmod1_5.5.1-xanmod1-1-d9_amd64.deb
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		if [[ ${bit} = "x86_64" ]]; then
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbSiWPok4UxIoag8pslCK5gBx79LcZ42h-MG7oncp3zl6w?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcJa4SR7ZNlNrqp331YSl30BMLE3R06tWvPhuc6EIiJOIw?download=1
 				
-				dpkg -i linux-image-d9.deb
-				dpkg -i linux-headers-d9.deb
+			dpkg -i linux-image-d10.deb
+			dpkg -i linux-headers-d10.deb
 				
-				#kernel_version="4.14.168-bbrplus"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi	
-		elif [[ ${version} = "10" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbSiWPok4UxIoag8pslCK5gBx79LcZ42h-MG7oncp3zl6w?download=1
-				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcJa4SR7ZNlNrqp331YSl30BMLE3R06tWvPhuc6EIiJOIw?download=1
-					
-				dpkg -i linux-image-d10.deb
-				dpkg -i linux-headers-d10.deb
-				
-				kernel_version="5.7.2-xanmod1"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi		
-		fi			
+			kernel_version="5.7.2-xanmod1"
+		else
+			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+		fi		
 	fi
 	
 	cd .. && rm -rf xanmod
@@ -742,15 +728,21 @@ gototcpx(){
 	wget -N "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh
 }
 
+#切换到秋水逸冰BBR安装脚本
+gototeddysun_bbr(){
+	clear
+	wget https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+}
+
 #开始菜单
 start_menu(){
 clear
 echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
- 更新内容及反馈:  https://blog.ylx.me/archives/783.html
- 母鸡慎用
+ 更新内容及反馈:  https://blog.ylx.me/archives/783.html 运行./tcp.sh再次调用本脚本 母鸡慎用
   
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本
+ ${Green_font_prefix}8.${Font_color_suffix} 切换到秋水逸冰BBR安装脚本 
 ————————————内核管理————————————
  ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
@@ -811,8 +803,11 @@ case "$num" in
 	7)
 	check_sys_bbrplusnew	
 	;;
+	8)
+	gototeddysun_bbr
+	;;
 	9)
-	gototcpx
+	gototcpx	
 	;;
 	11)
 	startbbrfq
@@ -1050,11 +1045,9 @@ check_sys_xanmod(){
 		else
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "9" || ${version} = "10" ]]; then
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
 			installxanmod
-		else
-			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} ,去xanmod.org 官网安装吧!" && exit 1
