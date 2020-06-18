@@ -898,7 +898,7 @@ BBR_grub(){
             if [ -f "/boot/grub2/grub.cfg" ]; then
 				grub2-mkconfig  -o   /boot/grub2/grub.cfg
 				grub2-set-default 0
-	    exit 1
+				exit 1
 			elif [ -f "/boot/efi/EFI/centos/grub.cfg" ]; then
 				grub2-mkconfig  -o   /boot/efi/EFI/centos/grub.cfg
 				grub2-set-default 0
@@ -915,6 +915,7 @@ BBR_grub(){
         fi
     elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
         /usr/sbin/update-grub
+		exit 1
     fi
 }
 
