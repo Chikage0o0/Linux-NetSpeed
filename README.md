@@ -1,7 +1,5 @@
 # Linux-NetSpeed
 ```
-![map](http://clustrmaps.com/map_v2.png?d=PAd2jfyp5uJezUAtrH4XmsNgbWCxZBykA_gcvdKjiVk&cl=ffffff)
-
 不卸载内核版本
 wget -N "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh
 卸载内核版本
