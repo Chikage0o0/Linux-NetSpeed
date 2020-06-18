@@ -1,5 +1,7 @@
 # Linux-NetSpeed
 ```
+<br/>
+![visitors](https://visitor-badge.glitch.me/badge?page_id=https://github.com/ylx2016/Linux-NetSpeed)
 不卸载内核版本
 wget -N "https://github.000060000.xyz/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh
 卸载内核版本
