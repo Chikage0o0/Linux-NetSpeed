@@ -913,7 +913,7 @@ BBR_grub(){
         fi
     elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
         /usr/sbin/update-grub
-		exit 1
+		#exit 1
     fi
 }
 
