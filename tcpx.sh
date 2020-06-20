@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.36
+#	Version: 1.3.2.37
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.36"
+sh_ver="1.3.2.37"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -41,13 +41,13 @@ installbbr(){
 		
 		elif [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EW1QJB1YjWVAqh476_nDTt8BGXthR8r6yZgKNtxiUnkhqw?download=1
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbQeSmPPMfRIrDgQcvhJgsgBpyJgAVRY1GZptaYlsziyig?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ef9KvmYkbsZJjGYw6073m-EB2WIGQg9IhPI9hVR4V3Y0Gw?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EV0JLwNBMZtOt023wkul_CkBTzaSToHH8KIgguawAa-WFg?download=1
 
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				#kernel_version="5.6.12"
+				kernel_version="5.7.4"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi	
@@ -266,13 +266,13 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EULt2I3md9JBvFf7fxDu3eIBJN8E1hfBnCv2qChTuoTAaA?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EQQXaoSrZF9ClrpmkJn2CaMB2WaGJBJ-tjfvrvvnTLlMfA?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERAo-0e2nVxIkiS-3ESibQkBtqPutKafMhuPJcPPjxezNg?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcFRGLkSHl5DtelqaAaSpE0BoA4Ypg0paEjjpolaORQKMw?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.7.2_xanmod1"
+				kernel_version="5.7.4_xanmod1"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
@@ -288,13 +288,13 @@ installxanmod(){
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-			wget -N -O linux-headers-d10.deb https://sourceforge.net/projects/xanmod/files/releases/edge/5.7.3-xanmod1/linux-headers-5.7.3-xanmod1_5.7.3-xanmod1~git20200617.d061306-0_amd64.deb/download
-			wget -N -O linux-image-d10.deb https://sourceforge.net/projects/xanmod/files/releases/edge/5.7.3-xanmod1/linux-image-5.7.3-xanmod1_5.7.3-xanmod1~git20200617.d061306-0_amd64.deb/download
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ebi4DrPpYchIuPBcw8iJ0FwBFRHCL4UeTdHEFtIOYwN36g?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUinaAfrdBVCisX1TMtnsX4BAmZII3FQss_dW0VEtG5fbg?download=1
 				
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 				
-			kernel_version="5.7.3-xanmod1"
+			kernel_version="5.7.4-xanmod1"
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
 		fi		
@@ -743,10 +743,10 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
  ${Green_font_prefix}9.${Font_color_suffix} 切换到卸载内核版本
  ${Green_font_prefix}8.${Font_color_suffix} 切换到秋水逸冰BBR安装脚本
 ————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15/5.7.4
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
- ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.7.2/5.7.3
+ ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.7.4
  ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核 - 5.4.0
  ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 - 5.5.2/5.5.10
  ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
