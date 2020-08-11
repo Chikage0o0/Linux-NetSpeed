@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.39
+#	Version: 1.3.2.40
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.39"
+sh_ver="1.3.2.40"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -294,7 +294,7 @@ installxanmod(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 				
-			kernel_version="5.8.0-xanmod1"
+			kernel_version="5.8.0-xanmod2"
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
 		fi		
