@@ -57,6 +57,11 @@ Zen官网
 https://liquorix.net/
 锐速
 https://moeclub.org/2017/03/09/14/
+官方编译好的内核
+https://sourceforge.net/projects/xanmod/files/releases/current
+https://elrepo.org/linux/kernel/el7/x86_64/RPMS/
+https://elrepo.org/linux/kernel/el8/x86_64/RPMS/
+https://kernel.ubuntu.com/~kernel-ppa/mainline/
 高科技
 https://github.com/phlinhng/v2ray-tcp-tls-web
 https://github.com/johnrosen1/trojan-gfw-script
