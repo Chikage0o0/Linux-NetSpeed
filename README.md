@@ -57,3 +57,6 @@ Zen官网
 https://liquorix.net/
 锐速
 https://moeclub.org/2017/03/09/14/
+高科技
+https://github.com/phlinhng/v2ray-tcp-tls-web
+https://github.com/johnrosen1/trojan-gfw-script
