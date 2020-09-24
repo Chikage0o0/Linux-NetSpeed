@@ -60,5 +60,6 @@ https://elrepo.org/linux/kernel/el7/x86_64/RPMS/
 https://elrepo.org/linux/kernel/el8/x86_64/RPMS/
 https://kernel.ubuntu.com/~kernel-ppa/mainline/
 高科技
+https://github.com/mack-a/v2ray-agent
 https://github.com/phlinhng/v2ray-tcp-tls-web
 https://github.com/johnrosen1/trojan-gfw-script
