@@ -59,6 +59,8 @@ https://sourceforge.net/projects/xanmod/files/releases/current
 https://elrepo.org/linux/kernel/el7/x86_64/RPMS/
 https://elrepo.org/linux/kernel/el8/x86_64/RPMS/
 https://kernel.ubuntu.com/~kernel-ppa/mainline/
+DD脚本
+https://www.cxthhhhh.com/network-reinstall-system-modify
 高科技
 https://github.com/mack-a/v2ray-agent
 https://github.com/phlinhng/v2ray-tcp-tls-web
