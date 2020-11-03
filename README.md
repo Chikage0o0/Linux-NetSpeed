@@ -54,11 +54,17 @@ Zen官网
 https://liquorix.net/
 锐速
 https://moeclub.org/2017/03/09/14/
+其他内核
+https://github.com/alibaba/cloud-kernel
+https://github.com/Tencent/TencentOS-kernel
 官方编译好的内核
 https://sourceforge.net/projects/xanmod/files/releases/current
 https://elrepo.org/linux/kernel/el7/x86_64/RPMS/
 https://elrepo.org/linux/kernel/el8/x86_64/RPMS/
 https://kernel.ubuntu.com/~kernel-ppa/mainline/
+http://mirrors.aliyun.com/alinux/2.1903/plus/x86_64/Packages/
+https://mirrors.tencent.com/tlinux/2.4/tlinux/x86_64/RPMS/
+
 DD脚本
 https://www.cxthhhhh.com/network-reinstall-system-modify
 高科技
