@@ -64,6 +64,7 @@ https://elrepo.org/linux/kernel/el8/x86_64/RPMS/
 https://kernel.ubuntu.com/~kernel-ppa/mainline/
 http://mirrors.aliyun.com/alinux/2.1903/plus/x86_64/Packages/
 https://mirrors.tencent.com/tlinux/2.4/tlinux/x86_64/RPMS/
+https://bintray.com/multipath-tcp/mptcp_rpm/mptcp/v0.95.1#files
 
 DD脚本
 https://www.cxthhhhh.com/network-reinstall-system-modify
