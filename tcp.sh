@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.49
+#	Version: 1.3.2.51
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.49"
+sh_ver="1.3.2.51"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -20,34 +20,34 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
 #安装BBR内核
 installbbr(){
-	kernel_version="5.6.15"
+	kernel_version="5.9.6"
 	bit=`uname -m`
 	rm -rf bbr
 	mkdir bbr && cd bbr
 	
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "6" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-headers-c6.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUCmObDQnMZEmKnhxS67sJkBG8kjbx0bjNF-XwTtzvgtAA?download=1
-				wget -N -O kernel-c6.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeC72joP3HVNmrIbjlPg_coBs7kj29Md4f9psAjZOuqOdg?download=1
+		# if [[ ${version} = "6" ]]; then
+			# if [[ ${bit} = "x86_64" ]]; then
+				# wget -N -O kernel-headers-c6.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUCmObDQnMZEmKnhxS67sJkBG8kjbx0bjNF-XwTtzvgtAA?download=1
+				# wget -N -O kernel-c6.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeC72joP3HVNmrIbjlPg_coBs7kj29Md4f9psAjZOuqOdg?download=1
 			
-				yum install -y kernel-c6.rpm
-				yum install -y kernel-headers-c6.rpm
+				# yum install -y kernel-c6.rpm
+				# yum install -y kernel-headers-c6.rpm
 			
-				#kernel_version="5.5.5"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi
+				# kernel_version="5.5.5"
+			# else
+				# echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			# fi
 		
-		elif [[ ${version} = "7" ]]; then
+		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETKmZxt2uxdGgnURGfTA2HcBWyEDdotq1DgvQEmN5yhAOA?download=1
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYpjC2yNeb1On3YZTDgdBT0Bn8WDzz3ZXqYvIrtyHV3EbA?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eay8NzgdPUlKgORAmPCtjL4BnaCEdQFLCYvH8_T_z86SlQ?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZnnRCA4S2NEpI9QrUZPsvUBbMhUJUCVfs5QmZCQk38ADw?download=1
 
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.8.14"
+				#kernel_version="5.8.14"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi	
@@ -59,112 +59,21 @@ installbbr(){
 			yum install -y kernel-c8.rpm
 			yum install -y kernel-headers-c8.rpm
 			
-			#kernel_version="5.5.5"
+			kernel_version="5.5.5"
 		fi
 	
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		if [[ "${release}" == "debian" ]]; then
-			if [[ ${version} = "8" ]]; then
-				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d8.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeNpacEol0ZDk5S5ARJ1G7wBI6hF0q-C--Nonxq31lO1iw?download=1
-					wget -N -O linux-headers-d8.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWmAacwLpdJPhs56m6KhxsEBnnZyqOPJggf-2XXHMfxCtw?download=1
+		if [[ ${bit} = "x86_64" ]]; then
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWFxa3pJJLxNuEbKV7Ch3ogBGXMM-BPPXyRFHwkRqmBdqA?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERQwuUXBnodCiyp9oSGAnoMBepgnlwMVfCcDa1yv1aaD6A?download=1
 				
-					dpkg -i linux-image-d8.deb
-					dpkg -i linux-headers-d8.deb
+			dpkg -i linux-image-d10.deb
+			dpkg -i linux-headers-d10.deb
 				
-					#kernel_version="5.5.5"
-				else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-				fi
-		
-			elif [[ ${version} = "9" ]]; then
-				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d9.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWrsOGQzcqJOrLzeaqXBh0sBbs9Np7anhs5JULwFAliGBg?download=1
-					wget -N -O linux-headers-d9.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EbAGliMxbpZAtaqvjhcaexkB3owfi2PddFenWUEwMNkiXw?download=1
-				
-					dpkg -i linux-image-d9.deb
-					dpkg -i linux-headers-d9.deb
-				
-					#kernel_version="5.5.5"
-				else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-				fi
-			elif [[ ${version} = "10" ]]; then
-				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EX1N_JVwmSJFs4RQ7LqgQzcBurXyK2qUV9EnjYVWqGMs3Q?download=1
-					wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EX4OVNaKJFtOhOH8US25-lEBeIr5WOi2rJGI55cTazMhdQ?download=1
-				
-					dpkg -i linux-image-d10.deb
-					dpkg -i linux-headers-d10.deb
-				
-					kernel_version="5.7.7"
-				else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-				fi
-			fi
-		elif [[ "${release}" == "ubuntu" ]]; then
-			if [[ ${version} = "16" ]]; then
-				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-u16.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERyDAcgbNptBjPGywtyy4zwB1S14VXAHEraobteVekwcNQ?download=1
-					wget -N -O linux-headers-u16.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eeka3lp7WAFOugowSi1F_eYBUXXdnx1dp1rI_aTg9XYtww?download=1
-				
-					dpkg -i linux-image-u16.deb
-					dpkg -i linux-headers-u16.deb
-				
-					#kernel_version="5.4.14"
-				else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-				fi
-		
-			elif [[ ${version} = "18" ]]; then
-				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-u18.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERvqNJiLLrpKnLO9z3vCdZIB-GwZr2AKXO7t6dpTbEotmQ?download=1
-					wget -N -O linux-headers-u18.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWZdQsfxE5lAvL3xTHxS9H4BjYijqpxP-TokL1hLag7PIw?download=1
-				
-					dpkg -i linux-image-u18.deb
-					dpkg -i linux-headers-u18.deb
-				
-					#kernel_version="5.4.14"
-				else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-				fi
-			elif [[ ${version} = "19" ]]; then
-				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-u19.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESEgC1nVDmRFmQeJnSWujz4BYy-tnZa64EgX60dIQJjW9Q?download=1
-					wget -N -O linux-headers-u19.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcsC0aEv8KBHhG3jwRaF8r4BLqvFwBLK5JGy83dfhdV-zQ?download=1
-				
-					dpkg -i linux-image-u19.deb
-					dpkg -i linux-headers-u19.deb
-				
-					#kernel_version="5.4.14"
-				else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-				fi
-			elif [[ ${version} = "20" ]]; then
-				if [[ ${bit} = "x86_64" ]]; then
-					wget -N -O linux-image-u20.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYqsZWWiss1JvRW5gsfGxckBQhV1IiQgOqzlFmzUJAAdpg?download=1
-					wget -N -O linux-headers-u20.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESJMvds9OwRKlSPEoHYeMPcB4CIbP9rO3hcdGmzAsJqCVQ?download=1
-				
-					dpkg -i linux-image-u20.deb
-					dpkg -i linux-headers-u20.deb
-				
-					#kernel_version="5.4.14"
-				else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-				fi	
-			fi				
-			
-		#else	
-		#	wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
-		#	wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/linux-headers-${kernel_version}-all.deb
-		#	wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
-		#	wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
-	
-		#	dpkg -i libssl1.0.0_1.0.1t-1+deb8u10_amd64.deb
-		#	dpkg -i linux-headers-${kernel_version}-all.deb
-		#	dpkg -i linux-headers-${kernel_version}.deb
-		#	dpkg -i linux-image-${kernel_version}.deb
-		fi
+			#kernel_version="5.9.6"
+		else
+			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+		fi	
 	fi
 	
 	cd .. && rm -rf bbr	
@@ -268,13 +177,13 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeNE7pFrlFpItROymkjTOhABPcQtSKiPEV-1udml0MEdcQ?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYcZDXP4gIBLtXCpUvrzqZsBPKrSmEAsF3VFwZay4BoR6A?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETLw9F6MgjBBlkkNGmFZu70B9p0kMOdqrF6ntv2QNI5I4g?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcFnSZfa6JBKqZOkE5xFd8oBPJCa6Lo7DzTPPM0INWsk-w?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			
-				kernel_version="5.8.15_xanmod"
+				kernel_version="5.9.6_xanmod"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
@@ -290,13 +199,13 @@ installxanmod(){
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
-			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EW3gG6mcvo9NlFNVX5IYoS8BqMIU9aOT4zBpvr1toA-_xQ?download=1
-			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYpr3qZSeExHhX7ze9YZ2N8BrRcobfpBVPOEokiOQifPbw?download=1
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EVs7sW2FDFxGjGcQs9dDLfMB9FuemohKTxr4bLwwzne7NQ?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWXbzy9vCZVCoPGTxFOth1sBOx5s9sfX22816DXEudv9aA?download=1
 				
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 				
-			kernel_version="5.8.15-xanmod"
+			kernel_version="5.9.6-xanmod"
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
 		fi		
@@ -346,32 +255,18 @@ installbbr2(){
 				kernel_version="5.4.0_rc6"
 		fi
 		
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "9" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-image-d9.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d9_amd64.deb
-				wget -N -O linux-headers-d9.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d9_amd64.deb
-				
-				dpkg -i linux-image-d9.deb
-				dpkg -i linux-headers-d9.deb
-				
-				#kernel_version="4.14.168-bbrplus"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi	
-		elif [[ ${version} = "10" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		if [[ ${bit} = "x86_64" ]]; then
+			wget -N -O linux-headers-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
 				wget -N -O linux-image-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
 					
 				dpkg -i linux-image-d10.deb
 				dpkg -i linux-headers-d10.deb
 				
-				#kernel_version="4.14.168-bbrplus"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi		
-		fi			
+			# kernel_version="5.4.0_rc6"
+		else
+			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+		fi		
 	fi
 	
 	cd .. && rm -rf bbr2
@@ -418,32 +313,18 @@ installzen(){
 				kernel_version="5.5.2_zen"
 		fi
 		
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "9" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d9.deb https://github.com/ylx2016/kernel/releases/download/5.5.2zen/linux-headers-5.5.2-zen_5.5.2-zen-1-d9_amd64.deb
-				wget -N -O linux-image-d9.deb https://github.com/ylx2016/kernel/releases/download/5.5.2zen/linux-image-5.5.2-zen_5.5.2-zen-1-d9_amd64.deb
-				
-				dpkg -i linux-image-d9.deb 
-				dpkg -i linux-headers-d9.deb
-				
-				#kernel_version="4.14.168-bbrplus"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi	
-		elif [[ ${version} = "10" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EShzFq8Jlv1PthbYlNNvLjIB2-hktrkPXxwd9mqcXgmcyg?download=1
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		if [[ ${bit} = "x86_64" ]]; then
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EShzFq8Jlv1PthbYlNNvLjIB2-hktrkPXxwd9mqcXgmcyg?download=1
 				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERXzOc-2BzJInOxBgKo62OkBgcI9-O-fw0M8U2B4NazuLg?download=1
 					
 				dpkg -i linux-image-d10.deb
 				dpkg -i linux-headers-d10.deb
 				
-				kernel_version="5.5.10-zen"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi		
-		fi			
+			kernel_version="5.5.10-zen"	
+		else
+			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+		fi		
 	fi
 	
 	cd .. && rm -rf zen
@@ -481,20 +362,18 @@ installbbrplusnew(){
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		fi
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "10" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ef9pJn1wp-pBk4FIPxT1qBoBqpWhTVCawoKzEB0_vpiMRw?download=1
-				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EaFJshr8za9Bq9FGjEBLds0B4ZfrYThLH8E35xe9-qWX_Q?download=1
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		if [[ ${bit} = "x86_64" ]]; then
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ef9pJn1wp-pBk4FIPxT1qBoBqpWhTVCawoKzEB0_vpiMRw?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EaFJshr8za9Bq9FGjEBLds0B4ZfrYThLH8E35xe9-qWX_Q?download=1
 					
-				dpkg -i linux-image-d10.deb
-				dpkg -i linux-headers-d10.deb
+			dpkg -i linux-image-d10.deb
+			dpkg -i linux-headers-d10.deb
 				
-				kernel_version="4.14.182-bbrplus"
-			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
-			fi		
-		fi			
+			kernel_version="4.14.182-bbrplus"
+		else
+			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+		fi
 	fi
 
 	cd .. && rm -rf bbrplusnew
@@ -520,6 +399,15 @@ startbbrfq(){
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 	sysctl -p
 	echo -e "${Info}BBR+FQ修改成功，重启生效！"
+}
+
+#启用BBR+fq_pie
+startbbrfqpie(){
+	remove_all
+	echo "net.core.default_qdisc=fq_pie" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+	sysctl -p
+	echo -e "${Info}BBR+FQ_PIE修改成功，重启生效！"
 }
 
 #启用BBR+cake
@@ -749,18 +637,18 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
   
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本
- ${Green_font_prefix}8.${Font_color_suffix} 切换到秋水逸冰BBR安装脚本
- ${Green_font_prefix}10.${Font_color_suffix} 切换到一键DD安装系统脚本 自负其责 新手勿入 
+ ${Green_font_prefix}88.${Font_color_suffix} 切换到秋水逸冰BBR安装脚本
+ ${Green_font_prefix}100.${Font_color_suffix} 切换到一键DD安装系统脚本 自负其责 新手勿入 
 ————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15/5.7.7/5.8.14
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.5.5/5.9.6
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
- ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.7.7/5.8.15
+ ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.9.6
  ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核 - 5.4.0
- ${Green_font_prefix}6.${Font_color_suffix} 安装 Zen版内核 - 5.5.2/5.5.10
  ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
+ ${Green_font_prefix}19.${Font_color_suffix} 使用BBR+FQ_QIE加速 
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
  ${Green_font_prefix}13.${Font_color_suffix} 使用BBRplus+FQ版加速
  ${Green_font_prefix}14.${Font_color_suffix} 使用Lotserver(锐速)加速
@@ -811,17 +699,20 @@ case "$num" in
 	7)
 	check_sys_bbrplusnew	
 	;;
-	8)
+	88)
 	gototeddysun_bbr
 	;;
 	9)
 	gototcpx
 	;;
-	10)
+	100)
 	gotodd	
 	;;
 	11)
 	startbbrfq
+	;;
+	19)
+	startbbrfqpie	
 	;;
 	12)
 	startbbrcake
@@ -983,23 +874,30 @@ check_version(){
 check_sys_bbr(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "6" || ${version} = "7" || ${version} = "8" ]]; then
+		# if [[ ${version} = "6" || ${version} = "7" || ${version} = "8" ]]; then
+		if [[ ${version} = "7" || ${version} = "8" ]]; then
 			installbbr
 		else
 			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" ]]; then
+	# elif [[ "${release}" == "debian" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" ]]; then
+		# if [[ ${version} = "9" || ${version} = "10" ]]; then
+			# installbbr
+		# else
+			# echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		# fi
+	# elif [[ "${release}" == "ubuntu" ]]; then
+		# if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
+		# if [[ ${version} = "16" || ${version} = "18" || ${version} = "20" ]]; then
+			# installbbr
+		# else
+			# echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		# fi
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
 			installbbr
-		else
-			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
-	elif [[ "${release}" == "ubuntu" ]]; then
-		if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-			installbbr
-		else
-			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
+		# fi
 	else
 		echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1013,18 +911,24 @@ check_sys_bbrplus(){
 		else
 			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" ]]; then
+	# elif [[ "${release}" == "debian" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" ]]; then
+		# if [[ ${version} = "9" || ${version} = "10" ]]; then
+			# installbbrplus
+		# else
+			# echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		# fi
+	# elif [[ "${release}" == "ubuntu" ]]; then
+		# if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" ]]; then
+		# if [[ ${version} = "16" || ${version} = "18" ]]; then
+			# installbbrplus
+		# else
+			# echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		# fi
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
 			installbbrplus
-		else
-			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
-	elif [[ "${release}" == "ubuntu" ]]; then
-		if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" ]]; then
-			installbbrplus
-		else
-			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
+		# fi	
 	else
 		echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1038,12 +942,15 @@ check_sys_bbrplusnew(){
 		else
 			echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "10" ]]; then
+	# elif [[ "${release}" == "debian" ]]; then
+		# if [[ ${version} = "10" ]]; then
+			# installbbrplusnew
+		# else
+			# echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		# fi
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
 			installbbrplusnew
-		else
-			echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
 	else
 		echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1058,11 +965,11 @@ check_sys_xanmod(){
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
 			installxanmod
-		fi
-	elif [[ "${release}" == "ubuntu" ]]; then
-			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} ,去xanmod.org 官网安装吧!" && exit 1
+		# fi
+	# elif [[ "${release}" == "ubuntu" ]]; then
+			# echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} ,去xanmod.org 官网安装吧!" && exit 1
 	else
 		echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1076,14 +983,17 @@ check_sys_bbr2(){
 		else
 			echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "9" || ${version} = "10" ]]; then
-			installbbr2
-		else
-			echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
-	elif [[ "${release}" == "ubuntu" ]]; then
-			echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	# elif [[ "${release}" == "debian" ]]; then
+		# if [[ ${version} = "9" || ${version} = "10" ]]; then
+			# installbbr2
+		# else
+			# echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		# fi
+	# elif [[ "${release}" == "ubuntu" ]]; then
+			# echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
+			installbbr2		
 	else
 		echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1098,14 +1008,17 @@ check_sys_zen(){
 		else
 			echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	elif [[ "${release}" == "debian" ]]; then
-		if [[ ${version} = "9" || ${version} = "10" ]]; then
-			installzen
-		else
-			echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
-	elif [[ "${release}" == "ubuntu" ]]; then
-			echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	# elif [[ "${release}" == "debian" ]]; then
+		# if [[ ${version} = "9" || ${version} = "10" ]]; then
+			# installzen
+		# else
+			# echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		# fi
+	# elif [[ "${release}" == "ubuntu" ]]; then
+			# echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
+			installzen				
 	else
 		echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1241,3 +1154,74 @@ check_sys
 check_version
 [[ ${release} != "debian" ]] && [[ ${release} != "ubuntu" ]] && [[ ${release} != "centos" ]] && echo -e "${Error} 本脚本不支持当前系统 ${release} !" && exit 1
 start_menu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
