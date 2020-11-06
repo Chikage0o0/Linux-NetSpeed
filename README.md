@@ -73,3 +73,9 @@ https://www.cxthhhhh.com/network-reinstall-system-modify
 https://github.com/mack-a/v2ray-agent
 https://github.com/phlinhng/v2ray-tcp-tls-web
 https://github.com/johnrosen1/trojan-gfw-script
+
+服务周期
+https://zh.wikipedia.org/zh/Ubuntu
+https://wiki.ubuntu.com/Releases
+https://wiki.debian.org/LTS
+https://wiki.centos.org/zh/About/Product
