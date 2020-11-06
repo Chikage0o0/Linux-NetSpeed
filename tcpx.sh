@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.51
+#	Version: 1.3.2.52
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.51"
+sh_ver="1.3.2.52"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -59,7 +59,7 @@ installbbr(){
 			yum install -y kernel-c8.rpm
 			yum install -y kernel-headers-c8.rpm
 			
-			kernel_version="5.5.5"
+			kernel_version="5.6.15"
 		fi
 	
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
@@ -639,7 +639,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
  ${Green_font_prefix}88.${Font_color_suffix} 切换到秋水逸冰BBR安装脚本
  ${Green_font_prefix}100.${Font_color_suffix} 切换到一键DD安装系统脚本 自负其责 新手勿入 
 ————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.5.5/5.9.6
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15/5.9.6
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.9.6
