@@ -712,7 +712,7 @@ Update_Shell(){
 		read -p "(默认: y):" yn
 		[[ -z "${yn}" ]] && yn="y"
 		if [[ ${yn} == [Yy] ]]; then
-			wget -N "https://${github}/tcpx.sh" && chmod +x tcpx.sh
+			wget -N "https://${github}/tcpx.sh" && chmod +x tcpx.sh && ./tcpx.sh
 			echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !"
 		else
 			echo && echo "	已取消..." && echo
