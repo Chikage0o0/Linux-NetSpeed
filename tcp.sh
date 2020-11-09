@@ -719,7 +719,7 @@ Update_Shell(){
 		fi
 	else
 		echo -e "当前已是最新版本[ ${sh_new_ver} ] !"
-		sleep 5s
+		sleep 2s && ./tcp.sh
 	fi
 }
 
