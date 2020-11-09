@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.52
+#	Version: 1.3.2.53
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.52"
+sh_ver="1.3.2.53"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -561,7 +561,6 @@ optimizing_system(){
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
 	echo "net.ipv4.tcp_retries2 = 8
 net.ipv4.tcp_slow_start_after_idle = 0
-net.ipv4.tcp_fastopen = 3
 fs.file-max = 1000000
 fs.inotify.max_user_instances = 8192
 net.ipv4.tcp_syncookies = 1
@@ -590,6 +589,119 @@ net.ipv4.ip_forward = 1">>/etc/sysctl.conf
 		reboot
 	fi
 }
+
+optimizing_system_johnrosen1()
+{
+cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
+#!!! Do not change these settings unless you know what you are doing !!!
+#net.ipv4.ip_forward = 1
+#net.ipv4.conf.all.forwarding = 1
+#net.ipv4.conf.default.forwarding = 1
+################################
+#net.ipv6.conf.all.forwarding = 1
+#net.ipv6.conf.default.forwarding = 1
+#net.ipv6.conf.lo.forwarding = 1
+################################
+net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
+net.ipv6.conf.lo.disable_ipv6 = 0
+################################
+net.ipv6.conf.all.accept_ra = 2
+net.ipv6.conf.default.accept_ra = 2
+################################
+net.core.netdev_max_backlog = 100000
+net.core.netdev_budget = 50000
+net.core.netdev_budget_usecs = 5000
+#fs.file-max = 51200
+net.core.rmem_max = 67108864
+net.core.wmem_max = 67108864
+net.core.rmem_default = 65536
+net.core.wmem_default = 65536
+net.core.somaxconn = 10000
+################################
+net.ipv4.icmp_echo_ignore_all = 0
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.icmp_ignore_bogus_error_responses = 1
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv4.conf.all.secure_redirects = 0
+net.ipv4.conf.default.secure_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.tcp_keepalive_time = 1200
+net.ipv4.tcp_keepalive_intvl = 15
+net.ipv4.tcp_keepalive_probes = 5
+net.ipv4.tcp_synack_retries = 2
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_rfc1337 = 1
+net.ipv4.tcp_timestamps = 1
+net.ipv4.tcp_tw_recycle = 0
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_fin_timeout = 15
+net.ipv4.ip_local_port_range = 10000 65000
+net.ipv4.tcp_max_tw_buckets = 2000000
+net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_rmem = 4096 87380 67108864
+net.ipv4.tcp_wmem = 4096 65536 67108864
+net.ipv4.udp_rmem_min = 8192
+net.ipv4.udp_wmem_min = 8192
+net.ipv4.tcp_mtu_probing = 0
+##############################
+net.ipv4.conf.all.arp_ignore = 2
+net.ipv4.conf.default.arp_ignore = 2
+net.ipv4.conf.all.arp_announce = 2
+net.ipv4.conf.default.arp_announce = 2
+##############################
+net.ipv4.tcp_autocorking = 0
+net.ipv4.tcp_slow_start_after_idle = 0
+net.ipv4.tcp_max_syn_backlog = 30000
+net.core.default_qdisc = fq
+net.ipv4.tcp_congestion_control = bbr
+net.ipv4.tcp_notsent_lowat = 16384
+net.ipv4.tcp_no_metrics_save = 1
+net.ipv4.tcp_ecn = 2
+net.ipv4.tcp_ecn_fallback = 1
+net.ipv4.tcp_frto = 0
+##############################
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+vm.swappiness = 0
+net.ipv4.ip_unprivileged_port_start = 0
+EOF
+	sysctl --system
+	cat > '/etc/systemd/system.conf' << EOF
+[Manager]
+#DefaultTimeoutStartSec=90s
+DefaultTimeoutStopSec=30s
+#DefaultRestartSec=100ms
+DefaultLimitCORE=infinity
+DefaultLimitNOFILE=51200
+DefaultLimitNPROC=51200
+EOF
+		cat > '/etc/security/limits.conf' << EOF
+* soft nofile 51200
+* hard nofile 51200
+* soft nproc 51200
+* hard nproc 51200
+EOF
+if grep -q "ulimit" /etc/profile
+then
+	:
+else
+echo "ulimit -SHn 51200" >> /etc/profile
+echo "ulimit -SHu 51200" >> /etc/profile
+fi
+if grep -q "pam_limits.so" /etc/pam.d/common-session
+then
+	:
+else
+echo "session required pam_limits.so" >> /etc/pam.d/common-session
+fi
+systemctl daemon-reload
+}
+
 #更新脚本
 Update_Shell(){
 	echo -e "当前版本为 [ ${sh_ver} ]，开始检测最新版本..."
@@ -647,7 +759,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
  ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
- ${Green_font_prefix}19.${Font_color_suffix} 使用BBR+FQ_QIE加速 
+ ${Green_font_prefix}19.${Font_color_suffix} 使用BBR+FQ_PIE加速 
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
  ${Green_font_prefix}13.${Font_color_suffix} 使用BBRplus+FQ版加速
  ${Green_font_prefix}14.${Font_color_suffix} 使用Lotserver(锐速)加速
@@ -658,7 +770,8 @@ echo && echo -e " TCP加速 一键安装管理脚本 不卸载内核版本 ${Red
 ————————————杂项管理————————————
  ${Green_font_prefix}21.${Font_color_suffix} 卸载全部加速
  ${Green_font_prefix}22.${Font_color_suffix} 系统配置优化
- ${Green_font_prefix}23.${Font_color_suffix} 退出脚本
+ ${Green_font_prefix}24.${Font_color_suffix} 应用johnrosen1的优化方案 与上面方案及加速管理互斥 无卸载
+ ${Green_font_prefix}23.${Font_color_suffix} 退出脚本 
 ————————————————————————————————" && echo
 
 	check_status
@@ -739,6 +852,9 @@ case "$num" in
 	;;
 	22)
 	optimizing_system
+	;;
+	24)
+	optimizing_system_johnrosen1
 	;;
 	23)
 	exit 1
