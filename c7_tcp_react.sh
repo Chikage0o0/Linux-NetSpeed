@@ -8,6 +8,7 @@ if [ ${kernel_version} = "5.9.6" ]; then
 	mkdir /root/tcp
 	cd /root/tcp
 	if [[ -e /root/tcp/tcp_react_rc2.ko ]]; then
+	insmod /root/tcp/tcp_react_rc2.ko
 	sysctl -w net.ipv4.tcp_congestion_control=react_rc2
 	else
 		yum remove kernel-headers -y
