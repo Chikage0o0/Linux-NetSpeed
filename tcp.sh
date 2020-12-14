@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.56
+#	Version: 1.3.2.57
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.56"
+sh_ver="1.3.2.57"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -41,36 +41,36 @@ installbbr(){
 		
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
+				kernel_version="5.10.0"
+				detele_kernel_head
 				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfW6q9Kun79Juwa9tyXK47cBJaL00gEmKNSBmhHl5Ubjjg?download=1
 				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESTQpFw24rBIqfPRCEl9OuQBJS-2CQOOVm9BkeOgt3obcA?download=1
-
+				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
-			
-				kernel_version="5.10.0"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi	
 			
 		elif [[ ${version} = "8" ]]; then
+			kernel_version="5.6.15"
+			detele_kernel_head
 			wget -N -O kernel-c8.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETadaTIeeQJCgxEXKlOFiCEBsBa-Y15QbDkv-HQGo2EHSQ?download=1
 			wget -N -O kernel-headers-c8.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZEZyLBjDplMgSqDzyaqkvYBW06OOKDCcIQq27381fa5-A?download=1
 
 			yum install -y kernel-c8.rpm
 			yum install -y kernel-headers-c8.rpm
-			
-			kernel_version="5.6.15"
 		fi
 	
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
+			kernel_version="5.10.0"
+			detele_kernel_head
 			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EX3SCMEaZ7JLurzVauRfOKoBY1eiJSAOooEJQahR4SWfcw?download=1
 			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EdGQ0poVAfdLn0X1CA_z4eUBnx3Wx7qDqZAXKN1L2EapZw?download=1
 				
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
-				
-			kernel_version="5.10.0"
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
 		fi	
@@ -108,6 +108,8 @@ installbbrplus(){
 				yum install -y kernel-headers-c7.rpm
 				
 				kernel_version="4.14.129_bbrplus"
+				detele_kernel_head
+				
 			else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
@@ -177,35 +179,35 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
+				kernel_version="5.9.6_xanmod"
+				detele_kernel_head
 				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETLw9F6MgjBBlkkNGmFZu70B9p0kMOdqrF6ntv2QNI5I4g?download=1
 				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EcFnSZfa6JBKqZOkE5xFd8oBPJCa6Lo7DzTPPM0INWsk-w?download=1
 				
 				yum install -y kernel-c7.rpm
-				yum install -y kernel-headers-c7.rpm
-			
-				kernel_version="5.9.6_xanmod"
+				yum install -y kernel-headers-c7.rpm			
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
+				kernel_version="5.5.1_xanmod1"
+				detele_kernel_head
 				wget -N -O kernel-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.1xanmod/kernel-5.5.1_xanmod1-1-c8.x86_64.rpm
 				wget -N -O kernel-headers-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.1xanmod/kernel-headers-5.5.1_xanmod1-1-c8.x86_64.rpm
 				
 				yum install -y kernel-c8.rpm
 				yum install -y kernel-headers-c8.rpm
-			
-				kernel_version="5.5.1_xanmod1"
 		fi
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
+			kernel_version="5.9.13-xanmod"
+			detele_kernel_head
 			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ee_I3gDsGHFDvkUL0EXBSR4BKCvJYwJSnCCj1fDtak-loQ?download=1
 			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EXzhrueMBNVChTNkkeyWzf0BKQBSIKIfL-RzEYiCV1JUgg?download=1
 				
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
-				
-			kernel_version="5.9.13-xanmod"
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
 		fi		
@@ -902,6 +904,41 @@ detele_kernel(){
 		fi
 	fi
 }
+
+detele_kernel_head(){
+	if [[ "${release}" == "centos" ]]; then
+		rpm_total=`rpm -qa | grep kernel-headers | grep -v "${kernel_version}" | grep -v "noarch" | wc -l`
+		if [ "${rpm_total}" > "1" ]; then
+			echo -e "检测到 ${rpm_total} 个其余head内核，开始卸载..."
+			for((integer = 1; integer <= ${rpm_total}; integer++)); do
+				rpm_del=`rpm -qa | grep kernel-headers | grep -v "${kernel_version}" | grep -v "noarch" | head -${integer}`
+				echo -e "开始卸载 ${rpm_del} headers内核..."
+				rpm --nodeps -e ${rpm_del}
+				echo -e "卸载 ${rpm_del} 内核卸载完成，继续..."
+			done
+			echo --nodeps -e "内核卸载完毕，继续..."
+		else
+			echo -e " 检测到 内核 数量不正确，请检查 !" && exit 1
+		fi
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		deb_total=`dpkg -l | grep linux-headers | awk '{print $2}' | grep -v "${kernel_version}" | wc -l`
+		if [ "${deb_total}" > "1" ]; then
+			echo -e "检测到 ${deb_total} 个其余head内核，开始卸载..."
+			for((integer = 1; integer <= ${deb_total}; integer++)); do
+				deb_del=`dpkg -l|grep linux-headers | awk '{print $2}' | grep -v "${kernel_version}" | head -${integer}`
+				echo -e "开始卸载 ${deb_del} headers内核..."
+				apt-get purge -y ${deb_del}
+				echo -e "卸载 ${deb_del} 内核卸载完成，继续..."
+			done
+			echo -e "内核卸载完毕，继续..."
+		else
+			echo -e " 检测到 内核 数量不正确，请检查 !" && exit 1
+		fi
+	fi
+}
+
+
+
 
 #更新引导
 BBR_grub(){
