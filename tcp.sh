@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.57
+#	Version: 1.3.2.59
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.57"
+sh_ver="1.3.2.59"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -101,28 +101,26 @@ installbbrplus(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
+				kernel_version="4.14.129_bbrplus"
+				detele_kernel_head
 				wget -N -O kernel-headers-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-headers-4.14.129-bbrplus.rpm
 				wget -N -O kernel-c7.rpm https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-4.14.129-bbrplus.rpm
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
-				
-				kernel_version="4.14.129_bbrplus"
-				detele_kernel_head
-				
 			else
 					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		fi	
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		kernel_version="4.14.129-bbrplus"
+		detele_kernel_head
 		wget -N -O linux-headers.deb https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.129-bbrplus.deb
 		wget -N -O linux-image.deb https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.129-bbrplus.deb
 		
 		dpkg -i linux-image.deb
 		dpkg -i linux-headers.deb
-			
-		kernel_version="4.14.129-bbrplus"
 	fi
 	
 	cd .. && rm -rf bbrplus
@@ -237,35 +235,35 @@ installbbr2(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
+				kernel_version="5.4.0_rc6"
+				detele_kernel_head
 				wget -N -O kernel-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
 				wget -N -O kernel-headers-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-headers-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
-			
-				kernel_version="5.4.0_rc6"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
+				kernel_version="5.4.0_rc6"
+				detele_kernel_head
 				wget -N -O kernel-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
 				wget -N -O kernel-headers-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-headers-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
 				
 				yum install -y kernel-c8.rpm
 				yum install -y kernel-headers-c8.rpm
-			
-				kernel_version="5.4.0_rc6"
 		fi
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
+			kernel_version="5.4.0_rc6"
+			detele_kernel_head
 			wget -N -O linux-headers-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
-				wget -N -O linux-image-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
+			wget -N -O linux-image-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
 					
-				dpkg -i linux-image-d10.deb
-				dpkg -i linux-headers-d10.deb
-				
-			# kernel_version="5.4.0_rc6"
+			dpkg -i linux-image-d10.deb
+			dpkg -i linux-headers-d10.deb
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
 		fi		
@@ -295,35 +293,35 @@ installzen(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
+				kernel_version="5.5.10_zen"
+				detele_kernel_head
 				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfQb4N8c2bxDlF3mj3SBVHIBGFSg_d1uR4LFzzT0Ii5FWA?download=1
 				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfKgMa8vsZBOt0zwXM_lHcUBOYlyH1CyRHrYSRJ5r6a0EQ?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
-			
-				kernel_version="5.5.10_zen"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
+				kernel_version="5.5.2_zen"
+				detele_kernel_head
 				wget -N -O kernel-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-5.5.2_zen-1-c8.x86_64.rpm
 				wget -N -O kernel-headers-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-headers-5.5.2_zen-1-c8.x86_64.rpm
 				
 				yum install -y kernel-c8.rpm
-				yum install -y kernel-headers-c8.rpm
-			
-				kernel_version="5.5.2_zen"
+				yum install -y kernel-headers-c8.rpm	
 		fi
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
+			kernel_version="5.5.10-zen"
+			detele_kernel_head
 			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EShzFq8Jlv1PthbYlNNvLjIB2-hktrkPXxwd9mqcXgmcyg?download=1
-				wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERXzOc-2BzJInOxBgKo62OkBgcI9-O-fw0M8U2B4NazuLg?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERXzOc-2BzJInOxBgKo62OkBgcI9-O-fw0M8U2B4NazuLg?download=1
 					
-				dpkg -i linux-image-d10.deb
-				dpkg -i linux-headers-d10.deb
-				
-			kernel_version="5.5.10-zen"	
+			dpkg -i linux-image-d10.deb
+			dpkg -i linux-headers-d10.deb	
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
 		fi		
@@ -353,26 +351,26 @@ installbbrplusnew(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
+				kernel_version="4.14.182_bbrplus"
+				detele_kernel_head
 				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWtxHt1RiAlHgqERl5bvYzcBUrkKa_n1mWQ-uM2-Na7gmQ?download=1
 				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYkNoi17pKJBi7KnhUGRqEIBEK_26-bzkCL-fuQYZmrHWA?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
-			
-				kernel_version="4.14.182_bbrplus"
 			else
 				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 			fi
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
+			kernel_version="4.14.182-bbrplus"
+			detele_kernel_head
 			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ef9pJn1wp-pBk4FIPxT1qBoBqpWhTVCawoKzEB0_vpiMRw?download=1
 			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EaFJshr8za9Bq9FGjEBLds0B4ZfrYThLH8E35xe9-qWX_Q?download=1
 					
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
-				
-			kernel_version="4.14.182-bbrplus"
 		else
 			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
 		fi
@@ -396,43 +394,43 @@ installbbrplusnew(){
 
 #启用BBR+fq
 startbbrfq(){
-	remove_all
-	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBR+FQ修改成功，重启生效！"
 }
 
 #启用BBR+fq_pie
 startbbrfqpie(){
-	remove_all
-	echo "net.core.default_qdisc=fq_pie" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.core.default_qdisc=fq_pie" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBR+FQ_PIE修改成功，重启生效！"
 }
 
 #启用BBR+cake
 startbbrcake(){
-	remove_all
-	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.core.default_qdisc=cake" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBR+cake修改成功，重启生效！"
 }
 
 #启用BBRplus
 startbbrplus(){
-	remove_all
-	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbrplus" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbrplus" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBRplus修改成功，重启生效！"
 }
 
 #启用Lotserver
 startlotserver(){
-	remove_all
+	remove_bbr_lotserver
 	if [[ "${release}" == "centos" ]]; then
 		yum install ethtool
 	else
@@ -451,55 +449,250 @@ maxmode=\"1\"">>/appex/etc/config
 
 #启用BBR2+FQ
 startbbr2fq(){
-	remove_all
-	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.conf
-	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
 #启用BBR2+CAKE
 startbbr2cake(){
-	remove_all
-	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.conf
-	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.core.default_qdisc=cake" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
 #启用BBR2+FQ+ecn
 startbbr2fqecn(){
-	remove_all
-	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.conf
-	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
 #启用BBR2+CAKE+ecn
 startbbr2cakeecn(){
-	remove_all
-	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.conf
-	echo "net.core.default_qdisc=cake" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.conf
-	sysctl -p
+	remove_bbr_lotserver
+	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.core.default_qdisc=cake" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
 	echo -e "${Info}BBR2修改成功，重启生效！"
 }
 
+#卸载bbr+锐速
+remove_bbr_lotserver(){
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.default_qdisc/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
+	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+	sysctl --system
+		
+	rm -rf bbrmod
+	
+	if [[ -e /appex/bin/lotServer.sh ]]; then
+		bash <(wget -qO- https://git.io/lotServerInstall.sh) uninstall
+	fi
+	clear
+	# echo -e "${Info}:清除bbr/lotserver加速完成。"
+	# sleep 1s
+}
 
 #卸载全部加速
 remove_all(){
+	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/#############################/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.lo.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.all.accept_ra/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.netdev_budget/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.netdev_budget_usecs/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/fs.file-max /d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.rmem_max/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.wmem_max/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.rmem_default/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.wmem_default/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.somaxconn/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.icmp_echo_ignore_all/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.icmp_echo_ignore_broadcasts/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.icmp_ignore_bogus_error_responses/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.default.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.secure_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.default.secure_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.send_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.default.send_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.default.rp_filter/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.rp_filter/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_time/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_intvl/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_probes/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_synack_retries/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_syncookies/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_rfc1337/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_tw_reuse/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_fin_timeout/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.ip_local_port_range/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_max_tw_buckets/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_mtu_probing/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.arp_ignore /d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.default.arp_ignore/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.arp_announce/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.default.arp_announce/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_autocorking/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_max_syn_backlog/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.default_qdisc/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_notsent_lowat/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn_fallback/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_frto/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.all.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/vm.swappiness/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.ip_unprivileged_port_start/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/vm.overcommit_memory/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh3/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh2/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh1/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh3/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh2/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh1/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.netfilter.nf_conntrack_max/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.nf_conntrack_max/d' /etc/sysctl.d/99-sysctl.conf
+	
+	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.conf
+	sed -i '/#############################/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.lo.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.accept_ra/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.conf
+	sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.conf
+	sed -i '/net.core.netdev_budget/d' /etc/sysctl.conf
+	sed -i '/net.core.netdev_budget_usecs/d' /etc/sysctl.conf
+	sed -i '/fs.file-max /d' /etc/sysctl.conf
+	sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+	sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+	sed -i '/net.core.rmem_default/d' /etc/sysctl.conf
+	sed -i '/net.core.wmem_default/d' /etc/sysctl.conf
+	sed -i '/net.core.somaxconn/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.icmp_echo_ignore_all/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.icmp_echo_ignore_broadcasts/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.icmp_ignore_bogus_error_responses/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.secure_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.secure_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.send_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.send_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.rp_filter/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.rp_filter/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_time/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_intvl/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_probes/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_synack_retries/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_syncookies/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_rfc1337/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_tw_reuse/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_fin_timeout/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_local_port_range/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_max_tw_buckets/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_mtu_probing/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.arp_ignore /d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.arp_ignore/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.arp_announce/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.arp_announce/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_autocorking/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_max_syn_backlog/d' /etc/sysctl.conf
+	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_notsent_lowat/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn_fallback/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_frto/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/vm.swappiness/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_unprivileged_port_start/d' /etc/sysctl.conf
+	sed -i '/vm.overcommit_memory/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh3/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh2/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh1/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh3/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh2/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh1/d' /etc/sysctl.conf
+	sed -i '/net.netfilter.nf_conntrack_max/d' /etc/sysctl.conf
+	sed -i '/net.nf_conntrack_max/d' /etc/sysctl.conf
+	sysctl --system
+	sed -i '/DefaultTimeoutStartSec/d' /etc/systemd/system.conf
+	sed -i '/DefaultTimeoutStopSec/d' /etc/systemd/system.conf
+	sed -i '/DefaultRestartSec/d' /etc/systemd/system.conf
+	sed -i '/DefaultLimitCORE/d' /etc/systemd/system.conf
+	sed -i '/DefaultLimitNOFILE/d' /etc/systemd/system.conf
+	sed -i '/DefaultLimitNPROC/d' /etc/systemd/system.conf
+	
+	sed -i '/soft nofile/d' /etc/security/limits.conf
+	sed -i '/hard nofile/d' /etc/security/limits.conf
+	sed -i '/soft nproc/d' /etc/security/limits.conf
+	sed -i '/hard nproc/d' /etc/security/limits.conf
+
+	sed -i '/ulimit -SHn/d' /etc/profile
+	sed -i '/ulimit -SHn/d' /etc/profile
+	sed -i '/required pam_limits.so/d' /etc/pam.d/common-session
+
+	systemctl daemon-reload
+	
 	rm -rf bbrmod
 	sed -i '/net.ipv4.tcp_retries2/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
 	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
-    sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
-    sed -i '/fs.file-max/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+	sed -i '/fs.file-max/d' /etc/sysctl.conf
 	sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
 	sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
 	sed -i '/net.core.rmem_default/d' /etc/sysctl.conf
@@ -561,7 +754,8 @@ optimizing_system(){
 	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_max_orphans/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
-	echo "net.ipv4.tcp_retries2 = 8
+
+echo "net.ipv4.tcp_retries2 = 8
 net.ipv4.tcp_slow_start_after_idle = 0
 fs.file-max = 1000000
 fs.inotify.max_user_instances = 8192
@@ -580,7 +774,7 @@ net.ipv4.tcp_timestamps = 0
 net.ipv4.tcp_max_orphans = 32768
 # forward ipv4
 #net.ipv4.ip_forward = 1">>/etc/sysctl.conf
-	sysctl -p
+sysctl -p
 	echo "*               soft    nofile           1000000
 *               hard    nofile          1000000">/etc/security/limits.conf
 	echo "ulimit -SHn 1000000">>/etc/profile
@@ -594,33 +788,110 @@ net.ipv4.tcp_max_orphans = 32768
 
 optimizing_system_johnrosen1()
 {
+sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.lo.forwarding/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.all.accept_ra/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.netdev_budget/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.netdev_budget_usecs/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/fs.file-max /d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.rmem_max/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.wmem_max/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.rmem_default/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.wmem_default/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.somaxconn/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.icmp_echo_ignore_all/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.icmp_echo_ignore_broadcasts/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.icmp_ignore_bogus_error_responses/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.default.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.secure_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.default.secure_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.send_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.default.send_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.default.rp_filter/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.rp_filter/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_keepalive_time/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_keepalive_intvl/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_keepalive_probes/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_synack_retries/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_syncookies/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_rfc1337/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_tw_reuse/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_fin_timeout/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.ip_local_port_range/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_max_tw_buckets/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_mtu_probing/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.arp_ignore /d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.default.arp_ignore/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.arp_announce/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.default.arp_announce/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_autocorking/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_max_syn_backlog/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.default_qdisc/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_notsent_lowat/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_ecn_fallback/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.tcp_frto/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.all.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.conf.default.accept_redirects/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/vm.swappiness/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.ip_unprivileged_port_start/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/vm.overcommit_memory/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.neigh.default.gc_thresh3/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.neigh.default.gc_thresh2/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.neigh.default.gc_thresh1/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.neigh.default.gc_thresh3/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.neigh.default.gc_thresh2/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv6.neigh.default.gc_thresh1/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.netfilter.nf_conntrack_max/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.nf_conntrack_max/d' /etc/sysctl.d/99-sysctl.conf
+
 cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
 #net.ipv4.ip_forward = 1
 #net.ipv4.conf.all.forwarding = 1
 #net.ipv4.conf.default.forwarding = 1
-################################
-#net.ipv6.conf.all.forwarding = 1
-#net.ipv6.conf.default.forwarding = 1
-#net.ipv6.conf.lo.forwarding = 1
-################################
+
+net.ipv6.conf.all.forwarding = 1
+net.ipv6.conf.default.forwarding = 1
+net.ipv6.conf.lo.forwarding = 1
+
 net.ipv6.conf.all.disable_ipv6 = 0
 net.ipv6.conf.default.disable_ipv6 = 0
 net.ipv6.conf.lo.disable_ipv6 = 0
-################################
+
 net.ipv6.conf.all.accept_ra = 2
 net.ipv6.conf.default.accept_ra = 2
-################################
+
 net.core.netdev_max_backlog = 100000
 net.core.netdev_budget = 50000
 net.core.netdev_budget_usecs = 5000
 #fs.file-max = 51200
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
-net.core.rmem_default = 65536
-net.core.wmem_default = 65536
+net.core.rmem_default = 67108864
+net.core.wmem_default = 67108864
 net.core.somaxconn = 10000
-################################
+
 net.ipv4.icmp_echo_ignore_all = 0
 net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv4.icmp_ignore_bogus_error_responses = 1
@@ -630,16 +901,15 @@ net.ipv4.conf.all.secure_redirects = 0
 net.ipv4.conf.default.secure_redirects = 0
 net.ipv4.conf.all.send_redirects = 0
 net.ipv4.conf.default.send_redirects = 0
-net.ipv4.conf.default.rp_filter = 1
-net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 0
+net.ipv4.conf.all.rp_filter = 0
 net.ipv4.tcp_keepalive_time = 1200
 net.ipv4.tcp_keepalive_intvl = 15
 net.ipv4.tcp_keepalive_probes = 5
 net.ipv4.tcp_synack_retries = 2
-net.ipv4.tcp_syncookies = 1
-net.ipv4.tcp_rfc1337 = 1
+net.ipv4.tcp_syncookies = 0
+net.ipv4.tcp_rfc1337 = 0
 net.ipv4.tcp_timestamps = 1
-#net.ipv4.tcp_tw_recycle = 0
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 15
 net.ipv4.ip_local_port_range = 10000 65000
@@ -650,12 +920,12 @@ net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.udp_rmem_min = 8192
 net.ipv4.udp_wmem_min = 8192
 net.ipv4.tcp_mtu_probing = 0
-##############################
-net.ipv4.conf.all.arp_ignore = 2
-net.ipv4.conf.default.arp_ignore = 2
-net.ipv4.conf.all.arp_announce = 2
-net.ipv4.conf.default.arp_announce = 2
-##############################
+
+#net.ipv4.conf.all.arp_ignore = 2
+#net.ipv4.conf.default.arp_ignore = 2
+#net.ipv4.conf.all.arp_announce = 2
+#net.ipv4.conf.default.arp_announce = 2
+
 net.ipv4.tcp_autocorking = 0
 net.ipv4.tcp_slow_start_after_idle = 0
 net.ipv4.tcp_max_syn_backlog = 30000
@@ -666,14 +936,32 @@ net.ipv4.tcp_no_metrics_save = 1
 net.ipv4.tcp_ecn = 2
 net.ipv4.tcp_ecn_fallback = 1
 net.ipv4.tcp_frto = 0
-##############################
+
 net.ipv6.conf.all.accept_redirects = 0
 net.ipv6.conf.default.accept_redirects = 0
-vm.swappiness = 0
-net.ipv4.ip_unprivileged_port_start = 0
+vm.swappiness = 1
+#net.ipv4.ip_unprivileged_port_start = 0
+vm.overcommit_memory = 1
+net.ipv4.neigh.default.gc_thresh3=8192
+net.ipv4.neigh.default.gc_thresh2=4096
+net.ipv4.neigh.default.gc_thresh1=2048
+net.ipv6.neigh.default.gc_thresh3=8192
+net.ipv6.neigh.default.gc_thresh2=4096
+net.ipv6.neigh.default.gc_thresh1=2048
+net.netfilter.nf_conntrack_max = 262144
+net.nf_conntrack_max = 262144
 EOF
-	sysctl --system
-	cat > '/etc/systemd/system.conf' << EOF
+sysctl --system
+echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
+
+sed -i '/DefaultTimeoutStartSec/d' /etc/systemd/system.conf
+sed -i '/DefaultTimeoutStopSec/d' /etc/systemd/system.conf
+sed -i '/DefaultRestartSec/d' /etc/systemd/system.conf
+sed -i '/DefaultLimitCORE/d' /etc/systemd/system.conf
+sed -i '/DefaultLimitNOFILE/d' /etc/systemd/system.conf
+sed -i '/DefaultLimitNPROC/d' /etc/systemd/system.conf
+
+cat > '/etc/systemd/system.conf' << EOF
 [Manager]
 #DefaultTimeoutStartSec=90s
 DefaultTimeoutStopSec=30s
@@ -682,7 +970,12 @@ DefaultLimitCORE=infinity
 DefaultLimitNOFILE=51200
 DefaultLimitNPROC=51200
 EOF
-		cat > '/etc/security/limits.conf' << EOF
+
+sed -i '/soft nofile/d' /etc/security/limits.conf
+sed -i '/hard nofile/d' /etc/security/limits.conf
+sed -i '/soft nproc/d' /etc/security/limits.conf
+sed -i '/hard nproc/d' /etc/security/limits.conf
+cat > '/etc/security/limits.conf' << EOF
 * soft nofile 51200
 * hard nofile 51200
 * soft nproc 51200
@@ -692,6 +985,8 @@ if grep -q "ulimit" /etc/profile
 then
 	:
 else
+sed -i '/ulimit -SHn/d' /etc/profile
+sed -i '/ulimit -SHn/d' /etc/profile
 echo "ulimit -SHn 51200" >> /etc/profile
 echo "ulimit -SHu 51200" >> /etc/profile
 fi
@@ -699,6 +994,7 @@ if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
 	:
 else
+sed -i '/required pam_limits.so/d' /etc/pam.d/common-session
 echo "session required pam_limits.so" >> /etc/pam.d/common-session
 fi
 systemctl daemon-reload
@@ -748,7 +1044,7 @@ start_menu(){
 clear
 echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
  更新内容及反馈:  https://blog.ylx.me/archives/783.html 运行./tcp.sh再次调用本脚本 母鸡慎用
-  
+ 
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本
  ${Green_font_prefix}88.${Font_color_suffix} 切换到秋水逸冰BBR安装脚本
@@ -773,7 +1069,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 ————————————杂项管理————————————
  ${Green_font_prefix}21.${Font_color_suffix} 卸载全部加速
  ${Green_font_prefix}22.${Font_color_suffix} 系统配置优化
- ${Green_font_prefix}24.${Font_color_suffix} 应用johnrosen1的优化方案 与上面方案及加速管理互斥 无卸载
+ ${Green_font_prefix}24.${Font_color_suffix} 应用johnrosen1的优化方案
  ${Green_font_prefix}23.${Font_color_suffix} 退出脚本 
 ————————————————————————————————" && echo
 
@@ -821,7 +1117,7 @@ case "$num" in
 	gototcpx
 	;;
 	100)
-	gotodd	
+	gotodd
 	;;
 	11)
 	startbbrfq
