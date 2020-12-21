@@ -509,6 +509,8 @@ remove_bbr_lotserver(){
 
 #卸载全部加速
 remove_all(){
+	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/#############################/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
