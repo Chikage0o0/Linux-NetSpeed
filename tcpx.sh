@@ -587,6 +587,85 @@ remove_all(){
 	sed -i '/net.ipv6.neigh.default.gc_thresh1/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.netfilter.nf_conntrack_max/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.nf_conntrack_max/d' /etc/sysctl.d/99-sysctl.conf
+	
+	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.conf
+	sed -i '/#############################/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.lo.forwarding/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.accept_ra/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_ra/d' /etc/sysctl.conf
+	sed -i '/net.core.netdev_max_backlog/d' /etc/sysctl.conf
+	sed -i '/net.core.netdev_budget/d' /etc/sysctl.conf
+	sed -i '/net.core.netdev_budget_usecs/d' /etc/sysctl.conf
+	sed -i '/fs.file-max /d' /etc/sysctl.conf
+	sed -i '/net.core.rmem_max/d' /etc/sysctl.conf
+	sed -i '/net.core.wmem_max/d' /etc/sysctl.conf
+	sed -i '/net.core.rmem_default/d' /etc/sysctl.conf
+	sed -i '/net.core.wmem_default/d' /etc/sysctl.conf
+	sed -i '/net.core.somaxconn/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.icmp_echo_ignore_all/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.icmp_echo_ignore_broadcasts/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.icmp_ignore_bogus_error_responses/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.secure_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.secure_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.send_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.send_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.rp_filter/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.rp_filter/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_time/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_intvl/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_keepalive_probes/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_synack_retries/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_syncookies/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_rfc1337/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_timestamps/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_tw_reuse/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_fin_timeout/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_local_port_range/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_max_tw_buckets/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_rmem/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_wmem/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.udp_rmem_min/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.udp_wmem_min/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_mtu_probing/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.arp_ignore /d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.arp_ignore/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.all.arp_announce/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.conf.default.arp_announce/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_autocorking/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_max_syn_backlog/d' /etc/sysctl.conf
+	sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_notsent_lowat/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_no_metrics_save/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn_fallback/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.tcp_frto/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.all.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.accept_redirects/d' /etc/sysctl.conf
+	sed -i '/vm.swappiness/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.ip_unprivileged_port_start/d' /etc/sysctl.conf
+	sed -i '/vm.overcommit_memory/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh3/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh2/d' /etc/sysctl.conf
+	sed -i '/net.ipv4.neigh.default.gc_thresh1/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh3/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh2/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.neigh.default.gc_thresh1/d' /etc/sysctl.conf
+	sed -i '/net.netfilter.nf_conntrack_max/d' /etc/sysctl.conf
+	sed -i '/net.nf_conntrack_max/d' /etc/sysctl.conf
 	sysctl --system
 	sed -i '/DefaultTimeoutStartSec/d' /etc/systemd/system.conf
 	sed -i '/DefaultTimeoutStopSec/d' /etc/systemd/system.conf
