@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.60
+#	Version: 1.3.2.61
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.60"
+sh_ver="1.3.2.61"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -1044,11 +1044,9 @@ start_menu(){
 clear
 echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
  更新内容及反馈:  https://blog.ylx.me/archives/783.html 运行./tcp.sh再次调用本脚本 母鸡慎用
- 
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本
- ${Green_font_prefix}88.${Font_color_suffix} 切换到秋水逸冰BBR安装脚本
- ${Green_font_prefix}100.${Font_color_suffix} 切换到一键DD安装系统脚本 自负其责 新手勿入 
+ ${Green_font_prefix}10.${Font_color_suffix} 切换到一键DD安装系统脚本 自负其责 新手勿入 
 ————————————内核管理————————————
  ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15/5.10.2
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
@@ -1058,7 +1056,6 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
- ${Green_font_prefix}19.${Font_color_suffix} 使用BBR+FQ_PIE加速 
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
  ${Green_font_prefix}13.${Font_color_suffix} 使用BBRplus+FQ版加速
  ${Green_font_prefix}14.${Font_color_suffix} 使用Lotserver(锐速)加速
@@ -1066,6 +1063,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}16.${Font_color_suffix} 使用BBR2+CAKE加速
  ${Green_font_prefix}17.${Font_color_suffix} 使用BBR2+FQ+ECN加速
  ${Green_font_prefix}18.${Font_color_suffix} 使用BBR2+CAKE+ECN加速 
+ ${Green_font_prefix}19.${Font_color_suffix} 使用BBR+FQ_PIE加速 
 ————————————杂项管理————————————
  ${Green_font_prefix}21.${Font_color_suffix} 卸载全部加速
  ${Green_font_prefix}22.${Font_color_suffix} 系统配置优化
@@ -1108,15 +1106,12 @@ case "$num" in
 	check_sys_zen
 	;;
 	7)
-	check_sys_bbrplusnew	
-	;;
-	88)
-	gototeddysun_bbr
+	check_sys_bbrplusnew
 	;;
 	9)
 	gototcpx
 	;;
-	100)
+	10)
 	gotodd
 	;;
 	11)
@@ -1242,26 +1237,26 @@ BBR_grub(){
         if [[ ${version} = "6" ]]; then
             if [ ! -f "/boot/grub/grub.conf" ]; then
                 echo -e "${Error} /boot/grub/grub.conf 找不到，请检查."
-                exit 1
+                #exit 1
             fi
             sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
         elif [[ ${version} = "7" ]]; then
             if [ -f "/boot/grub2/grub.cfg" ]; then
-				grub2-mkconfig  -o   /boot/grub2/grub.cfg
+				grub2-mkconfig -o /boot/grub2/grub.cfg
 				grub2-set-default 0
-				exit 1
+				#exit 1
 			elif [ -f "/boot/efi/EFI/centos/grub.cfg" ]; then
-				grub2-mkconfig  -o   /boot/efi/EFI/centos/grub.cfg
+				grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 				grub2-set-default 0
-				exit 1
+				#exit 1
 			else
 				echo -e "${Error} grub.cfg 找不到，请检查."
             fi
-			#grub2-mkconfig  -o   /boot/grub2/grub.cfg
+			#grub2-mkconfig -o /boot/grub2/grub.cfg
 			#grub2-set-default 0
 		
 		elif [[ ${version} = "8" ]]; then
-			grub2-mkconfig  -o   /boot/grub2/grub.cfg
+			grub2-mkconfig -o /boot/grub2/grub.cfg
 			grubby --info=ALL|awk -F= '$1=="kernel" {print i++ " : " $2}'
         fi
     elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
