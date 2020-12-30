@@ -1053,6 +1053,9 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.10.3
  ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
+ ${Green_font_prefix}*.${Font_color_suffix} *******************************
+ ${Green_font_prefix}*.${Font_color_suffix} 切换到不卸载内核版本查看***内容
+ ${Green_font_prefix}*.${Font_color_suffix} *******************************
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
