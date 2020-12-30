@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.62
+#	Version: 1.3.2.63
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.62"
+sh_ver="1.3.2.63"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -198,17 +198,18 @@ installxanmod(){
 		fi
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		if [[ ${bit} = "x86_64" ]]; then
-			kernel_version="5.10.3-xanmod"
-			detele_kernel_head
-			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETvfoM6KJOJAqpYV6bAuEFEB-v5cSFllrkRHp-MxB4AwKw?download=1
-			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETE7ElUogt5HtQIAsGog84MBdawzye4ECJu2TL0EqEBorw?download=1
+		# if [[ ${bit} = "x86_64" ]]; then
+			# kernel_version="5.10.3-xanmod"
+			# detele_kernel_head
+			# wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETvfoM6KJOJAqpYV6bAuEFEB-v5cSFllrkRHp-MxB4AwKw?download=1
+			# wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETE7ElUogt5HtQIAsGog84MBdawzye4ECJu2TL0EqEBorw?download=1
 				
-			dpkg -i linux-image-d10.deb
-			dpkg -i linux-headers-d10.deb
-		else
-			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
-		fi		
+			# dpkg -i linux-image-d10.deb
+			# dpkg -i linux-headers-d10.deb
+		# else
+			# echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+		# fi		
+		check_sys_official_xanmod
 	fi
 	
 	cd .. && rm -rf xanmod
@@ -390,6 +391,15 @@ installbbrplusnew(){
 	#fi
 	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 
+}
+
+#安装cloud内核 待施工
+installcloud(){
+	# kernel_version="******"
+	bit=`uname -m`
+	rm -rf kernel_cloud
+	mkdir kernel_cloud && cd kernel_cloud
+	
 }
 
 #启用BBR+fq
@@ -1052,17 +1062,18 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
  ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.10.3
- ${Green_font_prefix}5.${Font_color_suffix} 安装 BBR2测试版内核 - 5.4.0
  ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
+ ${Green_font_prefix}30.${Font_color_suffix} 安装 官方稳定内核 - Test
+ ${Green_font_prefix}31.${Font_color_suffix} 安装 官方最新内核 backports/elrepo - Test
+ ${Green_font_prefix}32.${Font_color_suffix} 安装 XANMOD官方内核 - Test
+ ${Green_font_prefix}33.${Font_color_suffix} 安装 XANMOD官方高响应内核 - Test
+ ${Green_font_prefix}34.${Font_color_suffix} 安装 debian官方cloud内核 无加速方案 - Test
+ ${Green_font_prefix}35.${Font_color_suffix} 安装 cloud内核 - Test
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
  ${Green_font_prefix}13.${Font_color_suffix} 使用BBRplus+FQ版加速
  ${Green_font_prefix}14.${Font_color_suffix} 使用Lotserver(锐速)加速
- ${Green_font_prefix}15.${Font_color_suffix} 使用BBR2+FQ加速
- ${Green_font_prefix}16.${Font_color_suffix} 使用BBR2+CAKE加速
- ${Green_font_prefix}17.${Font_color_suffix} 使用BBR2+FQ+ECN加速
- ${Green_font_prefix}18.${Font_color_suffix} 使用BBR2+CAKE+ECN加速 
  ${Green_font_prefix}19.${Font_color_suffix} 使用BBR+FQ_PIE加速 
 ————————————杂项管理————————————
  ${Green_font_prefix}21.${Font_color_suffix} 卸载全部加速
@@ -1107,6 +1118,24 @@ case "$num" in
 	;;
 	7)
 	check_sys_bbrplusnew
+	;;
+	30)
+	check_sys_official
+	;;
+	31)
+	check_sys_official_bbr
+	;;
+	32)
+	check_sys_official_xanmod
+	;;
+	33)
+	check_sys_official_xanmod_cacule
+	;;
+	34)
+	check_sys_official_debian_cloud
+	;;
+	35)
+	check_sys_cloud
 	;;
 	9)
 	gototcp
@@ -1516,6 +1545,132 @@ check_sys_Lotsever(){
 	fi
 }
 
+#检查官方稳定内核并安装
+check_sys_official(){
+	check_version
+	if [[ "${release}" == "centos" ]]; then
+		yum install kernel kernel-headers -y --skip-broken
+	elif [[ "${release}" == "debian" ]]; then
+		apt-get install linux-image-amd64 linux-headers-amd64 -y
+	elif [[ "${release}" == "ubuntu" ]]; then
+		apt-get install linux-image-generic linux-headers-generic -y
+	else
+		echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+	
+	BBR_grub
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+#检查官方最新内核并安装
+check_sys_official_bbr(){
+	check_version
+	if [[ "${release}" == "centos" ]]; then
+		rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+		if [[ ${version} = "7" ]]; then
+			yum install https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm -y
+			yum --enablerepo=elrepo-kernel install kernel-ml kernel-ml-headers -y --skip-broken
+		elif [[ ${version} = "8" ]]; then
+			yum install https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm -y
+			yum --enablerepo=elrepo-kernel install kernel-ml kernel-ml-headers -y --skip-broken
+		else	
+			echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi	
+	elif [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "9" ]]; then
+			echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
+			apt update
+			apt -t stretch-backports install linux-image-amd64 linux-headers-amd64 -y
+		elif [[ ${version} = "10" ]]; then
+			echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list
+			apt update
+			apt -t buster-backports install linux-image-amd64 linux-headers-amd64 -y
+		else
+			echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	elif [[ "${release}" == "ubuntu" ]]; then
+		echo -e "${Error} ubuntu不会写，你来吧" && exit 1
+	else
+		echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+	
+	BBR_grub
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+#检查官方xanmod内核并安装
+check_sys_official_xanmod(){
+	check_version
+	if [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
+		wget -qO - https://dl.xanmod.org/gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/xanmod-kernel.gpg add -
+		apt update && apt install linux-xanmod -y
+	else
+		echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+	
+	BBR_grub
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+#检查官方xanmod高响应内核并安装
+check_sys_official_xanmod_cacule(){
+	check_version
+	if [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
+		wget -qO - https://dl.xanmod.org/gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/xanmod-kernel.gpg add -
+		apt update && apt install linux-xanmod-cacule -y
+	else
+		echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+	
+	BBR_grub
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+#检查debian官方cloud内核并安装
+check_sys_official_debian_cloud(){
+	check_version
+	if [[ "${release}" == "debian" ]]; then
+		if [[ ${version} = "9" ]]; then
+			echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
+			apt update
+			apt -t stretch-backports install linux-image-cloud-amd64 linux-headers-cloud-amd64 -y
+		elif [[ ${version} = "10" ]]; then
+			echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list
+			apt update
+			apt -t buster-backports install linux-image-cloud-amd64 linux-headers-cloud-amd64 -y
+		else
+			echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
+	else
+		echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+	
+	BBR_grub
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+#检查cloud内核并安装
+check_sys_cloud(){
+	check_version
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" ]]; then
+			echo -e "${Error} 待施工!" && exit 1
+		else
+			echo -e "${Error} 待施工!" && exit 1
+		fi
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		echo -e "${Error} 待施工!" && exit 1
+	else
+		echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+	fi
+	
+	BBR_grub
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+}
+
+#检查系统当前状态
 check_status(){
 	kernel_version=`uname -r | awk -F "-" '{print $1}'`
 	kernel_version_full=`uname -r`
