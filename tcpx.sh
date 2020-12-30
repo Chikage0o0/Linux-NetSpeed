@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.63
+#	Version: 1.3.2.64
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.63"
+sh_ver="1.3.2.64"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -36,7 +36,7 @@ installbbr(){
 			
 				# kernel_version="5.5.5"
 			# else
-				# echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+				# echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			# fi
 		
 		if [[ ${version} = "7" ]]; then
@@ -49,7 +49,7 @@ installbbr(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi	
 			
 		elif [[ ${version} = "8" ]]; then
@@ -72,7 +72,7 @@ installbbr(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
 		fi	
 	fi
 	
@@ -109,7 +109,7 @@ installbbrplus(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-					echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+					echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		fi	
 		
@@ -185,7 +185,7 @@ installxanmod(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm			
 			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
 				kernel_version="5.5.1_xanmod1"
@@ -207,7 +207,7 @@ installxanmod(){
 			# dpkg -i linux-image-d10.deb
 			# dpkg -i linux-headers-d10.deb
 		# else
-			# echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+			# echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
 		# fi		
 		check_sys_official_xanmod
 	fi
@@ -244,7 +244,7 @@ installbbr2(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
 				kernel_version="5.4.0_rc6"
@@ -266,7 +266,7 @@ installbbr2(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
 		fi		
 	fi
 	
@@ -302,7 +302,7 @@ installzen(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
 				kernel_version="5.5.2_zen"
@@ -324,7 +324,7 @@ installzen(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb	
 		else
-			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1	
+			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
 		fi		
 	fi
 	
@@ -360,7 +360,7 @@ installbbrplusnew(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
@@ -373,7 +373,7 @@ installbbrplusnew(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 还在用32位内核，别再见了 !" && exit 1
+			echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 		fi
 	fi
 
@@ -393,13 +393,42 @@ installbbrplusnew(){
 
 }
 
-#安装cloud内核 待施工
+#安装cloud内核
 installcloud(){
-	# kernel_version="******"
 	bit=`uname -m`
 	rm -rf kernel_cloud
 	mkdir kernel_cloud && cd kernel_cloud
-	
+	if [[ "${release}" == "centos" ]]; then
+		if [[ ${version} = "7" ]]; then
+			if [[ ${bit} = "x86_64" ]]; then
+				kernel_version="5.10.3_cloud"
+				detele_kernel_head
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfdY757Xd65IpWJbHfwZN14BMN1oDMoSF7LWR5brqFQc6g?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUtsfMqv4z1DigrlIhDKyF8Bniqr-rIcb6ui1Ahmsey_Gw?download=1
+				
+				yum install -y kernel-c7.rpm
+				yum install -y kernel-headers-c7.rpm
+			else
+				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+			fi
+		fi
+	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		if [[ ${bit} = "x86_64" ]]; then
+			kernel_version="5.10.3-cloud"
+			detele_kernel_head
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ebc76Xk_GRJKneUeOHU3kgkBtJijnVi0FWIOHabpvO7Tig?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWgcYPbMr9hDkftLYSIK8F8BqTRLevFfYqItOvxDDIQfCA?download=1
+					
+			dpkg -i linux-image-d10.deb
+			dpkg -i linux-headers-d10.deb
+		else
+			echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+		fi
+	fi
+
+	cd .. && rm -rf kernel_cloud
+	BBR_grub
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 }
 
 #启用BBR+fq
@@ -1068,7 +1097,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
  ${Green_font_prefix}32.${Font_color_suffix} 安装 XANMOD官方内核 - Test
  ${Green_font_prefix}33.${Font_color_suffix} 安装 XANMOD官方高响应内核 - Test
  ${Green_font_prefix}34.${Font_color_suffix} 安装 debian官方cloud内核 无加速方案 - Test
- ${Green_font_prefix}35.${Font_color_suffix} 安装 cloud内核 - Test
+ ${Green_font_prefix}35.${Font_color_suffix} 安装 cloud内核 仅限KVM - Test
 ————————————加速管理————————————
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
  ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
@@ -1656,18 +1685,15 @@ check_sys_cloud(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
-			echo -e "${Error} 待施工!" && exit 1
+			installcloud
 		else
-			echo -e "${Error} 待施工!" && exit 1
+			echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		echo -e "${Error} 待施工!" && exit 1
+		installcloud
 	else
 		echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
-	
-	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 }
 
 #检查系统当前状态
