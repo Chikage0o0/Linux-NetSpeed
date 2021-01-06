@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.64
+#	Version: 1.3.2.65
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.64"
+sh_ver="1.3.2.65"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -1631,6 +1631,7 @@ check_sys_official_bbr(){
 check_sys_official_xanmod(){
 	check_version
 	if [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		apt-get install gnupg gnupg2 gnupg1 sudo -y
 		echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
 		wget -qO - https://dl.xanmod.org/gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/xanmod-kernel.gpg add -
 		apt update && apt install linux-xanmod -y
@@ -1646,6 +1647,7 @@ check_sys_official_xanmod(){
 check_sys_official_xanmod_cacule(){
 	check_version
 	if [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		apt-get install gnupg gnupg2 gnupg1 sudo -y
 		echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
 		wget -qO - https://dl.xanmod.org/gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/xanmod-kernel.gpg add -
 		apt update && apt install linux-xanmod-cacule -y
