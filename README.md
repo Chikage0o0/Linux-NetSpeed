@@ -43,6 +43,9 @@ sysctl net.core.default_qdisc
 真实队列查看？ 更改队列算法可能需要重启生效
 tc -s qdisc show
 
+/etc/sysctl.d/99-sysctl.conf
+sysctl --system
+
 ylx2016与chiakge、cx9208无任何关系
 bbsplus算法原作者
 https://blog.csdn.net/dog250/article/details/80629551
