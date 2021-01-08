@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.64
+#	Version: 1.3.2.66
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.64"
+sh_ver="1.3.2.66"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -1278,35 +1278,53 @@ detele_kernel_head(){
 	fi
 }
 
-
-
-
 #更新引导
 BBR_grub(){
 	if [[ "${release}" == "centos" ]]; then
         if [[ ${version} = "6" ]]; then
-            if [ ! -f "/boot/grub/grub.conf" ]; then
-                echo -e "${Error} /boot/grub/grub.conf 找不到，请检查."
-                #exit 1
+            if [ -f "/boot/grub/grub.conf" ]; then
+				sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
+			elif [ -f "/boot/grub/grub.cfg" ]; then
+				grub-mkconfig -o /boot/grub/grub.cfg
+				grub-set-default 0
+			elif [ -f "/boot/efi/EFI/centos/grub.cfg" ]; then
+				grub-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+				grub-set-default 0
+			elif [ -f "/boot/efi/EFI/redhat/grub.cfg" ]; then
+				grub-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+				grub-set-default 0	
+			else
+				echo -e "${Error} grub.conf/grub.cfg 找不到，请检查."
+				exit
             fi
-            sed -i 's/^default=.*/default=0/g' /boot/grub/grub.conf
         elif [[ ${version} = "7" ]]; then
             if [ -f "/boot/grub2/grub.cfg" ]; then
 				grub2-mkconfig -o /boot/grub2/grub.cfg
 				grub2-set-default 0
-				#exit 1
 			elif [ -f "/boot/efi/EFI/centos/grub.cfg" ]; then
 				grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
 				grub2-set-default 0
-				#exit 1
+			elif [ -f "/boot/efi/EFI/redhat/grub.cfg" ]; then
+				grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+				grub2-set-default 0	
 			else
 				echo -e "${Error} grub.cfg 找不到，请检查."
-            fi
-			#grub2-mkconfig -o /boot/grub2/grub.cfg
-			#grub2-set-default 0
-		
+				exit
+            fi	
 		elif [[ ${version} = "8" ]]; then
-			grub2-mkconfig -o /boot/grub2/grub.cfg
+			if [ -f "/boot/grub2/grub.cfg" ]; then
+				grub2-mkconfig -o /boot/grub2/grub.cfg
+				grub2-set-default 0
+			elif [ -f "/boot/efi/EFI/centos/grub.cfg" ]; then
+				grub2-mkconfig -o /boot/efi/EFI/centos/grub.cfg
+				grub2-set-default 0
+			elif [ -f "/boot/efi/EFI/redhat/grub.cfg" ]; then
+				grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+				grub2-set-default 0	
+			else
+				echo -e "${Error} grub.cfg 找不到，请检查."
+				exit
+			fi
 			grubby --info=ALL|awk -F= '$1=="kernel" {print i++ " : " $2}'
         fi
     elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
