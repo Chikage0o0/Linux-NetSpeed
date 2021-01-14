@@ -1596,7 +1596,13 @@ check_sys_Lotsever(){
 check_sys_official(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		yum install kernel kernel-headers -y --skip-broken
+		if [[ ${version} == "7" ]]; then
+			yum install kernel kernel-headers -y --skip-broken
+		elif [[ ${version} == "8" ]]; then
+			yum install kernel kernel-core kernel-headers -y --skip-broken
+		else
+			echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+		fi
 	elif [[ "${release}" == "debian" ]]; then
 		apt-get install linux-image-amd64 linux-headers-amd64 -y
 	elif [[ "${release}" == "ubuntu" ]]; then
