@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-
 #=================================================
-#	System Required: CentOS 6/7/8,Debian 8/9/10,ubuntu 16/18/19
+#	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.66
+#	Version: 1.3.2.68
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.66"
+sh_ver="1.3.2.68"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -177,10 +176,10 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.10.3_xanmod"
+				kernel_version="5.10.9_xanmod"
 				detele_kernel_head
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ee9bsyC4lzRNq3QaKzMx53wBUPYsWlTx0TiVKDBv4npNvw?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESnHv7m9Qg1BqY44tYiyodkBSpzHV8o8DN9qE32B2MU1oQ?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERmrL_Rku1RPkfPpovd9TLoBdisZVyTY-rTWScVZ1FviSA?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EViRb7707QNPo2Ysnb7popoBdM16Rdx4DwaYc82ktL-oMw?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm			
@@ -226,122 +225,7 @@ installxanmod(){
 	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 }
 
-#安装bbr2内核
-installbbr2(){
-	kernel_version="5.4.0-rc6"
-	bit=`uname -m`
-	rm -rf bbr2
-	mkdir bbr2 && cd bbr2
-	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.4.0_rc6"
-				detele_kernel_head
-				wget -N -O kernel-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
-				wget -N -O kernel-headers-c7.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-headers-5.4.0_rc6-1-bbr2-c7.x86_64.rpm
-				
-				yum install -y kernel-c7.rpm
-				yum install -y kernel-headers-c7.rpm
-			else
-				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
-			fi
-		elif [[ ${version} = "8" ]]; then
-				kernel_version="5.4.0_rc6"
-				detele_kernel_head
-				wget -N -O kernel-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
-				wget -N -O kernel-headers-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/kernel-headers-5.4.0_rc6-1-bbr2-c8.x86_64.rpm
-				
-				yum install -y kernel-c8.rpm
-				yum install -y kernel-headers-c8.rpm
-		fi
-		
-	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		if [[ ${bit} = "x86_64" ]]; then
-			kernel_version="5.4.0_rc6"
-			detele_kernel_head
-			wget -N -O linux-headers-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-headers-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
-			wget -N -O linux-image-d10.deb https://github.com/ylx2016/kernel/releases/download/5.4.0r6bbr2/linux-image-5.4.0-rc6_5.4.0-rc6-1-bbr2-d10_amd64.deb
-					
-			dpkg -i linux-image-d10.deb
-			dpkg -i linux-headers-d10.deb
-		else
-			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
-		fi		
-	fi
-	
-	cd .. && rm -rf bbr2
-	detele_kernel
-	BBR_grub
-	echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
-	echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
-	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR2${Font_color_suffix}"
-	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR2，是否现在重启 ? [Y/n] :" yn
-	[ -z "${yn}" ] && yn="y"
-	if [[ $yn == [Yy] ]]; then
-		echo -e "${Info} VPS 重启中..."
-		reboot
-	fi
-	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
-}
-
-#安装Zen内核
-installzen(){
-	kernel_version="5.5.2-zen"
-	bit=`uname -m`
-	rm -rf zen
-	mkdir zen && cd zen
-	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" ]]; then
-			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.5.10_zen"
-				detele_kernel_head
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfQb4N8c2bxDlF3mj3SBVHIBGFSg_d1uR4LFzzT0Ii5FWA?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfKgMa8vsZBOt0zwXM_lHcUBOYlyH1CyRHrYSRJ5r6a0EQ?download=1
-				
-				yum install -y kernel-c7.rpm
-				yum install -y kernel-headers-c7.rpm
-			else
-				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
-			fi
-		elif [[ ${version} = "8" ]]; then
-				kernel_version="5.5.2_zen"
-				detele_kernel_head
-				wget -N -O kernel-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-5.5.2_zen-1-c8.x86_64.rpm
-				wget -N -O kernel-headers-c8.rpm https://github.com/ylx2016/kernel/releases/download/5.5.2zen/kernel-headers-5.5.2_zen-1-c8.x86_64.rpm
-				
-				yum install -y kernel-c8.rpm
-				yum install -y kernel-headers-c8.rpm	
-		fi
-		
-	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		if [[ ${bit} = "x86_64" ]]; then
-			kernel_version="5.5.10-zen"
-			detele_kernel_head
-			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EShzFq8Jlv1PthbYlNNvLjIB2-hktrkPXxwd9mqcXgmcyg?download=1
-			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ERXzOc-2BzJInOxBgKo62OkBgcI9-O-fw0M8U2B4NazuLg?download=1
-					
-			dpkg -i linux-image-d10.deb
-			dpkg -i linux-headers-d10.deb	
-		else
-			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
-		fi		
-	fi
-	
-	cd .. && rm -rf zen
-	detele_kernel
-	BBR_grub
-	echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
-	echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
-	echo -e "${Tip} 重启VPS后，请重新运行脚本开启${Red_font_prefix}BBR${Font_color_suffix}"
-	stty erase '^H' && read -p "需要重启VPS后，才能开启BBR，是否现在重启 ? [Y/n] :" yn
-	[ -z "${yn}" ] && yn="y"
-	if [[ $yn == [Yy] ]]; then
-		echo -e "${Info} VPS 重启中..."
-		reboot
-	fi
-	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
-}
-
+#安装bbr2内核 集成到xanmod内核了
 #安装bbrplus 新内核
 installbbrplusnew(){
 	kernel_version="4.14.182-bbrplus"
@@ -400,10 +284,10 @@ installcloud(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.10.3_cloud"
+				kernel_version="5.10.9_cloud"
 				detele_kernel_head
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfdY757Xd65IpWJbHfwZN14BMN1oDMoSF7LWR5brqFQc6g?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUtsfMqv4z1DigrlIhDKyF8Bniqr-rIcb6ui1Ahmsey_Gw?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EYRED7A6xNZFvyNSSc1EG40BHU6ZU2aYEtZhF6RYbM0IqA?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETEa6Y5wQR9DqYyZGmNErkQBV4oVohoSv8PM9jlWpYzR5w?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
@@ -498,8 +382,16 @@ maxmode=\"1\"">>/appex/etc/config
 #启用BBR2+FQ
 startbbr2fq(){
 	remove_bbr_lotserver
-	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.d/99-sysctl.conf
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
+	echo -e "${Info}BBR2修改成功，重启生效！"
+}
+
+#启用BBR2+FQ_PIE
+startbbr2fq(){
+	remove_bbr_lotserver
+	echo "net.core.default_qdisc=fq_pie" >> /etc/sysctl.d/99-sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
 	sysctl --system
 	echo -e "${Info}BBR2修改成功，重启生效！"
@@ -508,31 +400,30 @@ startbbr2fq(){
 #启用BBR2+CAKE
 startbbr2cake(){
 	remove_bbr_lotserver
+	echo "net.core.default_qdisc=cake" >> /etc/sysctl.d/99-sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
+	echo -e "${Info}BBR2修改成功，重启生效！"
+}
+
+#开启ecn
+startecn(){
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
+	
+	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
+	echo -e "${Info}开启ecn结束！"
+}
+
+#关闭ecn
+closeecn(){
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.tcp_ecn/d' /etc/sysctl.conf
+	
 	echo "net.ipv4.tcp_ecn=0" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.core.default_qdisc=cake" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
 	sysctl --system
-	echo -e "${Info}BBR2修改成功，重启生效！"
-}
-
-#启用BBR2+FQ+ecn
-startbbr2fqecn(){
-	remove_bbr_lotserver
-	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.core.default_qdisc=fq" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
-	sysctl --system
-	echo -e "${Info}BBR2修改成功，重启生效！"
-}
-
-#启用BBR2+CAKE+ecn
-startbbr2cakeecn(){
-	remove_bbr_lotserver
-	echo "net.ipv4.tcp_ecn=1" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.core.default_qdisc=cake" >> /etc/sysctl.d/99-sysctl.conf
-	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
-	sysctl --system
-	echo -e "${Info}BBR2修改成功，重启生效！"
+	echo -e "${Info}关闭ecn结束！"
 }
 
 #卸载bbr+锐速
@@ -1046,6 +937,7 @@ sed -i '/required pam_limits.so/d' /etc/pam.d/common-session
 echo "session required pam_limits.so" >> /etc/pam.d/common-session
 fi
 systemctl daemon-reload
+echo -e "${Info}johnrosen1优化方案应用结束，可能需要重启！"
 }
 
 #更新脚本
@@ -1087,36 +979,60 @@ gotodd(){
 	wget -qO ~/Network-Reinstall-System-Modify.sh 'https://github.com/ylx2016/reinstall/raw/master/Network-Reinstall-System-Modify.sh' && chmod a+x ~/Network-Reinstall-System-Modify.sh && bash ~/Network-Reinstall-System-Modify.sh -UI_Options
 }
 
+#禁用IPv6
+closeipv6(){
+	clear
+	sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.conf
+	
+	echo "net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
+	echo -e "${Info}禁用IPv6结束，可能需要重启！"
+}
+
+#开启IPv6
+openipv6(){
+	clear
+	sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv6.conf.all.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.default.disable_ipv6/d' /etc/sysctl.conf
+	sed -i '/net.ipv6.conf.lo.disable_ipv6/d' /etc/sysctl.conf
+	
+	echo "net.ipv6.conf.all.disable_ipv6 = 0
+net.ipv6.conf.default.disable_ipv6 = 0
+net.ipv6.conf.lo.disable_ipv6 = 0" >> /etc/sysctl.d/99-sysctl.conf
+	sysctl --system
+	echo -e "${Info}开启IPv6结束，可能需要重启！"
+}
+
 #开始菜单
 start_menu(){
 clear
-echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
- 更新内容及反馈:  https://blog.ylx.me/archives/783.html 运行./tcp.sh再次调用本脚本 母鸡慎用
+echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix} from blog.ylx.me 母鸡慎用
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
- ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本
- ${Green_font_prefix}10.${Font_color_suffix} 切换到一键DD安装系统脚本 自负其责 新手勿入 
-————————————内核管理————————————
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核 - 5.6.15/5.10.2
- ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核 - 4.14.129
- ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核 - 多种
- ${Green_font_prefix}4.${Font_color_suffix} 安装 xanmod版内核 - 5.5.1/5.10.3
- ${Green_font_prefix}7.${Font_color_suffix} 安装 BBRplus新版内核 - 4.14.182
- ${Green_font_prefix}*.${Font_color_suffix} *******************************
- ${Green_font_prefix}*.${Font_color_suffix} 切换到不卸载内核版本查看***内容
- ${Green_font_prefix}*.${Font_color_suffix} *******************************
- ${Green_font_prefix}35.${Font_color_suffix} 安装 cloud内核 仅限KVM - Test
-————————————加速管理————————————
- ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速
- ${Green_font_prefix}12.${Font_color_suffix} 使用BBR+CAKE加速 
- ${Green_font_prefix}13.${Font_color_suffix} 使用BBRplus+FQ版加速
- ${Green_font_prefix}14.${Font_color_suffix} 使用Lotserver(锐速)加速
- ${Green_font_prefix}19.${Font_color_suffix} 使用BBR+FQ_PIE加速 
-————————————杂项管理————————————
- ${Green_font_prefix}21.${Font_color_suffix} 卸载全部加速
- ${Green_font_prefix}22.${Font_color_suffix} 系统配置优化
- ${Green_font_prefix}24.${Font_color_suffix} 应用johnrosen1的优化方案
- ${Green_font_prefix}23.${Font_color_suffix} 退出脚本 
-————————————————————————————————" && echo
+ ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本	${Green_font_prefix}10.${Font_color_suffix} 切换到一键DD系统脚本
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核		${Green_font_prefix}4.${Font_color_suffix} 安装 cloud内核
+ ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核		${Green_font_prefix}5.${Font_color_suffix} 安装 BBRplus新版内核
+ ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核	${Green_font_prefix}6.${Font_color_suffix} 安装 xanmod版内核
+ ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速		${Green_font_prefix}12.${Font_color_suffix} 使用BBR+FQ_PIE加速 
+ ${Green_font_prefix}13.${Font_color_suffix} 使用BBR+CAKE加速
+ ${Green_font_prefix}14.${Font_color_suffix} 使用BBR2+FQ加速	 	${Green_font_prefix}15.${Font_color_suffix} 使用BBR2+FQ_PIE加速 
+ ${Green_font_prefix}16.${Font_color_suffix} 使用BBR2+CAKE加速
+ ${Green_font_prefix}17.${Font_color_suffix} 开启ECN	 		${Green_font_prefix}18.${Font_color_suffix} 关闭ECN
+ ${Green_font_prefix}19.${Font_color_suffix} 使用BBRplus+FQ版加速 
+ ${Green_font_prefix}20.${Font_color_suffix} 使用Lotserver(锐速)加速 
+ ${Green_font_prefix}21.${Font_color_suffix} 系统配置优化	 	${Green_font_prefix}22.${Font_color_suffix} 应用johnrosen1的优化方案
+ ${Green_font_prefix}23.${Font_color_suffix} 禁用IPv6	 		${Green_font_prefix}24.${Font_color_suffix} 开启IPv6  
+ ${Green_font_prefix}25.${Font_color_suffix} 卸载全部加速	 	${Green_font_prefix}99.${Font_color_suffix} 退出脚本 
+————————————————————————————————————————————————————————————————" &&
 
 	check_status
 	echo -e " 当前内核为：${Font_color_suffix}${kernel_version_r}${Font_color_suffix}"
@@ -1128,7 +1044,6 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 	fi
 	echo -e " 当前拥塞控制算法为: ${Green_font_prefix}${net_congestion_control}${Font_color_suffix} 当前队列算法为: ${Green_font_prefix}${net_qdisc}${Font_color_suffix} "
 	
-echo
 read -p " 请输入数字 :" num
 case "$num" in
 	0)
@@ -1144,19 +1059,13 @@ case "$num" in
 	check_sys_Lotsever
 	;;
 	4)
-	check_sys_xanmod
+	check_sys_cloud
 	;;
 	5)
-	check_sys_bbr2
-	;;
-	6)
-	check_sys_zen
-	;;
-	7)
 	check_sys_bbrplusnew
 	;;
-	35)
-	check_sys_cloud
+	6)
+	check_sys_xanmod
 	;;
 	9)
 	gototcpx
@@ -1167,45 +1076,54 @@ case "$num" in
 	11)
 	startbbrfq
 	;;
-	19)
+	12)
 	startbbrfqpie	
 	;;
-	12)
+	13)
 	startbbrcake
 	;;
-	13)
-	startbbrplus
-	;;
 	14)
-	startlotserver
+	startbbr2fq
 	;;
 	15)
-	startbbr2fq
+	startbbr2fqpie
 	;;
 	16)
 	startbbr2cake
 	;;
 	17)
-	startbbr2fqecn
+	startecn
 	;;
 	18)
-	startbbr2cakeecn
+	closeecn
+	;;	
+	19)
+	startbbrplus
+	;;
+	20)
+	startlotserver
 	;;
 	21)
-	remove_all
-	;;
-	22)
 	optimizing_system
 	;;
-	24)
+	22)
 	optimizing_system_johnrosen1
 	;;
 	23)
+	closeipv6
+	;;
+	24)
+	openipv6
+	;;
+	25)
+	remove_all
+	;;
+	99)
 	exit 1
 	;;
 	*)
 	clear
-	echo -e "${Error}:请输入正确数字 [0-23]"
+	echo -e "${Error}:请输入正确数字 [0-99]"
 	sleep 5s
 	start_menu
 	;;
