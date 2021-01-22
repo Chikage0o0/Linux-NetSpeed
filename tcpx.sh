@@ -1259,9 +1259,9 @@ get_system_info() {
 	virt_check
 }
 virt_check(){
-	if hash ifconfig 2>/dev/null; then
-		eth=$(ifconfig)
-	fi
+	# if hash ifconfig 2>/dev/null; then
+		# eth=$(ifconfig)
+	# fi
 
 	virtualx=$(dmesg) 2>/dev/null
 
@@ -1306,7 +1306,7 @@ virt_check(){
 			fi
 		fi
 	else
-		virtual="Dedicated"
+		virtual="Dedicated母鸡"
 	fi
 }
 
