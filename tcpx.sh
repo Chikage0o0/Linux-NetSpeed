@@ -84,7 +84,7 @@ installbbr(){
 	cd .. && rm -rf bbr	
 	
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #安装BBRplus内核 4.14.129
@@ -120,7 +120,7 @@ installbbrplus(){
 	
 	cd .. && rm -rf bbrplus
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #安装Lotserver内核
@@ -140,7 +140,7 @@ installlot(){
 	fi
 	
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #安装xanmod内核  from xanmod.org
@@ -178,7 +178,7 @@ installxanmod(){
 	
 	cd .. && rm -rf xanmod
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #安装bbr2内核 集成到xanmod内核了
@@ -218,7 +218,7 @@ installbbrplusnew(){
 
 	cd .. && rm -rf bbrplusnew
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 
 }
 
@@ -257,7 +257,7 @@ installcloud(){
 
 	cd .. && rm -rf kernel_cloud
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #启用BBR+fq
@@ -1464,7 +1464,7 @@ check_sys_official(){
 	fi
 	
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #检查官方最新内核并安装
@@ -1500,7 +1500,7 @@ check_sys_official_bbr(){
 	fi
 	
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #检查官方xanmod内核并安装
@@ -1516,7 +1516,7 @@ check_sys_official_xanmod(){
 	fi
 	
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #检查官方xanmod高响应内核并安装
@@ -1532,7 +1532,7 @@ check_sys_official_xanmod_cacule(){
 	fi
 	
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 
 #检查debian官方cloud内核并安装
@@ -1555,7 +1555,7 @@ check_sys_official_debian_cloud(){
 	fi
 	
 	BBR_grub
-	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
+	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 }
 #检查cloud内核并安装
 check_sys_cloud(){
