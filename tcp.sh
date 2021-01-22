@@ -4,12 +4,18 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.68
+#	Version: 1.3.2.69
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
 
-sh_ver="1.3.2.68"
+# RED='\033[0;31m'
+# GREEN='\033[0;32m'
+# YELLOW='\033[0;33m'
+# SKYBLUE='\033[0;36m'
+# PLAIN='\033[0m'
+
+sh_ver="1.3.2.69"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -1019,7 +1025,7 @@ clear
 echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix} from blog.ylx.me 母鸡慎用
  ${Green_font_prefix}0.${Font_color_suffix} 升级脚本
  ${Green_font_prefix}9.${Font_color_suffix} 切换到不卸载内核版本	${Green_font_prefix}10.${Font_color_suffix} 切换到一键DD系统脚本
- ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核		${Green_font_prefix}4.${Font_color_suffix} 安装 cloud内核
+ ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核		${Green_font_prefix}4.${Font_color_suffix} 安装 cloud内核 KVM
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核		${Green_font_prefix}5.${Font_color_suffix} 安装 BBRplus新版内核
  ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核	${Green_font_prefix}6.${Font_color_suffix} 安装 xanmod版内核
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速		${Green_font_prefix}12.${Font_color_suffix} 使用BBR+FQ_PIE加速 
@@ -1035,7 +1041,8 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 ————————————————————————————————————————————————————————————————" &&
 
 	check_status
-	echo -e " 当前内核为：${Font_color_suffix}${kernel_version_r}${Font_color_suffix}"
+	get_system_info
+	echo -e " 系统及内核: ${Font_color_suffix}$opsy ($lbit Bit) $virtual${PLAIN} $kern${PLAIN}${Font_color_suffix}"
 	if [[ ${kernel_status} == "noinstall" ]]; then
 		echo -e " 当前状态: ${Green_font_prefix}未安装${Font_color_suffix} 加速内核 ${Red_font_prefix}请先安装内核${Font_color_suffix}"
 	else
@@ -1274,7 +1281,91 @@ check_sys(){
 	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
 		release="centos"
     fi
+
+#from https://github.com/oooldking
+get_opsy() {
+    [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
+    [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
+    [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
+}
+get_system_info() {
+	cname=$( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )
+	cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
+	freq=$( awk -F: '/cpu MHz/ {freq=$2} END {print freq}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )
+	corescache=$( awk -F: '/cache size/ {cache=$2} END {print cache}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//' )
+	tram=$( free -m | awk '/Mem/ {print $2}' )
+	uram=$( free -m | awk '/Mem/ {print $3}' )
+	bram=$( free -m | awk '/Mem/ {print $6}' )
+	swap=$( free -m | awk '/Swap/ {print $2}' )
+	uswap=$( free -m | awk '/Swap/ {print $3}' )
+	up=$( awk '{a=$1/86400;b=($1%86400)/3600;c=($1%3600)/60} {printf("%d days %d hour %d min\n",a,b,c)}' /proc/uptime )
+	load=$( w | head -1 | awk -F'load average:' '{print $2}' | sed 's/^[ \t]*//;s/[ \t]*$//' )
+	opsy=$( get_opsy )
+	arch=$( uname -m )
+	lbit=$( getconf LONG_BIT )
+	kern=$( uname -r )
+
+	# disk_size1=$( LANG=C df -hPl | grep -wvE '\-|none|tmpfs|overlay|shm|udev|devtmpfs|by-uuid|chroot|Filesystem' | awk '{print $2}' )
+	# disk_size2=$( LANG=C df -hPl | grep -wvE '\-|none|tmpfs|overlay|shm|udev|devtmpfs|by-uuid|chroot|Filesystem' | awk '{print $3}' )
+	# disk_total_size=$( calc_disk ${disk_size1[@]} )
+	# disk_used_size=$( calc_disk ${disk_size2[@]} )
+
+	tcpctrl=$( sysctl net.ipv4.tcp_congestion_control | awk -F ' ' '{print $3}' )
+
+	virt_check
+}
+virt_check(){
+	if hash ifconfig 2>/dev/null; then
+		eth=$(ifconfig)
+	fi
+
+	virtualx=$(dmesg) 2>/dev/null
+
+    if  [ $(which dmidecode) ]; then
+		sys_manu=$(dmidecode -s system-manufacturer) 2>/dev/null
+		sys_product=$(dmidecode -s system-product-name) 2>/dev/null
+		sys_ver=$(dmidecode -s system-version) 2>/dev/null
+	else
+		sys_manu=""
+		sys_product=""
+		sys_ver=""
+	fi
 	
+	if grep docker /proc/1/cgroup -qa; then
+	    virtual="Docker"
+	elif grep lxc /proc/1/cgroup -qa; then
+		virtual="Lxc"
+	elif grep -qa container=lxc /proc/1/environ; then
+		virtual="Lxc"
+	elif [[ -f /proc/user_beancounters ]]; then
+		virtual="OpenVZ"
+	elif [[ "$virtualx" == *kvm-clock* ]]; then
+		virtual="KVM"
+	elif [[ "$cname" == *KVM* ]]; then
+		virtual="KVM"
+	elif [[ "$cname" == *QEMU* ]]; then
+		virtual="KVM"
+	elif [[ "$virtualx" == *"VMware Virtual Platform"* ]]; then
+		virtual="VMware"
+	elif [[ "$virtualx" == *"Parallels Software International"* ]]; then
+		virtual="Parallels"
+	elif [[ "$virtualx" == *VirtualBox* ]]; then
+		virtual="VirtualBox"
+	elif [[ -e /proc/xen ]]; then
+		virtual="Xen"
+	elif [[ "$sys_manu" == *"Microsoft Corporation"* ]]; then
+		if [[ "$sys_product" == *"Virtual Machine"* ]]; then
+			if [[ "$sys_ver" == *"7.0"* || "$sys_ver" == *"Hyper-V" ]]; then
+				virtual="Hyper-V"
+			else
+				virtual="Microsoft Virtual Machine"
+			fi
+		fi
+	else
+		virtual="Dedicated"
+	fi
+}
+
 #处理ca证书
 	if [[ "${release}" == "centos" ]]; then
 		yum install ca-certificates -y
@@ -1304,30 +1395,13 @@ check_version(){
 check_sys_bbr(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		# if [[ ${version} = "6" || ${version} = "7" || ${version} = "8" ]]; then
 		if [[ ${version} = "7" || ${version} = "8" ]]; then
 			installbbr
 		else
 			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	# elif [[ "${release}" == "debian" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" ]]; then
-		# if [[ ${version} = "9" || ${version} = "10" ]]; then
-			# installbbr
-		# else
-			# echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		# fi
-	# elif [[ "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-		# if [[ ${version} = "16" || ${version} = "18" || ${version} = "20" ]]; then
-			# installbbr
-		# else
-			# echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		# fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-			installbbr
-		# fi
+		installbbr
 	else
 		echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1341,24 +1415,8 @@ check_sys_bbrplus(){
 		else
 			echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	# elif [[ "${release}" == "debian" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" ]]; then
-		# if [[ ${version} = "9" || ${version} = "10" ]]; then
-			# installbbrplus
-		# else
-			# echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		# fi
-	# elif [[ "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "16" || ${version} = "18" || ${version} = "19" ]]; then
-		# if [[ ${version} = "16" || ${version} = "18" ]]; then
-			# installbbrplus
-		# else
-			# echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		# fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-			installbbrplus
-		# fi	
+		installbbrplus
 	else
 		echo -e "${Error} BBRplus内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1372,15 +1430,8 @@ check_sys_bbrplusnew(){
 		else
 			echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
-	# elif [[ "${release}" == "debian" ]]; then
-		# if [[ ${version} = "10" ]]; then
-			# installbbrplusnew
-		# else
-			# echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		# fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-			installbbrplusnew
+		installbbrplusnew
 	else
 		echo -e "${Error} BBRplusNew内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
@@ -1395,62 +1446,9 @@ check_sys_xanmod(){
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-			installxanmod
-		# fi
-	# elif [[ "${release}" == "ubuntu" ]]; then
-			# echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} ,去xanmod.org 官网安装吧!" && exit 1
+		installxanmod
 	else
 		echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-	fi
-}
-
-check_sys_bbr2(){
-	check_version
-	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" || ${version} = "8" ]]; then
-			installbbr2
-		else
-			echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
-	# elif [[ "${release}" == "debian" ]]; then
-		# if [[ ${version} = "9" || ${version} = "10" ]]; then
-			# installbbr2
-		# else
-			# echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		# fi
-	# elif [[ "${release}" == "ubuntu" ]]; then
-			# echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-			installbbr2		
-	else
-		echo -e "${Error} bbr2内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-	fi
-}
-
-
-check_sys_zen(){
-	check_version
-	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" || ${version} = "8" ]]; then
-			installzen
-		else
-			echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		fi
-	# elif [[ "${release}" == "debian" ]]; then
-		# if [[ ${version} = "9" || ${version} = "10" ]]; then
-			# installzen
-		# else
-			# echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-		# fi
-	# elif [[ "${release}" == "ubuntu" ]]; then
-			# echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		# if [[ ${version} = "8" || ${version} = "9" || ${version} = "10" || ${version} = "16" || ${version} = "18" || ${version} = "19" || ${version} = "20" ]]; then
-			installzen				
-	else
-		echo -e "${Error} zen内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 	fi
 }
 
