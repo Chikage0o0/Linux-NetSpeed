@@ -1368,10 +1368,10 @@ virt_check(){
 
 #处理ca证书
 	if [[ "${release}" == "centos" ]]; then
-		yum install ca-certificates -y
+		yum install ca-certificates dmidecode -y
 		update-ca-trust force-enable
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		apt-get install ca-certificates -y
+		apt-get install ca-certificates dmidecode -y
 		update-ca-certificates
 	fi	
 }
