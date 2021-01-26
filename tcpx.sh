@@ -325,7 +325,7 @@ startbbr2fq(){
 }
 
 #启用BBR2+FQ_PIE
-startbbr2fq(){
+startbbr2fqpie(){
 	remove_bbr_lotserver
 	echo "net.core.default_qdisc=fq_pie" >> /etc/sysctl.d/99-sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr2" >> /etc/sysctl.d/99-sysctl.conf
