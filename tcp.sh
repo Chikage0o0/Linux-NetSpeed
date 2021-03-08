@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.71
+#	Version: 1.3.2.72
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.71"
+sh_ver="1.3.2.72"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -46,10 +46,10 @@ installbbr(){
 		
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.10.11"
+				kernel_version="5.11.4"
 				detele_kernel_head
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUAfSjMW2eNNg9cyHF29dOEBG1dM552CKxeQ513laHHDdA?download=1
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EeNKgWwDjqhIqGUmpgsLnXcBuUps_eKOsmtnysfYBlRDCg?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ee9Aix11R_hAji_ZjgoVQlEBcHN-HVo8Xmf-eTfePeuwyQ?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfArJR7pT4xCkrfIszp__ggBBcs12hFyz6PdRevFAcDDzw?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
@@ -69,10 +69,10 @@ installbbr(){
 	
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
-			kernel_version="5.10.11"
+			kernel_version="5.11.4"
 			detele_kernel_head
-			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EThfkvMWaOhMu7fSrZeaHlABYBvl8u4sz5_RhJEeCTTZ2A?download=1
-			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUzlBUMpYUpBqnNoQFSnfnYB9R_bisbIqEoG7RGpybnPsQ?download=1
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ecf2jKD5wSJDjuXn6r58bzIBV6ng3oaiOZYmSd3XQyr3vg?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EaYu3pW-bxJMrBvOuLya148B9U4ALTM77uU_Sdr6uFDHqg?download=1
 				
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
@@ -182,10 +182,10 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.10.11_xanmod"
+				kernel_version="5.11.4_xanmod"
 				detele_kernel_head
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eb3HFR1uFnhEk0Y2Ro6PfGYBiyZPsYKwFuhTWQ8GoNwG7A?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Eb5ZEyXUnM5Nj-AePu1b9RABgg0umDMTpe6prwNH3d9DBw?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZX-L0X9BxlKkqhD5-CwJhYBr86Xp87WVNoTU6rRoKBLHA?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EVx_iPuUUQVCoUuqcFLv5Z0B6wlxmMXcFfwCxOst3FjYBA?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm			
@@ -204,10 +204,10 @@ installxanmod(){
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
-			kernel_version="5.10.11-xanmod"
+			kernel_version="5.11.4-xanmod"
 			detele_kernel_head
-			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUjsZfjSes9Dgt5gVSC9cpUBvR21Coqp0iRYysxInNcUuA?download=1
-			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfmnqRIsVy5OrAVa2i9mLlEBGCTkVF3BcACmXDHlPP8Xlg?download=1
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ES6gfzDu6z5GgJFCmU7nEzcBeh1GHTNl2qGAlehi25avJw?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZjdHsGwrMdLol9fkL7YIZYBMrMvsk5MMcCHXWkFY88XQg?download=1
 				
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
@@ -290,10 +290,10 @@ installcloud(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.10.11_cloud"
+				kernel_version="5.11.4_cloud"
 				detele_kernel_head
-				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EQKgMxjTV5VIl1V3A-ORUEgBlWAh_dAz5Oe4MhDy1RMPvQ?download=1
-				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EU5bdlYU-QBFnjbGlKQXQmUBKDK7ZqIoNwD9buCQTzT_mA?download=1
+				wget -N -O kernel-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/Ef-1PZHkaD5JjGxlnMHMN-0Bk0nvLfSivaakljVWodCeXg?download=1
+				wget -N -O kernel-headers-c7.rpm https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EenmjkQzXBpAlKejFJOJx0ABzCmOKp8uIOh1EmaEiCghfw?download=1
 				
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
@@ -303,10 +303,10 @@ installcloud(){
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
-			kernel_version="5.10.11-cloud"
+			kernel_version="5.11.4-cloud"
 			detele_kernel_head
-			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EfcMPzT_sDBOswKwgLCAO3QB6F1x3IEIgA8n-BxO_niqgQ?download=1
-			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EUL37RkbmTxGlqyiDIXi9RYB2UV_fwu8DJ4WMp0it0nVJQ?download=1
+			wget -N -O linux-headers-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ESVJnvhr0uZFvXdCJde247cBqEybb9Z_7EhEi3XfZ_OgqA?download=1
+			wget -N -O linux-image-d10.deb https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EWQtDVLuDytEieS4VUzW-m8BWS_2wvs9-7obg6_PpOMOpA?download=1
 					
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
