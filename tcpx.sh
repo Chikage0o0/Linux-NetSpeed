@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.72
+#	Version: 1.3.2.73
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.72"
+sh_ver="1.3.2.73"
 github="github.000060000.xyz"
 
 Green_font_prefix="\033[32m" && Red_font_prefix="\033[31m" && Green_background_prefix="\033[42;37m" && Red_background_prefix="\033[41;37m" && Font_color_suffix="\033[0m"
@@ -386,6 +386,10 @@ remove_bbr_lotserver(){
 remove_all(){
 	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/#############################/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/kernel.pid_max' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/vm.nr_hugepages' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.optmem_max' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.route_localnet' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
@@ -663,6 +667,10 @@ sysctl -p
 
 optimizing_system_johnrosen1()
 {
+sed -i '/kernel.pid_max' /etc/sysctl.d/99-sysctl.conf
+sed -i '/vm.nr_hugepages' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.optmem_max' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.route_localnet' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
@@ -742,9 +750,10 @@ sed -i '/net.nf_conntrack_max/d' /etc/sysctl.d/99-sysctl.conf
 
 cat > '/etc/sysctl.d/99-sysctl.conf' << EOF
 #!!! Do not change these settings unless you know what you are doing !!!
-#net.ipv4.ip_forward = 1
-#net.ipv4.conf.all.forwarding = 1
-#net.ipv4.conf.default.forwarding = 1
+net.ipv4.conf.all.route_localnet=1
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.forwarding = 1
+net.ipv4.conf.default.forwarding = 1
 
 net.ipv6.conf.all.forwarding = 1
 net.ipv6.conf.default.forwarding = 1
@@ -765,6 +774,7 @@ net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
 net.core.rmem_default = 67108864
 net.core.wmem_default = 67108864
+net.core.optmem_max = 65536
 net.core.somaxconn = 10000
 
 net.ipv4.icmp_echo_ignore_all = 0
@@ -787,7 +797,7 @@ net.ipv4.tcp_rfc1337 = 0
 net.ipv4.tcp_timestamps = 1
 net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 15
-net.ipv4.ip_local_port_range = 10000 65000
+net.ipv4.ip_local_port_range = 1024 65535
 net.ipv4.tcp_max_tw_buckets = 2000000
 #net.ipv4.tcp_fastopen = 3
 net.ipv4.tcp_rmem = 4096 87380 67108864
@@ -817,12 +827,15 @@ net.ipv6.conf.default.accept_redirects = 0
 vm.swappiness = 1
 #net.ipv4.ip_unprivileged_port_start = 0
 vm.overcommit_memory = 1
+#vm.nr_hugepages=1280
+kernel.pid_max=64000
 net.ipv4.neigh.default.gc_thresh3=8192
 net.ipv4.neigh.default.gc_thresh2=4096
 net.ipv4.neigh.default.gc_thresh1=2048
 net.ipv6.neigh.default.gc_thresh3=8192
 net.ipv6.neigh.default.gc_thresh2=4096
 net.ipv6.neigh.default.gc_thresh1=2048
+net.ipv4.tcp_max_syn_backlog = 262144
 net.netfilter.nf_conntrack_max = 262144
 net.nf_conntrack_max = 262144
 EOF
@@ -842,8 +855,8 @@ cat > '/etc/systemd/system.conf' << EOF
 DefaultTimeoutStopSec=30s
 #DefaultRestartSec=100ms
 DefaultLimitCORE=infinity
-DefaultLimitNOFILE=51200
-DefaultLimitNPROC=51200
+DefaultLimitNOFILE=65535
+DefaultLimitNPROC=65535
 EOF
 
 sed -i '/soft nofile/d' /etc/security/limits.conf
@@ -851,10 +864,10 @@ sed -i '/hard nofile/d' /etc/security/limits.conf
 sed -i '/soft nproc/d' /etc/security/limits.conf
 sed -i '/hard nproc/d' /etc/security/limits.conf
 cat > '/etc/security/limits.conf' << EOF
-* soft nofile 51200
-* hard nofile 51200
-* soft nproc 51200
-* hard nproc 51200
+* soft nofile 65535
+* hard nofile 65535
+* soft nproc 65535
+* hard nproc 65535
 EOF
 if grep -q "ulimit" /etc/profile
 then
@@ -862,8 +875,8 @@ then
 else
 sed -i '/ulimit -SHn/d' /etc/profile
 sed -i '/ulimit -SHn/d' /etc/profile
-echo "ulimit -SHn 51200" >> /etc/profile
-echo "ulimit -SHu 51200" >> /etc/profile
+echo "ulimit -SHn 65535" >> /etc/profile
+echo "ulimit -SHu 65535" >> /etc/profile
 fi
 if grep -q "pam_limits.so" /etc/pam.d/common-session
 then
