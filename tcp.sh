@@ -456,10 +456,11 @@ remove_bbr_lotserver(){
 remove_all(){
 	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/#############################/d' /etc/sysctl.d/99-sysctl.conf
-	sed -i '/kernel.pid_max' /etc/sysctl.d/99-sysctl.conf
-	sed -i '/vm.nr_hugepages' /etc/sysctl.d/99-sysctl.conf
-	sed -i '/net.core.optmem_max' /etc/sysctl.d/99-sysctl.conf
-	sed -i '/net.ipv4.conf.all.route_localnet' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/vm.nr_hugepages/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.core.optmem_max/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.conf.all.route_localnet/d' /etc/sysctl.d/99-sysctl.conf
+	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
@@ -737,10 +738,10 @@ sysctl -p
 
 optimizing_system_johnrosen1()
 {
-sed -i '/kernel.pid_max' /etc/sysctl.d/99-sysctl.conf
-sed -i '/vm.nr_hugepages' /etc/sysctl.d/99-sysctl.conf
-sed -i '/net.core.optmem_max' /etc/sysctl.d/99-sysctl.conf
-sed -i '/net.ipv4.conf.all.route_localnet' /etc/sysctl.d/99-sysctl.conf
+sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/vm.nr_hugepages/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.core.optmem_max/d' /etc/sysctl.d/99-sysctl.conf
+sed -i '/net.ipv4.conf.all.route_localnet/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.ipv4.conf.all.forwarding/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.ipv4.conf.default.forwarding/d' /etc/sysctl.d/99-sysctl.conf
