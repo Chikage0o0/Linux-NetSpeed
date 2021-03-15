@@ -51,6 +51,8 @@ bbsplus算法原作者
 https://blog.csdn.net/dog250/article/details/80629551
 bbrplus首用名 ？
 https://github.com/cx9208/bbrplus
+新版bbrplus
+https://github.com/UJX6N/bbrplus-5.10
 xanmod官网
 https://xanmod.org
 Zen官网
