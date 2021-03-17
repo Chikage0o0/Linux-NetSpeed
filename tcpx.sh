@@ -393,10 +393,10 @@ startbbrplus(){
 startlotserver(){
 	remove_bbr_lotserver
 	if [[ "${release}" == "centos" ]]; then
-		yum install ethtool
+		yum install ethtool -y
 	else
 		apt-get update
-		apt-get install ethtool
+		apt-get install ethtool -y
 	fi
 	#bash <(wget -qO- https://git.io/lotServerInstall.sh) install
 	echo | bash <(wget --no-check-certificate -qO- https://github.com/xidcn/LotServer_Vicer/raw/master/Install.sh) install

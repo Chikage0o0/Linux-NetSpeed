@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.7
+#	Version: 1.3.2.75
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -464,10 +464,10 @@ startbbrplus(){
 startlotserver(){
 	remove_bbr_lotserver
 	if [[ "${release}" == "centos" ]]; then
-		yum install ethtool
+		yum install ethtool -y
 	else
 		apt-get update
-		apt-get install ethtool
+		apt-get install ethtool -y
 	fi
 	#bash <(wget -qO- https://git.io/lotServerInstall.sh) install
 	echo | bash <(wget --no-check-certificate -qO- https://github.com/xidcn/LotServer_Vicer/raw/master/Install.sh) install
