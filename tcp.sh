@@ -539,7 +539,7 @@ remove_bbr_lotserver(){
 	rm -rf bbrmod
 	
 	if [[ -e /appex/bin/lotServer.sh ]]; then
-		bash <(wget -qO- https://git.io/lotServerInstall.sh) uninstall
+		echo | bash <(wget -qO- https://git.io/lotServerInstall.sh) uninstall
 	fi
 	clear
 	# echo -e "${Info}:清除bbr/lotserver加速完成。"
