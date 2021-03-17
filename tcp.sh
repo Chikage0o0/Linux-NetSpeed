@@ -159,7 +159,39 @@ installlot(){
 		bash <(wget -qO- "https://${github}/Debian_Kernel.sh")
 	fi
 	
-	#detele_kernel
+	if [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+		deb_issue="$(cat /etc/issue)"
+		deb_relese="$(echo $deb_issue |grep -io 'Ubuntu\|Debian' |sed -r 's/(.*)/\L\1/')"
+		os_ver="$(dpkg --print-architecture)"
+		[ -n "$os_ver" ] || exit 1
+		if [ "$deb_relese" == 'ubuntu' ]; then
+			deb_ver="$(echo $deb_issue |grep -o '[0-9]*\.[0-9]*' |head -n1)"
+			if [ "$deb_ver" == "14.04" ]; then
+				kernel_version="3.16.0-77-generic"
+			elif [ "$deb_ver" == "16.04" ]; then
+				kernel_version="4.8.0-36-generic"
+			elif [ "$deb_ver" == "18.04" ]; then
+				kernel_version="4.15.0-30-generic"
+			else
+				exit 1
+			fi
+		url='archive.ubuntu.com'
+		urls='security.ubuntu.com'
+		elif [ "$deb_relese" == 'debian' ]; then
+			deb_ver="$(echo $deb_issue |grep -o '[0-9]*' |head -n1)"
+		fi	
+		if [ "$deb_ver" == "7" ]; then
+			kernel_version="3.2.0-4-${os_ver}"
+		elif [ "$deb_ver" == "8" ]; then
+			kernel_version="3.16.0-4-${os_ver}"
+		elif [ "$deb_ver" == "9" ]; then
+			kernel_version="4.9.0-4-${os_ver}"
+		else
+			exit 1
+		fi
+	fi
+	
+	detele_kernel
 	BBR_grub
 	echo -e "${Tip} ${Red_font_prefix}请检查上面是否有内核信息，无内核千万别重启${Font_color_suffix}"
 	echo -e "${Tip} ${Red_font_prefix}rescue不是正常内核，要排除这个${Font_color_suffix}"
@@ -172,6 +204,7 @@ installlot(){
 	fi
 	#echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功及手动调整内核启动顺序"
 }
+
 
 #安装xanmod内核  from xanmod.org
 installxanmod(){
