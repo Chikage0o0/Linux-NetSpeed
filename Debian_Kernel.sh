@@ -101,5 +101,3 @@ fi
   # done
 apt-get autoremove -y
 [ -d '/var/lib/apt/lists' ] && find /var/lib/apt/lists -type f -delete
-exit
-
