@@ -1625,7 +1625,7 @@ check_sys_bbrplusnew(){
 check_sys_xanmod(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" || ${version} = "8" ]]; then
+		if [[ ${version} = "7" ]]; then
 			installxanmod
 		else
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1

@@ -172,7 +172,7 @@ installbbrplus(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-					echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		fi	
 		
@@ -349,6 +349,7 @@ installxanmod(){
 		fi
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
+	
 		if [[ ${bit} = "x86_64" ]]; then
 			# kernel_version="5.11.4-xanmod"
 			# xanmod_ver_b=$(rm -rf /tmp/url.tmp && curl -o /tmp/url.tmp 'https://dl.xanmod.org/dl/changelog/?C=N;O=D' && grep folder.gif /tmp/url.tmp | head -n 1 | awk -F "[/]" '{print $5}' | awk -F "[>]" '{print $2}')
@@ -378,7 +379,7 @@ installxanmod(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
+			echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 		fi		
 	fi
 	
@@ -446,8 +447,6 @@ installbbrplusnew(){
 	echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
 
 }
-
-
 
 #启用BBR+fq
 startbbrfq(){
@@ -1590,7 +1589,7 @@ check_sys_bbrplusnew(){
 check_sys_xanmod(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" || ${version} = "8" ]]; then
+		if [[ ${version} = "7" ]]; then
 			installxanmod
 		else
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
