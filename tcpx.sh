@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.79
+#	Version: 1.3.2.80
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.79"
+sh_ver="1.3.2.80"
 github="github.000060000.xyz"
 
 imgurl=""
@@ -50,7 +50,6 @@ installbbr(){
 				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
 				github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}')
 				github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-				# kernel_version="5.11.4"
 				echo -e "获取的版本号为:${github_centos_ver}"
 				kernel_version=$github_centos_ver
 				detele_kernel_head
@@ -82,28 +81,6 @@ installbbr(){
 			yum install -y kernel-c8.rpm
 			yum install -y kernel-headers-c8.rpm
 		fi
-	
-	# elif [[ "${release}" == "ubuntu" ]]; then
-		# if [[ ${bit} = "x86_64" ]]; then
-			# ubuntu_ver=$(curl -s https://kernel.ubuntu.com/~kernel-ppa/mainline/ | awk -F'\"v' '/v[4-9]./{print $2}' | cut -d/ -f1 | grep -v - | sort -V | tail -1)
-			# echo -e "获取的内核版本号为：${ubuntu_ver}"
-			# kernel_version=$ubuntu_ver
-			# detele_kernel_head
-			# headurl=https://kernel.ubuntu.com/~kernel-ppa/mainline/v$ubuntu_ver/$(curl -s https://kernel.ubuntu.com/~kernel-ppa/mainline/v${ubuntu_ver}/ | grep "linux-headers" | grep "generic" | awk -F'\">' '/amd64.deb/{print $2}' | cut -d'<' -f1 | head -1)
-			# imgurl=https://kernel.ubuntu.com/~kernel-ppa/mainline/v$ubuntu_ver/$(curl -s https://kernel.ubuntu.com/~kernel-ppa/mainline/v${ubuntu_ver}/ | grep "linux-image" | grep "generic" | awk -F'\">' '/amd64.deb/{print $2}' | cut -d'<' -f1 | head -1)
-			# echo -e $headurl
-			# echo -e $imgurl
-			# echo -e "正在检查headers下载连接...."
-			# checkurl $headurl
-			# echo -e "正在检查内核下载连接...."
-			# checkurl $imgurl
-			# wget -N -O linux-headers-d10.deb $headurl
-			# wget -N -O linux-image-d10.deb $imgurl
-			# dpkg -i linux-image-d10.deb
-			# dpkg -i linux-headers-d10.deb
-		# else
-			# echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
-		# fi
 		
 	elif [[ "${release}" == "ubuntu" || "${release}" == "debian" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
@@ -126,29 +103,7 @@ installbbr(){
 			dpkg -i linux-headers-d10.deb
 		else
 			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
-		fi	
-		
-	# elif [[ "${release}" == "debian" ]]; then
-		# if [[ ${bit} = "x86_64" ]]; then
-			# debian_ver=$(curl -s http://http.us.debian.org/debian/pool/main/l/linux-signed-amd64/ | grep 'linux-image' | grep -v 'cloud' | grep -v 'rt' | grep -v 'bpo' | grep -v 'rt' | grep -v 'linux-image-amd64' | tail -1 | awk -F '>' '{print $7}' | awk -F '<' '{print $1}' | awk -F '[-]' '{print $5}' | awk -F '[_]' '{print $2}')
-			
-			# echo -e "获取的内核版本号为：${debian_ver}"
-			# kernel_version=$debian_ver
-			# detele_kernel_head
-		
-			# headurl=http://ftp.debian.org/debian/pool/main/l/linux-signed-amd64/$(curl -s http://http.us.debian.org/debian/pool/main/l/linux-signed-amd64/ | grep 'linux-headers' | grep -v 'cloud' | grep -v 'rt' | grep -v 'bpo' | grep -v 'rt' | grep -v 'linux-image-amd64' | tail -1 | awk -F '>' '{print $7}' | awk -F '<' '{print $1}')
-			# imgurl=http://ftp.debian.org/debian/pool/main/l/linux-signed-amd64/$(curl -s http://http.us.debian.org/debian/pool/main/l/linux-signed-amd64/ | grep 'linux-image' | grep -v 'cloud' | grep -v 'rt' | grep -v 'bpo' | grep -v 'rt' | grep -v 'linux-image-amd64' | tail -1 | awk -F '>' '{print $7}' | awk -F '<' '{print $1}')
-			# echo -e "正在检查headers下载连接...."
-			# checkurl $headurl
-			# echo -e "正在检查内核下载连接...."
-			# checkurl $imgurl
-			# wget -N -O linux-headers-d10.deb $headurl
-			# wget -N -O linux-image-d10.deb $imgurl
-			# dpkg -i linux-image-d10.deb
-			# dpkg -i linux-headers-d10.deb
-		# else
-			# echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
-		# fi	
+		fi
 	fi
 	
 	cd .. && rm -rf bbr	
@@ -295,19 +250,6 @@ installlot(){
 				exit 1
 			fi
 		fi
-		# while true; do
-			# List_Kernel="$(dpkg -l |grep 'linux-image\|linux-modules\|linux-generic\|linux-headers' |grep -v "$item")"
-			# Num_Kernel="$(echo "$List_Kernel" |sed '/^$/d' |wc -l)"
-			# [ "$Num_Kernel" -eq "0" ] && break
-			# for kernel in `echo "$List_Kernel" |awk '{print $2}'`
-			# do
-				# if [ -f "/var/lib/dpkg/info/${kernel}.prerm" ]; then
-					# sed -i 's/linux-check-removal/#linux-check-removal/' "/var/lib/dpkg/info/${kernel}.prerm"
-					# sed -i 's/uname -r/echo purge/' "/var/lib/dpkg/info/${kernel}.prerm"
-				# fi
-				# dpkg --force-depends --purge "$kernel"
-			# done
-		# done
 		apt-get autoremove -y
 		[ -d '/var/lib/apt/lists' ] && find /var/lib/apt/lists -type f -delete
 	fi
@@ -325,10 +267,14 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				kernel_version="5.11.4_xanmod"
+				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
+				github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_latest_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}' | sed 's/-/_/g')
+				github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_latest_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
+				echo -e "获取的版本号为:${github_centos_ver}"
+				kernel_version=$github_centos_ver
 				detele_kernel_head
-				headurl=https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EVx_iPuUUQVCoUuqcFLv5Z0B6wlxmMXcFfwCxOst3FjYBA?download=1
-				imgurl=https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZX-L0X9BxlKkqhD5-CwJhYBr86Xp87WVNoTU6rRoKBLHA?download=1
+				headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}-1.x86_64.rpm
+				imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}-1.x86_64.rpm
 				echo -e "正在检查headers下载连接...."
 				checkurl $headurl
 				echo -e "正在检查内核下载连接...."
