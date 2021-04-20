@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.80
+#	Version: 1.3.2.81
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.80"
+sh_ver="1.3.2.81"
 github="github.000060000.xyz"
 
 imgurl=""
@@ -68,10 +68,14 @@ installbbr(){
 			fi	
 			
 		elif [[ ${version} = "8" ]]; then
-			kernel_version="5.6.15"
+			echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
+			github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_C8_bbr_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}')
+			github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_C8_bbr_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
+			echo -e "获取的版本号为:${github_centos_ver}"
+			kernel_version=$github_centos_ver
 			detele_kernel_head
-			headurl=https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/EZEZyLBjDplMgSqDzyaqkvYBW06OOKDCcIQq27381fa5-A?download=1
-			imgurl=https://chinagz2018-my.sharepoint.com/:u:/g/personal/ylx_chinagz2018_onmicrosoft_com/ETadaTIeeQJCgxEXKlOFiCEBsBa-Y15QbDkv-HQGo2EHSQ?download=1
+			headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}-1.x86_64.rpm
+			imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}-1.x86_64.rpm
 			echo -e "正在检查headers下载连接...."
 			checkurl $headurl
 			echo -e "正在检查内核下载连接...."
@@ -287,10 +291,14 @@ installxanmod(){
 				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
-				kernel_version="5.5.1_xanmod1"
+				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
+				github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_C8_latest_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}' | sed 's/-/_/g')
+				github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_C8_latest_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
+				echo -e "获取的版本号为:${github_centos_ver}"
+				kernel_version=$github_centos_ver
 				detele_kernel_head
-				headurl=https://github.com/ylx2016/kernel/releases/download/5.5.1xanmod/kernel-headers-5.5.1_xanmod1-1-c8.x86_64.rpm
-				imgurl=https://github.com/ylx2016/kernel/releases/download/5.5.1xanmod/kernel-5.5.1_xanmod1-1-c8.x86_64.rpm
+				headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}-1.x86_64.rpm
+				imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}-1.x86_64.rpm
 				echo -e "正在检查headers下载连接...."
 				checkurl $headurl
 				echo -e "正在检查内核下载连接...."
@@ -1552,7 +1560,7 @@ check_sys_bbrplusnew(){
 check_sys_xanmod(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" ]]; then
+		if [[ ${version} = "7" || ${version} = "8" ]]; then
 			installxanmod
 		else
 			echo -e "${Error} xanmod内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
