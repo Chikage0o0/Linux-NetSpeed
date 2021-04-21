@@ -9,6 +9,9 @@ wget -O tcpx.sh "https://git.io/JYxKU" && chmod +x tcpx.sh && ./tcpx.sh
 卸载内核版本
 wget -O tcp.sh "https://git.io/coolspeeda" && chmod +x tcp.sh && ./tcp.sh
 
+关联action自动编译内核
+https://github.com/ylx2016/kernel/
+
 双持bbr+锐速
 bbr 添加
 echo "net.core.default_qdisc=fq" >> /etc/sysctl.d/99-sysctl.conf
