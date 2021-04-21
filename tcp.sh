@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.81
+#	Version: 1.3.2.82
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.81"
+sh_ver="1.3.2.82"
 github="github.000060000.xyz"
 
 imgurl=""
@@ -1548,7 +1548,7 @@ check_version(){
 check_sys_bbr(){
 	check_version
 	if [[ "${release}" == "centos" ]]; then
-		if [[ ${version} = "7" || ${version} = "8" ]]; then
+		if [[ ${version} = "7" ]]; then
 			installbbr
 		else
 			echo -e "${Error} BBR内核不支持当前系统 ${release} ${version} ${bit} !" && exit 1
