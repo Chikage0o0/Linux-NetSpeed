@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.82
+#	Version: 1.3.2.83
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.82"
+sh_ver="1.3.2.83"
 github="github.000060000.xyz"
 
 imgurl=""
@@ -47,14 +47,17 @@ installbbr(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
-				github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}')
-				github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-				echo -e "获取的版本号为:${github_centos_ver}"
-				kernel_version=$github_centos_ver
+				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
+				#github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}' | awk -F '[_]' '{print $3}')
+				github_tag=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}')
+				github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep 'headers' | awk -F '"' '{print $4}' | awk -F '[/]' '{print $9}' | awk -F '[-]' '{print $3}')
+				echo -e "获取的版本号为:${github_ver}"
+				kernel_version=$github_ver
 				detele_kernel_head
-				headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}-1.x86_64.rpm
-				imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}-1.x86_64.rpm
+				headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep  'headers' | awk -F '"' '{print $4}')
+				imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
+				#headurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/kernel-headers-${github_ver}-1.x86_64.rpm
+				#imgurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/kernel-${github_ver}-1.x86_64.rpm
 				echo -e "正在检查headers下载连接...."
 				checkurl $headurl
 				echo -e "正在检查内核下载连接...."
@@ -65,38 +68,21 @@ installbbr(){
 				yum install -y kernel-headers-c7.rpm
 			else
 				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
-			fi	
-			
-		elif [[ ${version} = "8" ]]; then
-			echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
-			github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_C8_bbr_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}')
-			github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_C8_bbr_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-			echo -e "获取的版本号为:${github_centos_ver}"
-			kernel_version=$github_centos_ver
-			detele_kernel_head
-			headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}-1.x86_64.rpm
-			imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}-1.x86_64.rpm
-			echo -e "正在检查headers下载连接...."
-			checkurl $headurl
-			echo -e "正在检查内核下载连接...."
-			checkurl $imgurl
-			wget -N -O kernel-headers-c8.rpm $headurl
-			wget -N -O kernel-c8.rpm $imgurl
-			yum install -y kernel-c8.rpm
-			yum install -y kernel-headers-c8.rpm
+			fi
 		fi
 		
 	elif [[ "${release}" == "ubuntu" || "${release}" == "debian" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
-			echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
-			github_ubuntu_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Ubuntu_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}')
-			github_ubuntu_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Ubuntu_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-			# kernel_version="5.11.4"
-			echo -e "获取的版本号为:${github_ubuntu_ver}"
-			kernel_version=$github_ubuntu_ver
+			echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
+			github_tag=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep 'Ubuntu_Kernel' | grep '_latest_bbr_' | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}')
+			github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag}  | grep 'deb' | grep 'headers' | awk -F '"' '{print $4}' | awk -F '[/]' '{print $9}' | awk -F '[-]' '{print $3}' | awk -F '[_]' '{print $1}')
+			echo -e "获取的版本号为:${github_ver}"
+			kernel_version=$github_ver
 			detele_kernel_head
-			headurl=https://github.com/ylx2016/kernel/releases/download/$github_ubuntu_tag/linux-headers-${github_ubuntu_ver}_${github_ubuntu_ver}-1_amd64.deb
-			imgurl=https://github.com/ylx2016/kernel/releases/download/$github_ubuntu_tag/linux-image-${github_ubuntu_ver}_${github_ubuntu_ver}-1_amd64.deb
+			headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep  'headers' | awk -F '"' '{print $4}')
+			imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
+			#headurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-headers-${github_ver}_${github_ver}-1_amd64.deb
+			#imgurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-image-${github_ver}_${github_ver}-1_amd64.deb
 			echo -e "正在检查headers下载连接...."
 			checkurl $headurl
 			echo -e "正在检查内核下载连接...."
@@ -301,14 +287,14 @@ installxanmod(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
-				github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_latest_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}' | sed 's/-/_/g')
-				github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_latest_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-				echo -e "获取的版本号为:${github_centos_ver}"
-				kernel_version=$github_centos_ver
+				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
+				github_tag=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_latest_' | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}')
+				github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep  'headers' | awk -F '"' '{print $4}' | awk -F '[/]' '{print $9}' | awk -F '[-]' '{print $3}' | awk -F '[_]' '{print $1}')
+				echo -e "获取的版本号为:${github_ver}"
+				kernel_version=$github_ver
 				detele_kernel_head
-				headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}-1.x86_64.rpm
-				imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}-1.x86_64.rpm
+				headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep  'headers' | awk -F '"' '{print $4}')
+				imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
 				echo -e "正在检查headers下载连接...."
 				checkurl $headurl
 				echo -e "正在检查内核下载连接...."
@@ -321,14 +307,14 @@ installxanmod(){
 				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
-				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
-				github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_C8_latest_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}' | sed 's/-/_/g')
-				github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_C8_latest_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-				echo -e "获取的版本号为:${github_centos_ver}"
-				kernel_version=$github_centos_ver
+				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
+				github_tag=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep 'cacule_C8_latest_' | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}')
+				github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep  'headers' | awk -F '"' '{print $4}' | awk -F '[/]' '{print $9}' | awk -F '[-]' '{print $3}' | awk -F '[_]' '{print $1}')
+				echo -e "获取的版本号为:${github_ver}"
+				kernel_version=$github_ver
 				detele_kernel_head
-				headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}-1.x86_64.rpm
-				imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}-1.x86_64.rpm
+				headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep  'headers' | awk -F '"' '{print $4}')
+				imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
 				echo -e "正在检查headers下载连接...."
 				checkurl $headurl
 				echo -e "正在检查内核下载连接...."
@@ -351,7 +337,7 @@ installxanmod(){
 			sourceforge_xanmod_cacule_ver=$(curl -s https://sourceforge.net/projects/xanmod/files/releases/cacule/ | grep 'class="folder ">' | head -n 1 | awk -F '"' '{print $2}')
 			sourceforge_xanmod_cacule_file_img=$(curl -s https://sourceforge.net/projects/xanmod/files/releases/cacule/${sourceforge_xanmod_cacule_ver}/ | grep 'linux-image' | head -n 1 | awk -F '"' '{print $2}')
 			sourceforge_xanmod_cacule_file_head=$(curl -s https://sourceforge.net/projects/xanmod/files/releases/cacule/${sourceforge_xanmod_cacule_ver}/ | grep 'linux-headers' | head -n 2 | awk -F '"' '{print $2}')
-			echo -e "获取的xanmod stable版本号为:${sourceforge_xanmod_stable_ver}"
+			#echo -e "获取的xanmod stable版本号为:${sourceforge_xanmod_stable_ver}"
 			echo -e "获取的xanmod cacule版本号为:${sourceforge_xanmod_cacule_ver}"
 			# kernel_version=$sourceforge_xanmod_stable_ver
 			# detele_kernel_head
@@ -397,7 +383,7 @@ installbbrplusnew(){
 	# github_ver_plus=$(curl -s https://github.com/UJX6N/bbrplus-5.10/releases | grep /bbrplus-5.10/releases/tag/ | head -1 | awk -F "[/]" '{print $6}' | awk -F "[>]" '{print $2}' | awk -F "[<]" '{print $1}')
 	# github_ver_plus_num=$(curl -s https://github.com/UJX6N/bbrplus-5.10/releases | grep /bbrplus-5.10/releases/tag/ | head -1 | awk -F "[/]" '{print $6}' | awk -F "[>]" '{print $2}' | awk -F "[<]" '{print $1}' | awk -F "[-]" '{print $1}')
 	# echo -e "获取的UJX6N的bbrplus-5.10版本号为:${github_ver_plus}"
-	echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈 大陆自行解决污染问题"
+	echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
 	# kernel_version=$github_ver_plus
 	
 	bit=`uname -m`
@@ -406,16 +392,13 @@ installbbrplusnew(){
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} = "7" ]]; then
 			if [[ ${bit} = "x86_64" ]]; then
-				
-				# headurl=https://github.com/UJX6N/bbrplus-5.10/releases/download/$github_ver_plus/CentOS-7_Optional_kernel-bbrplus-headers-$github_ver_plus_num-1.bbrplus.el7.x86_64.rpm
-				# imgurl=https://github.com/UJX6N/bbrplus-5.10/releases/download/$github_ver_plus/CentOS-7_Required_kernel-bbrplus-$github_ver_plus_num-1.bbrplus.el7.x86_64.rpm
-				github_centos_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbrplus_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}')
-				github_centos_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbrplus_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-				echo -e "获取的版本号为:${github_centos_ver}"
-				kernel_version=${github_centos_ver}_bbrplus
+				github_tag=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep 'Centos_Kernel' | grep '_latest_bbrplus_' | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}')
+				github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep  'headers' | awk -F '"' '{print $4}' | awk -F '[/]' '{print $9}' | awk -F '[-]' '{print $3}' | awk -F '[_]' '{print $1}')
+				echo -e "获取的版本号为:${github_ver}"
+				kernel_version=${github_ver}_bbrplus
 				detele_kernel_head
-				headurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-headers-${github_centos_ver}_bbrplus-1.x86_64.rpm
-				imgurl=https://github.com/ylx2016/kernel/releases/download/$github_centos_tag/kernel-${github_centos_ver}_bbrplus-1.x86_64.rpm
+				headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep  'headers' | awk -F '"' '{print $4}')
+				imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
 				echo -e "正在检查headers下载连接...."
 				checkurl $headurl
 				echo -e "正在检查内核下载连接...."
@@ -430,16 +413,13 @@ installbbrplusnew(){
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		if [[ ${bit} = "x86_64" ]]; then
-			# headurl=https://github.com/UJX6N/bbrplus-5.10/releases/download/$github_ver_plus/Debian-Ubuntu_Required_linux-headers-$github_ver_plus_num-bbrplus_$github_ver_plus_num-bbrplus-1_amd64.deb
-			# imgurl=https://github.com/UJX6N/bbrplus-5.10/releases/download/$github_ver_plus/Debian-Ubuntu_Required_linux-image-$github_ver_plus_num-bbrplus_$github_ver_plus_num-bbrplus-1_amd64.deb
-			github_ubuntu_ver=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Ubuntu_Kernel' | grep '_latest_bbrplus_' | head -n 1 | awk -F '"' '{print $2}' | awk -F '_' '{print $3}')
-			github_ubuntu_tag=$(curl -s 'https://github.com/ylx2016/kernel/releases' | grep 'Ubuntu_Kernel' | grep '_latest_bbrplus_' | head -n 1 | awk -F '/' '{print $5}' | awk -F '"' '{print $1}')
-			# kernel_version="5.11.4"
-			echo -e "获取的版本号为:${github_ubuntu_ver}"
-			kernel_version=${github_ubuntu_ver}-bbrplus
+			github_tag=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep 'Ubuntu_Kernel' | grep '_latest_bbrplus_' | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}')
+			github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep  'headers' | awk -F '"' '{print $4}' | awk -F '[/]' '{print $9}' | awk -F '[-]' '{print $3}' | awk -F '[_]' '{print $1}')
+			echo -e "获取的版本号为:${github_ver}"
+			kernel_version=${github_ver}-bbrplus
 			detele_kernel_head
-			headurl=https://github.com/ylx2016/kernel/releases/download/$github_ubuntu_tag/linux-headers-${github_ubuntu_ver}-bbrplus_${github_ubuntu_ver}-bbrplus-1_amd64.deb
-			imgurl=https://github.com/ylx2016/kernel/releases/download/$github_ubuntu_tag/linux-image-${github_ubuntu_ver}-bbrplus_${github_ubuntu_ver}-bbrplus-1_amd64.deb
+			headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep  'headers' | awk -F '"' '{print $4}')
+			imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
 			echo -e "正在检查headers下载连接...."
 			checkurl $headurl
 			echo -e "正在检查内核下载连接...."
