@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.84
+#	Version: 1.3.2.85
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,8 +15,8 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.84"
-github="github.000060000.xyz"
+sh_ver="1.3.2.85"
+github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
 headurl=""
@@ -1503,14 +1503,45 @@ virt_check(){
 	fi
 }
 
-#处理ca证书
-	if [[ "${release}" == "centos" ]]; then
-		yum install ca-certificates dmidecode -y
-		update-ca-trust force-enable
+if ! type curl >/dev/null 2>&1; then
+    echo 'curl 未安装 安装中'
+	apt-get update && apt-get install curl -y || yum install curl -y
+else
+    echo 'curl 已安装，继续'
+fi
+
+if ! type wget >/dev/null 2>&1; then
+    echo 'wget 未安装 安装中';
+	apt-get update && apt-get install wget -y || yum install curl -y
+else
+    echo 'wget 已安装，继续'
+fi
+
+if ! type dmidecode >/dev/null 2>&1; then
+    echo 'dmidecode 未安装 安装中';
+	apt-get update && apt-get install dmidecode -y || yum install dmidecode -y
+else
+    echo 'dmidecode 已安装，继续'
+fi
+
+#检查依赖
+if [[ "${release}" == "centos" ]]; then
+		if (yum list installed ca-certificates | grep '202'); then
+			echo 'CA证书检查OK'
+		else
+			echo 'CA证书检查不通过，处理中'
+			yum install ca-certificates dmidecode -y
+			update-ca-trust force-enable
+			fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		apt-get install ca-certificates dmidecode -y
-		update-ca-certificates
-	fi	
+		if (apt list --installed | grep 'ca-certificates' | grep '202');then
+			echo 'CA证书检查OK'
+		else
+			echo 'CA证书检查不通过，处理中'
+			apt-get install ca-certificates dmidecode -y
+			update-ca-certificates
+		fi	
+	fi
 }
 
 #检查Linux版本
