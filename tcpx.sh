@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.85
+#	Version: 1.3.2.86
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.85"
+sh_ver="1.3.2.86"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -67,7 +67,7 @@ installbbr(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
 			fi
 		fi
 		
@@ -91,8 +91,27 @@ installbbr(){
 			wget -N -O linux-image-d10.deb $imgurl
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
+		elif [[ ${bit} = "aarch64" ]]; then	
+			echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
+			github_tag=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep 'Ubuntu_Kernel' | grep '_arm64_' | grep '_bbr_' | head -n 1 | awk -F '"' '{print $4}' | awk -F '[/]' '{print $8}')
+			github_ver=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag}  | grep 'deb' | grep 'headers' | awk -F '"' '{print $4}' | awk -F '[/]' '{print $9}' | awk -F '[-]' '{print $3}' | awk -F '[_]' '{print $1}')
+			echo -e "获取的版本号为:${github_ver}"
+			kernel_version=$github_ver
+			detele_kernel_head
+			headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep  'headers' | awk -F '"' '{print $4}')
+			imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
+			#headurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-headers-${github_ver}_${github_ver}-1_amd64.deb
+			#imgurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-image-${github_ver}_${github_ver}-1_amd64.deb
+			echo -e "正在检查headers下载连接...."
+			checkurl $headurl
+			echo -e "正在检查内核下载连接...."
+			checkurl $imgurl
+			wget -N -O linux-headers-d10.deb $headurl
+			wget -N -O linux-image-d10.deb $imgurl
+			dpkg -i linux-image-d10.deb
+			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 还在用32位，别再见了 !" && exit 1	
+			echo -e "${Error} 不支持64位及ARM64以外的系统 !" && exit 1	
 		fi
 	fi
 	
@@ -124,24 +143,28 @@ installbbrplus(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
 			fi
 		fi	
 		
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-		kernel_version="4.14.129-bbrplus"
-		detele_kernel_head
-		headurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.129-bbrplus.deb
-		imgurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.129-bbrplus.deb
-		echo -e "正在检查headers下载连接...."
-		checkurl $headurl
-		echo -e "正在检查内核下载连接...."
-		checkurl $imgurl
-		wget -N -O linux-headers.deb $headurl
-		wget -N -O linux-image.deb $imgurl
+		if [[ ${bit} = "x86_64" ]]; then
+			kernel_version="4.14.129-bbrplus"
+			detele_kernel_head
+			headurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.129-bbrplus.deb
+			imgurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.129-bbrplus.deb
+			echo -e "正在检查headers下载连接...."
+			checkurl $headurl
+			echo -e "正在检查内核下载连接...."
+			checkurl $imgurl
+			wget -N -O linux-headers.deb $headurl
+			wget -N -O linux-image.deb $imgurl
 		
-		dpkg -i linux-image.deb
-		dpkg -i linux-headers.deb
+			dpkg -i linux-image.deb
+			dpkg -i linux-headers.deb
+		else
+				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+		fi	
 	fi
 	
 	cd .. && rm -rf bbrplus
@@ -151,6 +174,10 @@ installbbrplus(){
 
 #安装Lotserver内核
 installlot(){
+	bit=`uname -m`
+	if [[ ${bit} != "x86_64" ]]; then
+		echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+	fi	
 	if [[ "${release}" == "centos" ]]; then
 		rpm --import http://${github}/lotserver/${release}/RPM-GPG-KEY-elrepo.org
 		yum remove -y kernel-firmware
@@ -252,6 +279,9 @@ installlot(){
 installxanmod(){
 	kernel_version="5.5.1-xanmod1"
 	bit=`uname -m`
+	if [[ ${bit} != "x86_64" ]]; then
+		echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+	fi
 	rm -rf xanmod
 	mkdir xanmod && cd xanmod
 	if [[ "${release}" == "centos" ]]; then
@@ -274,7 +304,7 @@ installxanmod(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm			
 			else
-				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
 				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
@@ -330,7 +360,7 @@ installxanmod(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+			echo -e "${Error} 不支持64位以外的系统 !" && exit 1
 		fi		
 	fi
 	
@@ -351,6 +381,9 @@ installbbrplusnew(){
 	# kernel_version=$github_ver_plus
 	
 	bit=`uname -m`
+	if [[ ${bit} != "x86_64" ]]; then
+		echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+	fi
 	rm -rf bbrplusnew
 	mkdir bbrplusnew && cd bbrplusnew
 	if [[ "${release}" == "centos" ]]; then
@@ -372,7 +405,7 @@ installbbrplusnew(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+				echo -e "${Error} 不支持64位及ARM64以外的系统 !" && exit 1
 			fi
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
@@ -393,7 +426,7 @@ installbbrplusnew(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 还在用32位，别再见了 !" && exit 1
+			echo -e "${Error} 不支持64位及ARM64以外的系统 !" && exit 1
 		fi
 	fi
 
