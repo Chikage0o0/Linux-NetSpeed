@@ -1581,11 +1581,11 @@ check_version(){
 		version=`grep -oE  "[0-9.]+" /etc/issue | cut -d . -f 1`
 	fi
 	bit=`uname -m`
-	if [[ ${bit} = "x86_64" ]]; then
-		bit="x64"
-	else
-		bit="x32"
-	fi
+	# if [[ ${bit} = "x86_64" ]]; then
+		# bit="x64"
+	# else
+		# bit="x32"
+	# fi
 }
 
 #检查安装bbr的系统要求

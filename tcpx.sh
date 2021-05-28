@@ -1160,7 +1160,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 
 	check_status
 	get_system_info
-	echo -e " 系统及内核: ${Font_color_suffix}$opsy ($lbit Bit) $virtual${PLAIN} $kern${PLAIN}${Font_color_suffix}"
+	echo -e " 系统信息: ${Font_color_suffix}$opsy ${Green_font_prefix}$virtual${Font_color_suffix} $arch ${Green_font_prefix}$kern${Font_color_suffix} "
 	if [[ ${kernel_status} == "noinstall" ]]; then
 		echo -e " 当前状态: ${Green_font_prefix}未安装${Font_color_suffix} 加速内核 ${Red_font_prefix}请先安装内核${Font_color_suffix}"
 	else
@@ -1545,11 +1545,11 @@ check_version(){
 		version=`grep -oE  "[0-9.]+" /etc/issue | cut -d . -f 1`
 	fi
 	bit=`uname -m`
-	if [[ ${bit} = "x86_64" ]]; then
-		bit="x64"
-	else
-		bit="x32"
-	fi
+	# if [[ ${bit} = "x86_64" ]]; then
+		# bit="x64"
+	# else
+		# bit="x32"
+	# fi
 }
 
 #检查安装bbr的系统要求
