@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.86
+#	Version: 1.3.2.87
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.86"
+sh_ver="1.3.2.87"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -67,7 +67,7 @@ installbbr(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+				echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 			fi
 		fi
 		
@@ -111,7 +111,7 @@ installbbr(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 不支持64位及ARM64以外的系统 !" && exit 1	
+			echo -e "${Error} 不支持x86_64及arm64/aarch64以外的系统 !" && exit 1	
 		fi
 	fi
 	
@@ -153,7 +153,7 @@ installbbrplus(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
 			else
-				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+				echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 			fi
 		fi	
 		
@@ -173,7 +173,7 @@ installbbrplus(){
 			dpkg -i linux-image.deb
 			dpkg -i linux-headers.deb
 		else
-				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+				echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 		fi	
 	fi
 	
@@ -196,7 +196,7 @@ installbbrplus(){
 installlot(){
 	bit=`uname -m`
 	if [[ ${bit} != "x86_64" ]]; then
-		echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+		echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 	fi	
 	if [[ "${release}" == "centos" ]]; then
 		rpm --import http://${github}/lotserver/${release}/RPM-GPG-KEY-elrepo.org
@@ -310,7 +310,7 @@ installxanmod(){
 	kernel_version="5.5.1-xanmod1"
 	bit=`uname -m`
 	if [[ ${bit} != "x86_64" ]]; then
-		echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+		echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 	fi
 	rm -rf xanmod
 	mkdir xanmod && cd xanmod
@@ -334,7 +334,7 @@ installxanmod(){
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm			
 			else
-				echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+				echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 			fi
 		elif [[ ${version} = "8" ]]; then
 				echo -e "如果下载地址出错，可能当前正在更新，超过半天还是出错请反馈，大陆自行解决污染问题"
@@ -390,7 +390,7 @@ installxanmod(){
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
 		else
-			echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+			echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 		fi		
 	fi
 	
@@ -422,7 +422,7 @@ installbbrplusnew(){
 	
 	bit=`uname -m`
 	if [[ ${bit} != "x86_64" ]]; then
-		echo -e "${Error} 不支持64位以外的系统 !" && exit 1
+		echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 	fi
 	rm -rf bbrplusnew
 	mkdir bbrplusnew && cd bbrplusnew
@@ -444,8 +444,6 @@ installbbrplusnew(){
 				wget -N -O kernel-headers-c7.rpm $imgurl
 				yum install -y kernel-c7.rpm
 				yum install -y kernel-headers-c7.rpm
-			else
-				echo -e "${Error} 不支持64位及ARM64以外的系统 !" && exit 1
 			fi
 		fi
 	elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
@@ -465,8 +463,6 @@ installbbrplusnew(){
 			wget -N -O linux-image-d10.deb $imgurl
 			dpkg -i linux-image-d10.deb
 			dpkg -i linux-headers-d10.deb
-		else
-			echo -e "${Error} 不支持64位及ARM64以外的系统 !" && exit 1
 		fi
 	fi
 
@@ -1212,7 +1208,7 @@ echo && echo -e " TCP加速 一键安装管理脚本 ${Red_font_prefix}[v${sh_ve
 
 	check_status
 	get_system_info
-	echo -e " 系统及内核: ${Font_color_suffix}$opsy ($lbit Bit) $virtual${PLAIN} $kern${PLAIN}${Font_color_suffix}"
+	echo -e " 系统信息: ${Font_color_suffix}$opsy ${Green_font_prefix}$virtual${Font_color_suffix} $arch ${Green_font_prefix}$kern${Font_color_suffix} "
 	if [[ ${kernel_status} == "noinstall" ]]; then
 		echo -e " 当前状态: ${Green_font_prefix}未安装${Font_color_suffix} 加速内核 ${Red_font_prefix}请先安装内核${Font_color_suffix}"
 	else
