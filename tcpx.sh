@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.87
+#	Version: 1.3.2.88
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.87"
+sh_ver="1.3.2.88"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -1668,7 +1668,11 @@ check_sys_Lotsever(){
 #检查官方稳定内核并安装
 check_sys_official(){
 	check_version
+	bit=$(uname -m)
 	if [[ "${release}" == "centos" ]]; then
+		if [[ ${bit} != "x86_64" ]]; then
+			echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
+		fi	
 		if [[ ${version} == "7" ]]; then
 			yum install kernel kernel-headers -y --skip-broken
 		elif [[ ${version} == "8" ]]; then
@@ -1677,7 +1681,11 @@ check_sys_official(){
 			echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
 	elif [[ "${release}" == "debian" ]]; then
-		apt-get install linux-image-amd64 linux-headers-amd64 -y
+		if [[ ${bit} == "x86_64" ]]; then
+			apt-get install linux-image-amd64 linux-headers-amd64 -y
+		elif [[ ${bit} == "aarch64" ]]; then
+			apt-get install linux-image-arm64 linux-headers-arm64 -y
+		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
 		apt-get install linux-image-generic linux-headers-generic -y
 	else
@@ -1691,7 +1699,11 @@ check_sys_official(){
 #检查官方最新内核并安装
 check_sys_official_bbr(){
 	check_version
+	bit=$(uname -m)
 	if [[ "${release}" == "centos" ]]; then
+		if [[ ${bit} != "x86_64" ]]; then
+			echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
+		fi	
 		rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 		if [[ ${version} = "7" ]]; then
 			yum install https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm -y
@@ -1706,11 +1718,27 @@ check_sys_official_bbr(){
 		if [[ ${version} = "9" ]]; then
 			echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
 			apt update
-			apt -t stretch-backports install linux-image-amd64 linux-headers-amd64 -y
+			if [[ ${bit} == "x86_64" ]]; then
+				apt -t stretch-backports install linux-image-amd64 linux-headers-amd64 -y
+			elif [[ ${bit} == "aarch64" ]]; then
+				apt -t stretch-backports install linux-image-arm64 linux-headers-arm64 -y
+			fi	
 		elif [[ ${version} = "10" ]]; then
 			echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list
 			apt update
-			apt -t buster-backports install linux-image-amd64 linux-headers-amd64 -y
+			if [[ ${bit} == "x86_64" ]]; then
+				apt -t buster-backports install linux-image-amd64 linux-headers-amd64 -y
+			elif [[ ${bit} == "aarch64" ]]; then
+				apt -t buster-backports install linux-image-arm64 linux-headers-arm64 -y
+			fi	
+		elif [[ ${version} = "11" ]]; then
+			echo "deb http://deb.debian.org/debian bullseye-backports main" > /etc/apt/sources.list.d/bullseye-backports.list
+			apt update
+			if [[ ${bit} == "x86_64" ]]; then
+				apt -t bullseye-backports install linux-image-amd64 linux-headers-amd64 -y
+			elif [[ ${bit} == "aarch64" ]]; then
+				echo -e "${Error} 暂时不支持aarch64的系统 !" && exit 1
+			fi
 		else
 			echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 		fi
@@ -1727,6 +1755,9 @@ check_sys_official_bbr(){
 #检查官方xanmod内核并安装
 check_sys_official_xanmod(){
 	check_version
+	if [[ ${bit} != "x86_64" ]]; then
+		echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
+	fi	
 	if [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		apt-get install gnupg gnupg2 gnupg1 sudo -y
 		echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
@@ -1743,6 +1774,9 @@ check_sys_official_xanmod(){
 #检查官方xanmod高响应内核并安装
 check_sys_official_xanmod_cacule(){
 	check_version
+	if [[ ${bit} != "x86_64" ]]; then
+		echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
+	fi	
 	if [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
 		apt-get install gnupg gnupg2 gnupg1 sudo -y
 		echo 'deb http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-kernel.list
