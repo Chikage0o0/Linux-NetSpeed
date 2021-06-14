@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.87
+#	Version: 1.3.2.89
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.87"
+sh_ver="1.3.2.89"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -198,6 +198,12 @@ installlot(){
 	if [[ ${bit} != "x86_64" ]]; then
 		echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
 	fi	
+	if [[ ${bit} == "x86_64" ]]; then
+		bit='x64'
+	fi
+	if [[ ${bit} == "i386" ]]; then
+		bit='x32'
+	fi
 	if [[ "${release}" == "centos" ]]; then
 		rpm --import http://${github}/lotserver/${release}/RPM-GPG-KEY-elrepo.org
 		yum remove -y kernel-firmware
