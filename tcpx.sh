@@ -26,6 +26,8 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
+rm -rf /etc/sysctl.d/bbr.conf
+
 #检查连接
 checkurl(){
 	url=$(curl --max-time 5 --retry 3 --retry-delay 2 --connect-timeout 2 -s --head $1 | head -n 1)
@@ -562,7 +564,7 @@ remove_bbr_lotserver(){
 
 #卸载全部加速
 remove_all(){
-	rm -rf /etc/sysctl.d/bbr.conf
+	rm -rf /etc/sysctl.d/*.conf
 	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/#############################/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
@@ -794,7 +796,6 @@ remove_all(){
 
 #优化系统配置
 optimizing_system(){
-	rm -rf /etc/sysctl.d/bbr.conf
 	sed -i '/net.ipv4.tcp_retries2/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
@@ -848,7 +849,6 @@ sysctl -p
 
 optimizing_system_johnrosen1()
 {
-rm -rf /etc/sysctl.d/bbr.conf
 sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/vm.nr_hugepages/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.core.optmem_max/d' /etc/sysctl.d/99-sysctl.conf
