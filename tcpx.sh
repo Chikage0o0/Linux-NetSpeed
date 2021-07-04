@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.89
+#	Version: 1.3.2.90
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.89"
+sh_ver="1.3.2.90"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -562,6 +562,7 @@ remove_bbr_lotserver(){
 
 #卸载全部加速
 remove_all(){
+	rm -rf /etc/sysctl.d/*.conf
 	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/#############################/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
@@ -793,6 +794,7 @@ remove_all(){
 
 #优化系统配置
 optimizing_system(){
+	rm -rf /etc/sysctl.d/*.conf
 	sed -i '/net.ipv4.tcp_retries2/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
@@ -846,6 +848,7 @@ sysctl -p
 
 optimizing_system_johnrosen1()
 {
+rm -rf /etc/sysctl.d/*.conf
 sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/vm.nr_hugepages/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.core.optmem_max/d' /etc/sysctl.d/99-sysctl.conf
