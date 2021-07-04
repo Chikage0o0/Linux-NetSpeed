@@ -612,7 +612,7 @@ remove_bbr_lotserver(){
 
 #卸载全部加速
 remove_all(){
-	rm -rf /etc/sysctl.d/*.conf
+	rm -rf /etc/sysctl.d/bbr.conf
 	sed -i '/#!!! Do not change these settings unless you know what you are doing !!!/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/#############################/d' /etc/sysctl.d/99-sysctl.conf
 	sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
@@ -844,7 +844,7 @@ remove_all(){
 
 #优化系统配置
 optimizing_system(){
-	rm -rf /etc/sysctl.d/*.conf
+	rm -rf /etc/sysctl.d/bbr.conf
 	sed -i '/net.ipv4.tcp_retries2/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
 	sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
@@ -898,7 +898,7 @@ sysctl -p
 
 optimizing_system_johnrosen1()
 {
-rm -rf /etc/sysctl.d/*.conf
+rm -rf /etc/sysctl.d/bbr.conf
 sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/vm.nr_hugepages/d' /etc/sysctl.d/99-sysctl.conf
 sed -i '/net.core.optmem_max/d' /etc/sysctl.d/99-sysctl.conf
