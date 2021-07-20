@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.90
+#	Version: 1.3.2.91
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.90"
+sh_ver="1.3.2.91"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -1629,6 +1629,10 @@ check_sys_xanmod(){
 #检查安装Lotsever的系统要求
 check_sys_Lotsever(){
 	check_version
+	bit=`uname -m`
+	if [[ ${bit} != "x86_64" ]]; then
+		echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
+	fi
 	if [[ "${release}" == "centos" ]]; then
 		if [[ ${version} == "6" ]]; then
 			kernel_version="2.6.32-504"
@@ -1642,15 +1646,15 @@ check_sys_Lotsever(){
 		fi
 	elif [[ "${release}" == "debian" ]]; then
 		if [[ ${version} = "7" || ${version} = "8" ]]; then
-			if [[ ${bit} == "x64" ]]; then
+			if [[ ${bit} == "x86_64" ]]; then
 				kernel_version="3.16.0-4"
 				installlot
-			elif [[ ${bit} == "x32" ]]; then
+			elif [[ ${bit} == "i386" ]]; then
 				kernel_version="3.2.0-4"
 				installlot
 			fi
 		elif [[ ${version} = "9" ]]; then
-			if [[ ${bit} == "x64" ]]; then
+			if [[ ${bit} == "x86_64" ]]; then
 				kernel_version="4.9.0-4"
 				installlot
 			fi
@@ -1659,10 +1663,10 @@ check_sys_Lotsever(){
 		fi
 	elif [[ "${release}" == "ubuntu" ]]; then
 		if [[ ${version} -ge "12" ]]; then
-			if [[ ${bit} == "x64" ]]; then
+			if [[ ${bit} == "x86_64" ]]; then
 				kernel_version="4.4.0-47"
 				installlot
-			elif [[ ${bit} == "x32" ]]; then
+			elif [[ ${bit} == "i386" ]]; then
 				kernel_version="3.13.0-29"
 				installlot
 			fi
