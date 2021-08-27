@@ -28,7 +28,9 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 
-rm -rf /etc/sysctl.d/bbr.conf
+if [ -f "/etc/sysctl.d/bbr.conf" ]; then
+  rm -rf /etc/sysctl.d/bbr.conf
+fi
 
 #检查连接
 checkurl() {
@@ -619,7 +621,11 @@ remove_all() {
   rm -rf /etc/sysctl.d/*.conf
   #rm -rf /etc/sysctl.conf
   #touch /etc/sysctl.conf
-  cat /dev/null >/etc/sysctl.conf
+  if [ ! -f "/etc/sysctl.conf" ]; then
+    touch /etc/sysctl.conf
+  else
+    cat /dev/null >/etc/sysctl.conf
+  fi
   sysctl --system
   sed -i '/DefaultTimeoutStartSec/d' /etc/systemd/system.conf
   sed -i '/DefaultTimeoutStopSec/d' /etc/systemd/system.conf
@@ -689,6 +695,9 @@ remove_all() {
 
 #优化系统配置
 optimizing_system() {
+  if [ ! -f "/etc/sysctl.conf" ]; then
+    touch /etc/sysctl.conf
+  fi
   sed -i '/net.ipv4.tcp_retries2/d' /etc/sysctl.conf
   sed -i '/net.ipv4.tcp_slow_start_after_idle/d' /etc/sysctl.conf
   sed -i '/net.ipv4.tcp_fastopen/d' /etc/sysctl.conf
@@ -741,6 +750,9 @@ net.ipv4.tcp_max_orphans = 32768
 }
 
 optimizing_system_johnrosen1() {
+  if [ ! -f "/etc/sysctl.d/99-sysctl.conf" ]; then
+    touch /etc/sysctl.d/99-sysctl.conf
+  fi
   sed -i '/kernel.pid_max/d' /etc/sysctl.d/99-sysctl.conf
   sed -i '/vm.nr_hugepages/d' /etc/sysctl.d/99-sysctl.conf
   sed -i '/net.core.optmem_max/d' /etc/sysctl.d/99-sysctl.conf
