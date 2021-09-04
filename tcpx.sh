@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.93
+#	Version: 1.3.2.94
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.93"
+sh_ver="1.3.2.94"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -237,7 +237,7 @@ installlot() {
       echo "deb http://${url}/${deb_relese} ${ver}-backports main restricted universe multiverse" >>/etc/apt/sources.list
       echo "deb http://${urls}/${deb_relese} ${ver}-security main restricted universe multiverse" >>/etc/apt/sources.list
 
-      apt-get update
+      apt-get --allow-releaseinfo-change update
       apt-get install --no-install-recommends -y linux-image-${item}
     elif [ "$deb_relese" == 'debian' ]; then
       echo "deb http://${url}/${deb_relese} ${ver} main" >/etc/apt/sources.list
@@ -530,7 +530,7 @@ startlotserver() {
   if [[ "${release}" == "centos" ]]; then
     yum install ethtool -y
   else
-    apt-get update
+    apt-get --allow-releaseinfo-change update
     apt-get install ethtool -y
   fi
   #bash <(wget -qO- https://git.io/lotServerInstall.sh) install
@@ -1433,26 +1433,26 @@ check_sys() {
       echo 'CA证书检查OK'
     else
       echo 'CA证书检查不通过，处理中'
-      apt-get update && apt-get install ca-certificates -y
+      apt-get --allow-releaseinfo-change update && apt-get install ca-certificates -y
       update-ca-certificates
     fi
     if ! type curl >/dev/null 2>&1; then
       echo 'curl 未安装 安装中'
-      apt-get update && apt-get install curl -y
+      apt-get --allow-releaseinfo-change update && apt-get install curl -y
     else
       echo 'curl 已安装，继续'
     fi
 
     if ! type wget >/dev/null 2>&1; then
       echo 'wget 未安装 安装中'
-      apt-get update && apt-get install wget -y
+      apt-get --allow-releaseinfo-change update && apt-get install wget -y
     else
       echo 'wget 已安装，继续'
     fi
 
     if ! type dmidecode >/dev/null 2>&1; then
       echo 'dmidecode 未安装 安装中'
-      apt-get update && apt-get install dmidecode -y
+      apt-get --allow-releaseinfo-change update && apt-get install dmidecode -y
     else
       echo 'dmidecode 已安装，继续'
     fi
