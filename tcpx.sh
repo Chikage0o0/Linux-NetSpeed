@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.95
+#	Version: 1.3.2.96
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.95"
+sh_ver="1.3.2.96"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -1053,7 +1053,7 @@ start_menu() {
  ${Green_font_prefix}9.${Font_color_suffix} 切换到卸载内核版本		${Green_font_prefix}10.${Font_color_suffix} 切换到一键DD系统脚本
  ${Green_font_prefix}1.${Font_color_suffix} 安装 BBR原版内核
  ${Green_font_prefix}2.${Font_color_suffix} 安装 BBRplus版内核		${Green_font_prefix}5.${Font_color_suffix} 安装 BBRplus新版内核
- ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核	${Green_font_prefix}6.${Font_color_suffix} 安装 xanmod版内核
+ ${Green_font_prefix}3.${Font_color_suffix} 安装 Lotserver(锐速)内核	${Green_font_prefix}6.${Font_color_suffix} 安装 Zen官方内核
  ${Green_font_prefix}30.${Font_color_suffix} 安装 官方稳定内核		${Green_font_prefix}31.${Font_color_suffix} 安装 官方最新内核 backports/elrepo
  ${Green_font_prefix}32.${Font_color_suffix} 安装 XANMOD官方内核	${Green_font_prefix}33.${Font_color_suffix} 安装 XANMOD官方高响应内核
  ${Green_font_prefix}11.${Font_color_suffix} 使用BBR+FQ加速		${Green_font_prefix}12.${Font_color_suffix} 使用BBR+FQ_PIE加速 
@@ -1092,14 +1092,11 @@ start_menu() {
   3)
     check_sys_Lotsever
     ;;
-  # 4)
-  # check_sys_cloud
-  # ;;
   5)
     check_sys_bbrplusnew
     ;;
   6)
-    check_sys_xanmod
+    check_sys_official_zen
     ;;
   30)
     check_sys_official
@@ -1300,7 +1297,7 @@ BBR_grub() {
 #简单的检查内核
 check_kernel() {
   echo -e "${Tip} 鉴于1次人工检查有人不看，下面是2次脚本简易检查内核，开始匹配 /boot/vmlinuz-* 文件"
-  ls /boot/vmlinuz-* | grep -v 'rescue' || echo -e "${Error} 没有匹配到 /boot/vmlinuz-* 文件，很有可能没有内核，谨慎重启，在确认没有内核的情况下，你可以尝试按9切换到不卸载内核选择30安装默认内核救急，此时你应该给我反馈！"
+  ls /boot/vmlinuz-* -I rescue -1 || echo -e "${Error} 没有匹配到 /boot/vmlinuz-* 文件，很有可能没有内核，谨慎重启，在确认没有内核的情况下，你可以尝试按9切换到不卸载内核选择30安装默认内核救急，此时你应该给我反馈！"
 }
 
 #############内核管理组件#############
@@ -1729,27 +1726,27 @@ check_sys_official_xanmod_cacule() {
 }
 
 #检查debian官方cloud内核并安装
-check_sys_official_debian_cloud() {
-  check_version
-  if [[ "${release}" == "debian" ]]; then
-    if [[ ${version} == "9" ]]; then
-      echo "deb http://deb.debian.org/debian stretch-backports main" >/etc/apt/sources.list.d/stretch-backports.list
-      apt update
-      apt -t stretch-backports install linux-image-cloud-amd64 linux-headers-cloud-amd64 -y
-    elif [[ ${version} == "10" ]]; then
-      echo "deb http://deb.debian.org/debian buster-backports main" >/etc/apt/sources.list.d/buster-backports.list
-      apt update
-      apt -t buster-backports install linux-image-cloud-amd64 linux-headers-cloud-amd64 -y
-    else
-      echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-    fi
-  else
-    echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
-  fi
+# check_sys_official_debian_cloud() {
+# check_version
+# if [[ "${release}" == "debian" ]]; then
+# if [[ ${version} == "9" ]]; then
+# echo "deb http://deb.debian.org/debian stretch-backports main" >/etc/apt/sources.list.d/stretch-backports.list
+# apt update
+# apt -t stretch-backports install linux-image-cloud-amd64 linux-headers-cloud-amd64 -y
+# elif [[ ${version} == "10" ]]; then
+# echo "deb http://deb.debian.org/debian buster-backports main" >/etc/apt/sources.list.d/buster-backports.list
+# apt update
+# apt -t buster-backports install linux-image-cloud-amd64 linux-headers-cloud-amd64 -y
+# else
+# echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+# fi
+# else
+# echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+# fi
 
-  BBR_grub
-  echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
-}
+# BBR_grub
+# echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
+# }
 #检查cloud内核并安装
 # check_sys_cloud(){
 # check_version
@@ -1765,6 +1762,27 @@ check_sys_official_debian_cloud() {
 # echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
 # fi
 # }
+
+#检查Zen官方内核并安装
+check_sys_official_zen() {
+  check_version
+  if [[ ${bit} != "x86_64" ]]; then
+    echo -e "${Error} 不支持x86_64以外的系统 !" && exit 1
+  fi
+  if [[ "${release}" == "debian" ]]; then
+    curl 'https://liquorix.net/add-liquorix-repo.sh' | sudo bash
+    apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
+  elif [[ "${release}" == "ubuntu" ]]; then
+    add-apt-repository ppa:damentz/liquorix && sudo apt-get update
+    apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
+  else
+    echo -e "${Error} 不支持当前系统 ${release} ${version} ${bit} !" && exit 1
+  fi
+
+  BBR_grub
+  echo -e "${Tip} 内核安装完毕，请参考上面的信息检查是否安装成功,默认从排第一的高版本内核启动"
+}
+
 #检查系统当前状态
 check_status() {
   kernel_version=$(uname -r | awk -F "-" '{print $1}')
