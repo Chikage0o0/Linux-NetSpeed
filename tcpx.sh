@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.97
+#	Version: 1.3.2.98
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.97"
+sh_ver="1.3.2.98"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -1788,6 +1788,12 @@ check_sys_official_zen() {
     curl 'https://liquorix.net/add-liquorix-repo.sh' | sudo bash
     apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
   elif [[ "${release}" == "ubuntu" ]]; then
+    if ! type add-apt-repository >/dev/null 2>&1; then
+      echo 'add-apt-repository 未安装 安装中'
+      apt-get install software-properties-common -y
+    else
+      echo 'add-apt-repository 已安装，继续'
+    fi
     add-apt-repository ppa:damentz/liquorix && sudo apt-get update
     apt-get install linux-image-liquorix-amd64 linux-headers-liquorix-amd64 -y
   else
