@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.99
+#	Version: 1.3.2.100
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.99"
+sh_ver="1.3.2.100"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -1357,13 +1357,27 @@ check_sys() {
   fi
 
   #from https://github.com/oooldking
+
+  _exists() {
+    local cmd="$1"
+    if eval type type >/dev/null 2>&1; then
+      eval type "$cmd" >/dev/null 2>&1
+    elif command >/dev/null 2>&1; then
+      command -v "$cmd" >/dev/null 2>&1
+    else
+      which "$cmd" >/dev/null 2>&1
+    fi
+    local rt=$?
+    return ${rt}
+  }
+
   get_opsy() {
     [ -f /etc/redhat-release ] && awk '{print ($1,$3~/^[0-9]/?$3:$4)}' /etc/redhat-release && return
     [ -f /etc/os-release ] && awk -F'[= "]' '/PRETTY_NAME/{print $3,$4,$5}' /etc/os-release && return
     [ -f /etc/lsb-release ] && awk -F'[="]+' '/DESCRIPTION/{print $2}' /etc/lsb-release && return
   }
   get_system_info() {
-    cname=$(awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//')
+    #cname=$(awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//')
     #cores=$(awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo)
     #freq=$(awk -F: '/cpu MHz/ {freq=$2} END {print freq}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//')
     #corescache=$(awk -F: '/cache size/ {cache=$2} END {print cache}' /proc/cpuinfo | sed 's/^[ \t]*//;s/[ \t]*$//')
@@ -1388,55 +1402,139 @@ check_sys() {
 
     virt_check
   }
+  # from LemonBench
   virt_check() {
     # if hash ifconfig 2>/dev/null; then
     # eth=$(ifconfig)
     # fi
 
-    virtualx=$(dmesg) 2>/dev/null
+    # _exists "dmesg" && virtualx="$(dmesg 2>/dev/null)"
 
-    if [[ $(which dmidecode) ]]; then
-      sys_manu=$(dmidecode -s system-manufacturer) 2>/dev/null
-      sys_product=$(dmidecode -s system-product-name) 2>/dev/null
-      sys_ver=$(dmidecode -s system-version) 2>/dev/null
-    else
-      sys_manu=""
-      sys_product=""
-      sys_ver=""
-    fi
-
-    if grep docker /proc/1/cgroup -qa; then
-      virtual="Docker"
-    elif grep lxc /proc/1/cgroup -qa; then
-      virtual="Lxc"
-    elif grep -qa container=lxc /proc/1/environ; then
-      virtual="Lxc"
-    elif [[ -f /proc/user_beancounters ]]; then
-      virtual="OpenVZ"
-    elif [[ "$virtualx" == *kvm-clock* ]]; then
-      virtual="KVM"
-    elif [[ "$cname" == *KVM* ]]; then
-      virtual="KVM"
-    elif [[ "$cname" == *QEMU* ]]; then
-      virtual="KVM"
-    elif [[ "$virtualx" == *"VMware Virtual Platform"* ]]; then
-      virtual="VMware"
-    elif [[ "$virtualx" == *"Parallels Software International"* ]]; then
-      virtual="Parallels"
-    elif [[ "$virtualx" == *VirtualBox* ]]; then
-      virtual="VirtualBox"
-    elif [[ -e /proc/xen ]]; then
-      virtual="Xen"
-    elif [[ "$sys_manu" == *"Microsoft Corporation"* ]]; then
-      if [[ "$sys_product" == *"Virtual Machine"* ]]; then
-        if [[ "$sys_ver" == *"7.0"* || "$sys_ver" == *"Hyper-V" ]]; then
-          virtual="Hyper-V"
+    # if _exists "dmidecode"; then
+    # sys_manu="$(dmidecode -s system-manufacturer 2>/dev/null)"
+    # sys_product="$(dmidecode -s system-product-name 2>/dev/null)"
+    # sys_ver="$(dmidecode -s system-version 2>/dev/null)"
+    # else
+    # sys_manu=""
+    # sys_product=""
+    # sys_ver=""
+    # fi
+    # if   grep -qa docker /proc/1/cgroup; then
+    # virtual="Docker"
+    # elif grep -qa lxc /proc/1/cgroup; then
+    # virtual="LXC"
+    # elif grep -qa container=lxc /proc/1/environ; then
+    # virtual="LXC"
+    # elif [[ -f /proc/user_beancounters ]]; then
+    # virtual="OpenVZ"
+    # elif [[ "${virtualx}" == *kvm-clock* ]]; then
+    # virtual="KVM"
+    # elif [[ "${cname}" == *KVM* ]]; then
+    # virtual="KVM"
+    # elif [[ "${cname}" == *QEMU* ]]; then
+    # virtual="KVM"
+    # elif [[ "${virtualx}" == *"VMware Virtual Platform"* ]]; then
+    # virtual="VMware"
+    # elif [[ "${virtualx}" == *"Parallels Software International"* ]]; then
+    # virtual="Parallels"
+    # elif [[ "${virtualx}" == *VirtualBox* ]]; then
+    # virtual="VirtualBox"
+    # elif [[ -e /proc/xen ]]; then
+    # virtual="Xen"
+    # elif [[ "${sys_manu}" == *"Microsoft Corporation"* ]]; then
+    # if [[ "${sys_product}" == *"Virtual Machine"* ]]; then
+    # if [[ "${sys_ver}" == *"7.0"* || "${sys_ver}" == *"Hyper-V" ]]; then
+    # virtual="Hyper-V"
+    # else
+    # virtual="Microsoft Virtual Machine"
+    # fi
+    # fi
+    # else
+    # virtual="Dedicated母鸡"
+    # fi
+    if [ -f "/usr/bin/systemd-detect-virt" ]; then
+      Var_VirtType="$(/usr/bin/systemd-detect-virt)"
+      # 虚拟机检测
+      if [ "${Var_VirtType}" = "qemu" ]; then
+        virtual="QEMU"
+      elif [ "${Var_VirtType}" = "kvm" ]; then
+        virtual="KVM"
+      elif [ "${Var_VirtType}" = "zvm" ]; then
+        virtual="S390 Z/VM"
+      elif [ "${Var_VirtType}" = "vmware" ]; then
+        virtual="VMware"
+      elif [ "${Var_VirtType}" = "microsoft" ]; then
+        virtual="Microsoft Hyper-V"
+      elif [ "${Var_VirtType}" = "xen" ]; then
+        virtual="Xen Hypervisor"
+      elif [ "${Var_VirtType}" = "bochs" ]; then
+        virtual="BOCHS"
+      elif [ "${Var_VirtType}" = "uml" ]; then
+        virtual="User-mode Linux"
+      elif [ "${Var_VirtType}" = "parallels" ]; then
+        virtual="Parallels"
+      elif [ "${Var_VirtType}" = "bhyve" ]; then
+        virtual="FreeBSD Hypervisor"
+      # 容器虚拟化检测
+      elif [ "${Var_VirtType}" = "openvz" ]; then
+        virtual="OpenVZ"
+      elif [ "${Var_VirtType}" = "lxc" ]; then
+        virtual="LXC"
+      elif [ "${Var_VirtType}" = "lxc-libvirt" ]; then
+        virtual="LXC (libvirt)"
+      elif [ "${Var_VirtType}" = "systemd-nspawn" ]; then
+        virtual="Systemd nspawn"
+      elif [ "${Var_VirtType}" = "docker" ]; then
+        virtual="Docker"
+      elif [ "${Var_VirtType}" = "rkt" ]; then
+        virtual="RKT"
+      # 特殊处理
+      elif [ -c "/dev/lxss" ]; then # 处理WSL虚拟化
+        Var_VirtType="wsl"
+        virtual="Windows Subsystem for Linux (WSL)"
+      # 未匹配到任何结果, 或者非虚拟机
+      elif [ "${Var_VirtType}" = "none" ]; then
+        Var_VirtType="dedicated"
+        virtual="None"
+        local Var_BIOSVendor
+		Var_BIOSVendor="$(dmidecode -s bios-vendor)"
+        if [ "${Var_BIOSVendor}" = "SeaBIOS" ]; then
+          Var_VirtType="Unknown"
+          virtual="Unknown with SeaBIOS BIOS"
         else
-          virtual="Microsoft Virtual Machine"
+          Var_VirtType="dedicated"
+          virtual="Dedicated with ${Var_BIOSVendor} BIOS"
         fi
       fi
-    else
-      virtual="Dedicated母鸡"
+    elif [ ! -f "/usr/sbin/virt-what" ]; then
+      Var_VirtType="Unknown"
+      virtual="[Error: virt-what not found !]"
+    elif [ -f "/.dockerenv" ]; then # 处理Docker虚拟化
+      Var_VirtType="docker"
+      virtual="Docker"
+    elif [ -c "/dev/lxss" ]; then # 处理WSL虚拟化
+      Var_VirtType="wsl"
+      virtual="Windows Subsystem for Linux (WSL)"
+    else # 正常判断流程
+      Var_VirtType="$(virt-what | xargs)"
+      local Var_VirtTypeCount
+	  Var_VirtTypeCount="$(echo $Var_VirtTypeCount | wc -l)"
+      if [ "${Var_VirtTypeCount}" -gt "1" ]; then # 处理嵌套虚拟化
+        virtual="echo ${Var_VirtType}"
+        Var_VirtType="$(echo ${Var_VirtType} | head -n1)" # 使用检测到的第一种虚拟化继续做判断
+      elif [ "${Var_VirtTypeCount}" -eq "1" ] && [ "${Var_VirtType}" != "" ]; then # 只有一种虚拟化
+        virtual="${Var_VirtType}"
+      else
+        local Var_BIOSVendor
+		Var_BIOSVendor="$(dmidecode -s bios-vendor)"
+        if [ "${Var_BIOSVendor}" = "SeaBIOS" ]; then
+          Var_VirtType="Unknown"
+          virtual="Unknown with SeaBIOS BIOS"
+        else
+          Var_VirtType="dedicated"
+          virtual="Dedicated with ${Var_BIOSVendor} BIOS"
+        fi
+      fi
     fi
   }
 
