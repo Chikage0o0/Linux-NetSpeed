@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.97
+#	Version: 1.3.2.99
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.97"
+sh_ver="1.3.2.99"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -934,7 +934,7 @@ net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_fin_timeout = 15
 net.ipv4.ip_local_port_range = 1024 65535
 net.ipv4.tcp_max_tw_buckets = 2000000
-#net.ipv4.tcp_fastopen = 3
+net.ipv4.tcp_fastopen = 3
 net.ipv4.tcp_rmem = 4096 87380 67108864
 net.ipv4.tcp_wmem = 4096 65536 67108864
 net.ipv4.udp_rmem_min = 8192
@@ -974,6 +974,7 @@ net.ipv4.tcp_max_syn_backlog = 262144
 net.netfilter.nf_conntrack_max = 262144
 net.nf_conntrack_max = 262144
 EOF
+  sysctl -p	
   sysctl --system
   echo madvise >/sys/kernel/mm/transparent_hugepage/enabled
 
@@ -1001,16 +1002,13 @@ EOF
   cat >'/etc/security/limits.conf' <<EOF
 * soft nofile 65535
 * hard nofile 65535
-* soft nproc 65535
-* hard nproc 65535
 EOF
   if grep -q "ulimit" /etc/profile; then
     :
   else
     sed -i '/ulimit -SHn/d' /etc/profile
-    sed -i '/ulimit -SHn/d' /etc/profile
+    sed -i '/ulimit -SHu/d' /etc/profile
     echo "ulimit -SHn 65535" >>/etc/profile
-    echo "ulimit -SHu 65535" >>/etc/profile
   fi
   if grep -q "pam_limits.so" /etc/pam.d/common-session; then
     :
