@@ -1245,7 +1245,7 @@ detele_kernel_head() {
 
 detele_kernel_custom() {
   BBR_grub
-  read -p " 查看上面内核，请输入需要保留的内核关键词(例如:5.15.0-11) :" kernel_version
+  read -p " 查看上面内核输入需保留保留保留的内核关键词(如:5.15.0-11) :" kernel_version
   detele_kernel
   detele_kernel_head
   BBR_grub
