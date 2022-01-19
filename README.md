@@ -1,5 +1,8 @@
 # Linux-NetSpeed
 ```
+搬瓦工在线库存查询
+https://bwg.ylx.me/
+
 预先准备
 centos：yum install ca-certificates wget -y && update-ca-trust force-enable
 debian/ubuntu：apt-get install ca-certificates wget -y && update-ca-certificates
