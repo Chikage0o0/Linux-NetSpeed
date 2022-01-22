@@ -35,11 +35,24 @@ fi
 #检查连接
 checkurl() {
   url=$(curl --max-time 5 --retry 3 --retry-delay 2 --connect-timeout 2 -s --head $1 | head -n 1)
+  # echo ${url}
   if [[ ${url} == *200* || ${url} == *302* || ${url} == *308* ]]; then
     echo "下载地址检查OK，继续！"
   else
     echo "下载地址检查出错，退出！"
     exit 1
+  fi
+}
+
+#cn使用fastgit.org的github加速
+check_cn() {
+  geoip=$(wget --no-check-certificate -qO- https://api.ip.sb/geoip -T 10 | grep "\"country_code\":\"CN\"")
+  if [[ "$geoip" != "" ]]; then
+    # echo "下面使用fastgit.org的加速服务"
+    # echo ${1//github.com/download.fastgit.org}
+	echo https://endpoint.fastgit.org/$1
+  else
+    echo $1
   fi
 }
 
@@ -2013,18 +2026,6 @@ check_status() {
       run_status="未安装加速模块"
     fi
   fi
-}
-
-#cn github加速
-check_cn() {
-  geoip=$(wget --no-check-certificate -qO- https://api.ip.sb/geoip -T 10 | grep "\"country_code\":\"CN\"")
-  if [[ "$geoip" != "" ]]; then
-    echo "下面使用fastgit.org的加速服务"
-    echo ${1//github.com/download.fastgit.org}
-  else
-    echo $1
-  fi
-
 }
 
 #############系统检测组件#############
