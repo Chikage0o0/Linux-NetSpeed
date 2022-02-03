@@ -7,7 +7,8 @@ export PATH
 #	Description: BBR+BBR魔改版+BBRplus+Lotserver
 #	Version: 1.3.2
 #	Author: 千影,cx9208
-#	Blog: https://www.94ish.me/
+#	Blog: https://www.939.me/
+#   本脚本已不更新，推荐使用5.5以上内核自带的bbr速度最佳
 #=================================================
 
 sh_ver="1.3.2"
