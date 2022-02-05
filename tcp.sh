@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.100
+#	Version: 1.3.2.102
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.100"
+sh_ver="1.3.2.102"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -35,11 +35,24 @@ fi
 #检查连接
 checkurl() {
   url=$(curl --max-time 5 --retry 3 --retry-delay 2 --connect-timeout 2 -s --head $1 | head -n 1)
+  # echo ${url}
   if [[ ${url} == *200* || ${url} == *302* || ${url} == *308* ]]; then
     echo "下载地址检查OK，继续！"
   else
     echo "下载地址检查出错，退出！"
     exit 1
+  fi
+}
+
+#cn使用fastgit.org的github加速
+check_cn() {
+  geoip=$(wget --no-check-certificate -qO- https://api.ip.sb/geoip -T 10 | grep "\"country_code\":\"CN\"")
+  if [[ "$geoip" != "" ]]; then
+    # echo "下面使用fastgit.org的加速服务"
+    # echo ${1//github.com/download.fastgit.org}
+	echo https://endpoint.fastgit.org/$1
+  else
+    echo $1
   fi
 }
 
@@ -64,6 +77,9 @@ installbbr() {
         imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
         #headurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/kernel-headers-${github_ver}-1.x86_64.rpm
         #imgurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/kernel-${github_ver}-1.x86_64.rpm
+
+        headurl=$(check_cn $headurl)
+        imgurl=$(check_cn $imgurl)
         echo -e "正在检查headers下载连接...."
         checkurl $headurl
         echo -e "正在检查内核下载连接...."
@@ -89,6 +105,9 @@ installbbr() {
       imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
       #headurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-headers-${github_ver}_${github_ver}-1_amd64.deb
       #imgurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-image-${github_ver}_${github_ver}-1_amd64.deb
+
+      headurl=$(check_cn $headurl)
+      imgurl=$(check_cn $imgurl)
       echo -e "正在检查headers下载连接...."
       checkurl $headurl
       echo -e "正在检查内核下载连接...."
@@ -108,7 +127,10 @@ installbbr() {
       imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'deb' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
       #headurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-headers-${github_ver}_${github_ver}-1_amd64.deb
       #imgurl=https://github.com/ylx2016/kernel/releases/download/$github_tag/linux-image-${github_ver}_${github_ver}-1_amd64.deb
-      echo -e "正在检查headers下载连接...."
+      
+      headurl=$(check_cn $headurl)
+      imgurl=$(check_cn $imgurl)
+	  echo -e "正在检查headers下载连接...."
       checkurl $headurl
       echo -e "正在检查内核下载连接...."
       checkurl $imgurl
@@ -151,6 +173,9 @@ installbbrplus() {
         detele_kernel_head
         headurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-headers-4.14.129-bbrplus.rpm
         imgurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/centos/7/kernel-4.14.129-bbrplus.rpm
+
+        headurl=$(check_cn $headurl)
+        imgurl=$(check_cn $imgurl)
         echo -e "正在检查headers下载连接...."
         checkurl $headurl
         echo -e "正在检查内核下载连接...."
@@ -170,6 +195,9 @@ installbbrplus() {
       detele_kernel_head
       headurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.129-bbrplus.deb
       imgurl=https://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.129-bbrplus.deb
+
+      headurl=$(check_cn $headurl)
+      imgurl=$(check_cn $imgurl)
       echo -e "正在检查headers下载连接...."
       checkurl $headurl
       echo -e "正在检查内核下载连接...."
@@ -340,6 +368,9 @@ installxanmod() {
         detele_kernel_head
         headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep 'headers' | awk -F '"' '{print $4}')
         imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
+
+        headurl=$(check_cn $headurl)
+        imgurl=$(check_cn $imgurl)
         echo -e "正在检查headers下载连接...."
         checkurl $headurl
         echo -e "正在检查内核下载连接...."
@@ -360,6 +391,9 @@ installxanmod() {
       detele_kernel_head
       headurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep 'headers' | awk -F '"' '{print $4}')
       imgurl=$(curl -s 'https://api.github.com/repos/ylx2016/kernel/releases' | grep ${github_tag} | grep 'rpm' | grep -v 'headers' | grep -v 'devel' | awk -F '"' '{print $4}')
+
+      headurl=$(check_cn $headurl)
+      imgurl=$(check_cn $imgurl)
       echo -e "正在检查headers下载连接...."
       checkurl $headurl
       echo -e "正在检查内核下载连接...."
@@ -396,6 +430,7 @@ installxanmod() {
       #imgurl=https://sourceforge.net/projects/xanmod/files/releases/cacule/${sourceforge_xanmod_cacule_ver}/${sourceforge_xanmod_cacule_file_img}/download
       headurl=https://sourceforge.net/projects/xanmod/files/releases/lts/${sourceforge_xanmod_lts_ver}/${sourceforge_xanmod_lts_file_head}/download
       imgurl=https://sourceforge.net/projects/xanmod/files/releases/lts/${sourceforge_xanmod_lts_ver}/${sourceforge_xanmod_lts_file_img}/download
+
       echo -e "正在检查headers下载连接...."
       checkurl $headurl
       echo -e "正在检查内核下载连接...."
@@ -455,6 +490,9 @@ installbbrplusnew() {
         detele_kernel_head
         headurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'rpm' | grep 'headers' | grep 'el7' | awk -F '"' '{print $4}')
         imgurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'rpm' | grep -v 'devel' | grep -v 'headers' | grep -v 'Source' | grep 'el7' | awk -F '"' '{print $4}')
+
+        headurl=$(check_cn $headurl)
+        imgurl=$(check_cn $imgurl)
         echo -e "正在检查headers下载连接...."
         checkurl $headurl
         echo -e "正在检查内核下载连接...."
@@ -476,6 +514,9 @@ installbbrplusnew() {
         detele_kernel_head
         headurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'rpm' | grep 'headers' | grep 'el8' | awk -F '"' '{print $4}')
         imgurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'rpm' | grep -v 'devel' | grep -v 'headers' | grep -v 'Source' | grep 'el8' | awk -F '"' '{print $4}')
+
+        headurl=$(check_cn $headurl)
+        imgurl=$(check_cn $imgurl)
         echo -e "正在检查headers下载连接...."
         checkurl $headurl
         echo -e "正在检查内核下载连接...."
@@ -497,6 +538,9 @@ installbbrplusnew() {
       detele_kernel_head
       headurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'https' | grep 'amd64.deb' | grep 'headers' | awk -F '"' '{print $4}')
       imgurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'https' | grep 'amd64.deb' | grep 'image' | awk -F '"' '{print $4}')
+
+      headurl=$(check_cn $headurl)
+      imgurl=$(check_cn $imgurl)
       echo -e "正在检查headers下载连接...."
       checkurl $headurl
       echo -e "正在检查内核下载连接...."
@@ -513,6 +557,9 @@ installbbrplusnew() {
       detele_kernel_head
       headurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'https' | grep 'arm64.deb' | grep 'headers' | awk -F '"' '{print $4}')
       imgurl=$(curl -s 'https://api.github.com/repos/UJX6N/bbrplus-5.10/releases' | grep ${github_ver_plus} | grep 'https' | grep 'arm64.deb' | grep 'image' | awk -F '"' '{print $4}')
+
+      headurl=$(check_cn $headurl)
+      imgurl=$(check_cn $imgurl)
       echo -e "正在检查headers下载连接...."
       checkurl $headurl
       echo -e "正在检查内核下载连接...."
@@ -589,7 +636,8 @@ startlotserver() {
     apt-get install ethtool -y
   fi
   #bash <(wget -qO- https://git.io/lotServerInstall.sh) install
-  echo | bash <(wget --no-check-certificate -qO- https://github.com/xidcn/LotServer_Vicer/raw/master/Install.sh) install
+  #echo | bash <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/1265578519/lotServer/main/lotServerInstall.sh) install
+  echo | bash <(wget --no-check-certificate -qO- https://raw.githubusercontent.com/fei5seven/lotServer/master/lotServerInstall.sh) install
   sed -i '/advinacc/d' /appex/etc/config
   sed -i '/maxmode/d' /appex/etc/config
   echo -e "advinacc=\"1\"
