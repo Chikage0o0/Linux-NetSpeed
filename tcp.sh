@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.102
+#	Version: 1.3.2.103
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.102"
+sh_ver="1.3.2.103"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -1380,7 +1380,14 @@ BBR_grub() {
       grubby --info=ALL | awk -F= '$1=="kernel" {print i++ " : " $2}'
     fi
   elif [[ "${release}" == "debian" || "${release}" == "ubuntu" ]]; then
-    /usr/sbin/update-grub
+    if _exists "update-grub"; then
+      update-grub
+    elif [ -f "/usr/sbin/update-grub" ]; then
+      /usr/sbin/update-grub
+    else
+      apt install grub2-common -y
+      update-grub
+    fi
     #exit 1
   fi
 }
