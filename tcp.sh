@@ -4,7 +4,7 @@ export PATH
 #=================================================
 #	System Required: CentOS 7/8,Debian/ubuntu,oraclelinux
 #	Description: BBR+BBRplus+Lotserver
-#	Version: 1.3.2.104
+#	Version: 100.0.0.0
 #	Author: 千影,cx9208,YLX
 #	更新内容及反馈:  https://blog.ylx.me/archives/783.html
 #=================================================
@@ -15,7 +15,7 @@ export PATH
 # SKYBLUE='\033[0;36m'
 # PLAIN='\033[0m'
 
-sh_ver="1.3.2.104"
+sh_ver="100.0.0.0"
 github="raw.githubusercontent.com/ylx2016/Linux-NetSpeed/master"
 
 imgurl=""
@@ -46,7 +46,7 @@ checkurl() {
 
 #cn使用fastgit.org的github加速
 check_cn() {
-  geoip=$(wget --no-check-certificate -qO- https://api.ip.sb/geoip -T 10 | grep "\"country_code\":\"CN\"")
+  geoip=$(wget --user-agent="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36" --no-check-certificate -qO- https://api.ip.sb/geoip -T 10 | grep "\"country_code\":\"CN\"")
   if [[ "$geoip" != "" ]]; then
     # echo "下面使用fastgit.org的加速服务"
     # echo ${1//github.com/download.fastgit.org}
