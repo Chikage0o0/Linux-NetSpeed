@@ -35,7 +35,7 @@ installbbr(){
 		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-headers-${kernel_version}.deb
 		wget -N --no-check-certificate http://${github}/bbr/debian-ubuntu/${bit}/linux-image-${kernel_version}.deb
 	
-		dpkg -i libssl1.1_1.1.1d-0+deb10u2_amd64.deb
+		dpkg -i libssl1.1_1.1.1n-0+deb10u3_amd64.deb
 		dpkg -i linux-headers-${kernel_version}-all.deb
 		dpkg -i linux-headers-${kernel_version}.deb
 		dpkg -i linux-image-${kernel_version}.deb
